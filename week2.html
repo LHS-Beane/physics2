@@ -1,0 +1,297 @@
+export default function Week2GaussPotentialPage() {
+  const sections = [
+    {
+      title: "1. Electric Field Review",
+      emoji: "⚡",
+      summary: "Review electric field meaning, units, and field-line rules before jumping into flux.",
+      bullets: [
+        "Electric field as force per unit charge",
+        "Units: N/C",
+        "Field lines start on positive and end on negative charges",
+        "Field-line density shows relative field strength"
+      ],
+      prompt: "Why is electric field a vector and not a scalar?"
+    },
+    {
+      title: "2. Symmetry",
+      emoji: "🌀",
+      summary: "Students identify patterns that make Gauss's Law useful.",
+      bullets: [
+        "Point charge → spherical symmetry",
+        "Line charge → cylindrical symmetry",
+        "Infinite plane → planar symmetry",
+        "Symmetry helps predict field direction and constancy"
+      ],
+      prompt: "Why must the electric field near an infinite plane point perpendicular to the surface?"
+    },
+    {
+      title: "3. Electric Flux",
+      emoji: "📡",
+      summary: "Students build intuition that flux measures how much field passes through a surface.",
+      bullets: [
+        "Flux depends on field strength, area, and orientation",
+        "Surface facing field directly gives maximum flux",
+        "Surface parallel to field gives zero flux",
+        "Area vectors are perpendicular to surfaces"
+      ],
+      prompt: "How does tilting a surface change the flux through it?"
+    },
+    {
+      title: "4. Gauss's Law Discovery",
+      emoji: "🔍",
+      summary: "A visual pattern-finding activity helps students notice that enclosed charge controls net flux.",
+      bullets: [
+        "Positive charge inside → net outward flux",
+        "Negative charge inside → net inward flux",
+        "Charge outside → no net flux",
+        "Only enclosed charge matters"
+      ],
+      prompt: "What pattern do you notice between enclosed charge and field lines crossing a closed surface?"
+    },
+    {
+      title: "5. Gauss's Law",
+      emoji: "🧠",
+      summary: "Once the pattern is discovered visually, the equation becomes a summary instead of a mystery.",
+      bullets: [
+        "Closed surfaces are used with Gauss's Law",
+        "Gaussian surfaces should match the symmetry of the charge distribution",
+        "Sphere for point charge, cylinder for line charge, pillbox for plane charge",
+        "Gauss's Law is most useful when symmetry is strong"
+      ],
+      prompt: "How do you decide whether Gauss's Law will be useful for a problem?"
+    },
+    {
+      title: "6. Conductors",
+      emoji: "🧲",
+      summary: "Students connect electrostatic equilibrium to what happens inside and on the surface of conductors.",
+      bullets: [
+        "Electric field inside a conductor in electrostatic equilibrium is zero",
+        "Excess charge resides on the outer surface",
+        "The electric field at the surface is perpendicular",
+        "Charges in cavities induce charge rearrangement"
+      ],
+      prompt: "Why can't the electric field inside a conductor remain nonzero in electrostatic equilibrium?"
+    },
+    {
+      title: "7. Electric Potential",
+      emoji: "🔋",
+      summary: "Students transition from electric field to potential energy per unit charge.",
+      bullets: [
+        "Potential is a scalar quantity",
+        "Potential energy per unit charge",
+        "Positive charges move toward lower potential",
+        "Negative charges move toward higher potential"
+      ],
+      prompt: "How is electric potential different from electric field?"
+    },
+    {
+      title: "8. Point-Charge Potential",
+      emoji: "📍",
+      summary: "Students connect distance from charge to how potential changes in space.",
+      bullets: [
+        "Potential decreases with distance from a point charge",
+        "Electric field and potential are related but not the same",
+        "Equipotential lines are always perpendicular to electric field lines",
+        "Potential is measured in volts (J/C)"
+      ],
+      prompt: "Why is electric potential called a scalar while electric field is a vector?"
+    }
+  ];
+
+  const warmups = [
+    "Sketch the electric field around a positive point charge.",
+    "A surface is parallel to an electric field. What is the flux through it?",
+    "A Gaussian surface encloses +3 C and -1 C. What is the net enclosed charge?",
+    "What is one property of a conductor in electrostatic equilibrium?"
+  ];
+
+  const formulas = [
+    { label: "Electric Field", expr: "E = F / q" },
+    { label: "Electric Flux", expr: "Φ = EA cos θ" },
+    { label: "Gauss's Law", expr: "Φ = qₑₙc / ε₀" },
+    { label: "Electric Potential", expr: "V = U / q" },
+    { label: "Point-Charge Potential", expr: "V = (1 / 4π ε₀) (q / r)" }
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100">
+      <header className="relative overflow-hidden border-b border-slate-800 bg-gradient-to-br from-sky-950 via-slate-950 to-indigo-950">
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_rgba(56,189,248,0.35),_transparent_30%),radial-gradient(circle_at_left,_rgba(99,102,241,0.25),_transparent_35%)]" />
+        <div className="relative mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-20">
+          <div className="max-w-3xl space-y-6">
+            <div className="inline-flex items-center rounded-full border border-sky-400/30 bg-sky-400/10 px-4 py-1 text-sm font-medium text-sky-200">
+              Physics II • Week 2 Learning Hub
+            </div>
+            <h1 className="text-4xl font-black tracking-tight md:text-6xl">
+              Electric Flux, <span className="text-sky-300">Gauss’s Law</span>, and Electric Potential
+            </h1>
+            <p className="max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
+              A student-friendly webpage that matches the guided packet and slide deck. Built for slower pacing, stronger visuals, and clearer conceptual connections.
+            </p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-slate-800 bg-white/5 p-4 backdrop-blur">
+                <div className="text-2xl font-bold text-sky-300">8</div>
+                <div className="text-sm text-slate-300">Core lesson sections</div>
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-white/5 p-4 backdrop-blur">
+                <div className="text-2xl font-bold text-sky-300">5</div>
+                <div className="text-sm text-slate-300">Must-know formulas</div>
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-white/5 p-4 backdrop-blur">
+                <div className="text-2xl font-bold text-sky-300">4</div>
+                <div className="text-sm text-slate-300">Warm-up checks</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-7xl px-6 py-10 md:px-10">
+        <section className="mb-10 grid gap-6 lg:grid-cols-[1.4fr_0.9fr]">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl shadow-sky-950/20">
+            <h2 className="text-2xl font-bold text-white">How to Use This Page</h2>
+            <div className="mt-4 grid gap-4 md:grid-cols-3">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+                <div className="mb-2 text-sm font-semibold uppercase tracking-wide text-sky-300">Before Class</div>
+                <p className="text-sm leading-6 text-slate-300">Preview the vocabulary and formulas so the lesson feels familiar instead of brand-new.</p>
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+                <div className="mb-2 text-sm font-semibold uppercase tracking-wide text-sky-300">During Notes</div>
+                <p className="text-sm leading-6 text-slate-300">Follow each section in order and use the reflection prompts as mini checkpoints.</p>
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+                <div className="mb-2 text-sm font-semibold uppercase tracking-wide text-sky-300">After Class</div>
+                <p className="text-sm leading-6 text-slate-300">Return to the worked ideas before attempting the worksheet practice set.</p>
+              </div>
+            </div>
+          </div>
+
+          <aside className="rounded-3xl border border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950 p-6">
+            <h2 className="text-2xl font-bold text-white">Quick Warm-Ups</h2>
+            <ol className="mt-4 space-y-3 text-sm leading-6 text-slate-300">
+              {warmups.map((item, idx) => (
+                <li key={idx} className="rounded-2xl border border-slate-800 bg-white/5 p-3">
+                  <span className="mr-2 font-bold text-sky-300">{idx + 1}.</span>
+                  {item}
+                </li>
+              ))}
+            </ol>
+          </aside>
+        </section>
+
+        <section className="mb-10">
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-3xl font-black">Lesson Roadmap</h2>
+              <p className="mt-2 max-w-3xl text-slate-300">Each section below matches the guided packet and slide deck, so students can move between paper notes, instruction, and the webpage without getting lost.</p>
+            </div>
+          </div>
+
+          <div className="grid gap-5 lg:grid-cols-2">
+            {sections.map((section, idx) => (
+              <article key={idx} className="group rounded-3xl border border-slate-800 bg-slate-900/70 p-6 transition hover:-translate-y-1 hover:border-sky-400/40 hover:shadow-xl hover:shadow-sky-950/20">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-sky-400/10 text-2xl ring-1 ring-sky-400/20">
+                    {section.emoji}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold uppercase tracking-wide text-sky-300">Section {idx + 1}</div>
+                    <h3 className="mt-1 text-2xl font-bold text-white">{section.title}</h3>
+                    <p className="mt-3 leading-7 text-slate-300">{section.summary}</p>
+                  </div>
+                </div>
+                <ul className="mt-5 space-y-2 text-sm leading-6 text-slate-300">
+                  {section.bullets.map((bullet, bIdx) => (
+                    <li key={bIdx} className="flex gap-3 rounded-2xl bg-slate-950/50 px-4 py-3">
+                      <span className="mt-1 text-sky-300">•</span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-5 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-amber-200">Packet Prompt</div>
+                  <p className="mt-2 text-sm leading-6 text-amber-50">{section.prompt}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-10 grid gap-6 xl:grid-cols-[1fr_1.1fr]">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6">
+            <h2 className="text-2xl font-bold text-white">Formula Reference</h2>
+            <p className="mt-2 text-slate-300">These are the major relationships students need to recognize, not just memorize.</p>
+            <div className="mt-5 space-y-3">
+              {formulas.map((formula, idx) => (
+                <div key={idx} className="flex items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/60 px-4 py-4">
+                  <div>
+                    <div className="text-sm font-semibold uppercase tracking-wide text-sky-300">{formula.label}</div>
+                  </div>
+                  <code className="rounded-xl bg-white/5 px-3 py-2 font-mono text-sm text-slate-100">{formula.expr}</code>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-gradient-to-br from-indigo-950/50 to-slate-900 p-6">
+            <h2 className="text-2xl font-bold text-white">Why Gauss’s Law Is Tricky</h2>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4">
+                <h3 className="font-bold text-sky-300">Common Student Mistake</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-300">Trying to use Gauss’s Law just because the formula is available, even when the symmetry is weak.</p>
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4">
+                <h3 className="font-bold text-sky-300">Better Question</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-300">Ask first: “What symmetry exists?” Then ask: “What Gaussian surface matches it?”</p>
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4">
+                <h3 className="font-bold text-sky-300">Strong Cases</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-300">Point charge, line charge, and infinite plane are the classics because the field behaves predictably.</p>
+              </div>
+              <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-4">
+                <h3 className="font-bold text-sky-300">Teaching Win</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-300">Discovery first, equation second. That flip makes the whole topic feel much less brutal.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-10 rounded-3xl border border-slate-800 bg-slate-900/80 p-6">
+          <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-white">Mini Study Flow</h2>
+              <p className="mt-2 text-slate-300">A simple sequence students can actually follow without getting overwhelmed.</p>
+            </div>
+          </div>
+          <div className="mt-6 grid gap-4 md:grid-cols-4">
+            {[
+              ["Preview", "Skim the vocabulary and formulas before class."],
+              ["Watch", "Follow the notes and visuals during the lesson."],
+              ["Practice", "Use the guided packet before the harder worksheet pages."],
+              ["Reflect", "Answer one conceptual question in complete sentences."]
+            ].map(([title, desc], idx) => (
+              <div key={idx} className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+                <div className="text-sm font-semibold uppercase tracking-wide text-sky-300">Step {idx + 1}</div>
+                <h3 className="mt-2 text-xl font-bold text-white">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-300">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-3xl border border-slate-800 bg-gradient-to-r from-sky-950/50 via-slate-900 to-indigo-950/50 p-8">
+          <div className="max-w-3xl">
+            <div className="text-sm font-semibold uppercase tracking-[0.2em] text-sky-300">Mr. Beane • Louisville High School • Louisville, Ohio</div>
+            <h2 className="mt-3 text-3xl font-black text-white">Week 2 Focus Question</h2>
+            <p className="mt-4 text-lg leading-8 text-slate-200">
+              How can we use symmetry and electric flux to understand the relationship between enclosed charge, electric fields, and electric potential?
+            </p>
+            <div className="mt-6 inline-flex rounded-2xl border border-sky-400/30 bg-sky-400/10 px-4 py-3 text-sm text-sky-100">
+              Teacher contact: andy.beane@lepapps.org
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
