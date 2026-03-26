@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Physics II Exam Review</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+  <header id="top" class="bg-gradient-to-r from-sky-900 via-indigo-900 to-slate-900 border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 py-10">
+      <p class="uppercase tracking-[0.3em] text-sky-300 text-sm font-semibold">University Physics II</p>
+      <h1 class="text-4xl md:text-5xl font-bold mt-2">Exam Review Website</h1>
+      <p class="mt-4 text-slate-300 max-w-3xl text-lg">Topics: Coulomb’s Law, Electric Fields, Gauss’s Law, Electric Potential, Electric Potential Energy, and Resistance / Ohm’s Law.</p>
+      <p class="mt-3 text-slate-400 max-w-3xl">Each section tiers up in difficulty and mixes conceptual, algebraic, and calculation-based problems. Open each answer only after you have committed to a solution.</p>
+    </div>
+  </header>
+
+  <nav class="sticky top-0 z-20 backdrop-blur bg-slate-950/85 border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap gap-3 text-sm">
+      <a href="#coulomb" class="px-3 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700">Coulomb</a>
+      <a href="#field" class="px-3 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700">Field</a>
+      <a href="#gauss" class="px-3 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700">Gauss</a>
+      <a href="#potential" class="px-3 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700">Potential</a>
+      <a href="#energy" class="px-3 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700">Energy</a>
+      <a href="#resistance" class="px-3 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700">Resistance</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-6 py-8 space-y-10">
+    <section class="grid md:grid-cols-3 gap-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+        <h2 class="font-semibold text-sky-300">How to Use This Review</h2>
+        <p class="text-slate-300 mt-2">Try each question first on paper. Then reveal the answer. After that, read the explanation even if you were correct.</p>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+        <h2 class="font-semibold text-sky-300">Difficulty Structure</h2>
+        <p class="text-slate-300 mt-2">Each topic starts with foundational reasoning and then builds toward multi-step or more abstract applications.</p>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+        <h2 class="font-semibold text-sky-300">Exam Advice</h2>
+        <p class="text-slate-300 mt-2">Always identify the governing relationship first: force, field, flux, potential, energy, or current.</p>
+      </div>
+    </section>
+
+    <div id="review-root" class="space-y-8"></div>
+  </main>
+
+  <script>
+    function typesetMath(target = document.body) {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise([target]).catch(() => {});
+      }
+    }
+
+    const sections = [
+      {
+        id: 'coulomb',
+        title: "Coulomb's Law",
+        blurb: 'Start with how force depends on charge and separation, then move into direction and superposition thinking.',
+        questions: [
+          {
+            level: 'Level 1 · Conceptual',
+            q: 'Two point charges are moved from a separation of $r$ to $2r$. What happens to the magnitude of the electric force between them?',
+            a: 'The force becomes one-fourth as large.',
+            e: 'Coulomb\'s law is $$F = k\\frac{|q_1q_2|}{r^2}.$$ If the distance doubles, the denominator becomes $(2r)^2 = 4r^2$. That makes the force $\\tfrac14$ of the original value. This is inverse-square behavior, not linear behavior.'
+          },
+          {
+            level: 'Level 2 · Direction + Calculation',
+            q: 'A charge $q_1 = +2.0\\,\\mu\\text{C}$ and a charge $q_2 = -3.0\\,\\mu\\text{C}$ are separated by $0.50\\,\\text{m}$. Find the magnitude of the electric force and determine whether it is attractive or repulsive.',
+            a: '$$F = k\\frac{|q_1q_2|}{r^2} = 9.0\\times10^9\\frac{(2.0\\times10^{-6})(3.0\\times10^{-6})}{(0.50)^2} = 0.216\\,\\text{N}.$$ The force is attractive.',
+            e: 'Use the magnitudes in the Coulomb formula to find the size of the force. Because the charges have opposite signs, they attract each other. A strong habit is to decide attraction vs. repulsion before touching the calculator.'
+          },
+          {
+            level: 'Level 3 · Algebraic Comparison',
+            q: 'Suppose the magnitude of one charge is tripled while the distance between the charges is cut in half. By what factor does the electric force change?',
+            a: 'The force increases by a factor of 12.',
+            e: 'From $$F \\propto \\frac{q_1q_2}{r^2},$$ tripling one charge multiplies the force by 3. Halving the distance multiplies the force by $$\\frac{1}{(1/2)^2} = 4.$$ Total factor: $3\\times4=12$.'
+          },
+          {
+            level: 'Level 4 · Conceptual Superposition',
+            q: 'Two identical positive charges are fixed on a horizontal line, one to the left and one to the right of the midpoint. A small positive test charge is placed exactly at the midpoint. What is the net electric force on the test charge? Explain physically.',
+            a: 'The net electric force is zero.',
+            e: 'Each source charge repels the positive test charge. The left charge pushes it rightward, and the right charge pushes it leftward. Because the source charges are identical and equally distant from the midpoint, the two forces have equal magnitude and opposite direction, so they cancel. This is a classic superposition result.'
+          }
+        ]
+      },
+      {
+        id: 'field',
+        title: 'Electric Field',
+        blurb: 'Connect the field definition to force, direction, and field cancellation.',
+        questions: [
+          {
+            level: 'Level 1 · Conceptual',
+            q: 'At a point in space, the electric field is zero. Does that guarantee that there are no charges anywhere nearby?',
+            a: 'No. It only means the vector sum of the electric fields at that point is zero.',
+            e: 'Electric field is a vector quantity. Multiple charges can produce fields that cancel at a specific location. A zero field does not mean the absence of charges; it means balance at that point.'
+          },
+          {
+            level: 'Level 2 · Calculation',
+            q: 'Find the electric field magnitude at a point $0.20\\,\\text{m}$ from a point charge of $+5.0\\,\\mu\\text{C}$. State the direction of the field.',
+            a: '$$E = k\\frac{|q|}{r^2} = 9.0\\times10^9\\frac{5.0\\times10^{-6}}{(0.20)^2} = 1.125\\times10^6\\,\\text{N/C}.$$ The field points away from the positive charge.',
+            e: 'The electric field of a positive point charge points radially outward. The magnitude comes directly from the point-charge field equation. Keep the direction separate from the numeric calculation.'
+          },
+          {
+            level: 'Level 3 · Force from Field',
+            q: 'A particle with charge $q = -2.0\\times10^{-6}\\,\\text{C}$ is placed in a uniform electric field of magnitude $3.0\\times10^4\\,\\text{N/C}$ directed to the right. Find the force on the particle, including direction.',
+            a: '$$\\vec F = q\\vec E.$$ Magnitude: $$|F| = |q|E = (2.0\\times10^{-6})(3.0\\times10^4)=6.0\\times10^{-2}\\,\\text{N}.$$ Direction: to the left.',
+            e: 'A negative charge feels a force opposite the field direction. Many students memorize the formula but forget the sign meaning. The field points right, so a negative charge is forced left.'
+          },
+          {
+            level: 'Level 4 · Algebraic Reasoning',
+            q: 'If the electric field at a distance $r$ from a point charge is $E$, what is the electric field at a distance $3r$ from the same charge?',
+            a: 'The field becomes $\\tfrac{E}{9}$.',
+            e: 'Point-charge electric field follows $$E \\propto \\frac{1}{r^2}.$$ Replacing $r$ with $3r$ gives $$E_{new}=\\frac{1}{3^2}E=\\frac{E}{9}.$$ This matches the same inverse-square pattern seen in Coulomb\'s law.'
+          }
+        ]
+      },
+      {
+        id: 'gauss',
+        title: "Gauss's Law",
+        blurb: 'Focus on what Gauss’s law does and does not tell you, then move to symmetric applications.',
+        questions: [
+          {
+            level: 'Level 1 · Conceptual',
+            q: 'A closed Gaussian surface encloses no net charge, but there are charges outside the surface. What is the net electric flux through the surface?',
+            a: 'The net electric flux is zero.',
+            e: 'Gauss\'s law says $$\\Phi_E = \\frac{Q_{enc}}{\\varepsilon_0}.$$ Only enclosed charge determines net flux. External charges can create fields on the surface, but their field lines enter and leave in a way that gives zero net flux through the entire closed surface.'
+          },
+          {
+            level: 'Level 2 · Flux Calculation',
+            q: 'A spherical Gaussian surface encloses a charge of $+4.0\\,\\mu\\text{C}$. Find the net electric flux through the surface.',
+            a: '$$\\Phi_E = \\frac{Q_{enc}}{\\varepsilon_0} = \\frac{4.0\\times10^{-6}}{8.85\\times10^{-12}} \\approx 4.52\\times10^5\\,\\text{N·m}^2/\\text{C}.$$ ',
+            e: 'This is a direct Gauss\'s law computation. Notice that the radius of the sphere does not appear. Flux depends on enclosed charge, not the size of the Gaussian surface.'
+          },
+          {
+            level: 'Level 3 · Symmetry + Field',
+            q: 'A total charge $Q$ is uniformly distributed on a spherical shell of radius $R$. What is the electric field at a point outside the shell at distance $r>R$ from the center?',
+            a: '$$E = k\\frac{Q}{r^2}$$ directed radially outward if $Q>0$.',
+            e: 'For spherical symmetry, choose a spherical Gaussian surface of radius $r$. Then $$\\Phi_E = EA = E(4\\pi r^2)=\\frac{Q}{\\varepsilon_0}.$$ Solving gives $$E = \\frac{Q}{4\\pi\\varepsilon_0r^2}=k\\frac{Q}{r^2}.$$ Outside a spherically symmetric charge distribution, the field acts as if all the charge were concentrated at the center.'
+          },
+          {
+            level: 'Level 4 · Inside a Conductor',
+            q: 'A conductor is in electrostatic equilibrium. What is the electric field inside the conducting material, and why must that be true?',
+            a: 'The electric field inside the conductor is zero.',
+            e: 'If there were a nonzero electric field inside a conductor, free charges would continue to move. Electrostatic equilibrium means charges have already rearranged until there is no net force driving further motion. Therefore the internal field must be zero.'
+          }
+        ]
+      },
+      {
+        id: 'potential',
+        title: 'Electric Potential',
+        blurb: 'Reinforce potential as energy per charge and connect it explicitly to the electric field.',
+        questions: [
+          {
+            level: 'Level 1 · Conceptual',
+            q: 'If the electric field points to the right, in which direction does electric potential decrease?',
+            a: 'Electric potential decreases to the right.',
+            e: 'Electric field points in the direction of decreasing potential. In one dimension, $$E_x = -\\frac{dV}{dx}.$$ The negative sign captures the downhill relationship between field and potential.'
+          },
+          {
+            level: 'Level 2 · Potential from Energy',
+            q: 'A charge of $2.0\\times10^{-6}\\,\\text{C}$ experiences a change in electric potential energy of $1.0\\times10^{-4}\\,\\text{J}$. What is the corresponding potential difference?',
+            a: '$$\\Delta V = \\frac{\\Delta U}{q} = \\frac{1.0\\times10^{-4}}{2.0\\times10^{-6}} = 50\\,\\text{V}.$$ ',
+            e: 'Potential difference is energy change per unit charge. Keep track of what is being divided by what: potential is not total energy, and energy is not charge.'
+          },
+          {
+            level: 'Level 3 · Point Charge Potential',
+            q: 'Find the electric potential at a distance of $0.30\\,\\text{m}$ from a point charge of $+6.0\\,\\mu\\text{C}$, taking $V=0$ at infinity.',
+            a: '$$V = k\\frac{q}{r} = 9.0\\times10^9\\frac{6.0\\times10^{-6}}{0.30} = 1.8\\times10^5\\,\\text{V}.$$ ',
+            e: 'The point-charge potential formula comes from integrating the point-charge field. Potential is a scalar, so there is no direction attached to the answer. The sign comes from the sign of the source charge.'
+          },
+          {
+            level: 'Level 4 · Derivative Connection',
+            q: 'The electric potential in a region is given by $V(x)=12-4x$ in volts, where $x$ is in meters. Find the electric field in that region.',
+            a: '$$E_x=-\\frac{dV}{dx}=-(-4)=+4\\,\\text{V/m}.$$ The field points in the positive $x$-direction.',
+            e: 'Take the derivative first, then apply the minus sign. A constant negative slope in the potential means a constant positive electric field. This question checks whether students can move from a potential function to the field it creates.'
+          }
+        ]
+      },
+      {
+        id: 'energy',
+        title: 'Electric Potential Energy',
+        blurb: 'Blend sign reasoning with computations involving work and stored configuration energy.',
+        questions: [
+          {
+            level: 'Level 1 · Conceptual',
+            q: 'A positive charge moves in the same direction as the electric field. What happens to its electric potential energy?',
+            a: 'Its electric potential energy decreases.',
+            e: 'The electric field points in the direction a positive charge would naturally accelerate. When the field does positive work on the charge, the system’s electric potential energy drops.'
+          },
+          {
+            level: 'Level 2 · Energy from Potential Difference',
+            q: 'A charge of $3.0\\times10^{-6}\\,\\text{C}$ moves through a potential difference of $20\\,\\text{V}$. Find the change in electric potential energy.',
+            a: '$$\\Delta U = q\\Delta V = (3.0\\times10^{-6})(20)=6.0\\times10^{-5}\\,\\text{J}.$$ ',
+            e: 'This formula is the direct bridge between potential and energy. The sign depends on the physical situation and the sign of the charge, but the magnitude comes from multiplying charge by potential difference.'
+          },
+          {
+            level: 'Level 3 · Two-Particle System',
+            q: 'Two charges, $q_1=+3.0\\,\\mu\\text{C}$ and $q_2=+2.0\\,\\mu\\text{C}$, are separated by $0.50\\,\\text{m}$. Find the electric potential energy of the system.',
+            a: '$$U = k\\frac{q_1q_2}{r} = 9.0\\times10^9\\frac{(3.0\\times10^{-6})(2.0\\times10^{-6})}{0.50} = 0.108\\,\\text{J}.$$ ',
+            e: 'Because both charges are positive, the potential energy is positive. Positive potential energy reflects the fact that work must be done by an external agent to assemble like charges close together against their natural repulsion.'
+          },
+          {
+            level: 'Level 4 · Work Interpretation',
+            q: 'An external agent slowly moves a positive charge closer to another fixed positive charge. Is the work done by the external agent positive, negative, or zero? What happens to the electric potential energy?',
+            a: 'The external agent does positive work, and the electric potential energy increases.',
+            e: 'Like charges repel, so pushing them closer requires an external force in the direction of motion. That means the external agent adds energy to the system. In slow motion, that added work appears as an increase in electric potential energy.'
+          }
+        ]
+      },
+      {
+        id: 'resistance',
+        title: "Resistance and Ohm's Law",
+        blurb: 'Tie circuits back to fields, potential differences, and proportional reasoning.',
+        questions: [
+          {
+            level: 'Level 1 · Conceptual',
+            q: 'If the voltage across a resistor stays constant and the resistance increases, what happens to the current?',
+            a: 'The current decreases.',
+            e: 'Ohm\'s law is $$I=\\frac{\\Delta V}{R}.$$ At fixed voltage, current is inversely proportional to resistance. Larger resistance means it is harder for charge to drift through the material.'
+          },
+          {
+            level: 'Level 2 · Direct Calculation',
+            q: 'A $12\\,\\text{V}$ battery is connected to a $4.0\\,\\Omega$ resistor. Find the current.',
+            a: '$$I=\\frac{V}{R}=\\frac{12}{4.0}=3.0\\,\\text{A}.$$ ',
+            e: 'This is the most direct Ohm\'s law application. Before calculating, students should be able to estimate that the current must be a few amps, not a tiny fraction or something enormous.'
+          },
+          {
+            level: 'Level 3 · Algebraic Scaling',
+            q: 'A resistor carries current $I$ when connected to voltage $V$. What happens to the current if the voltage is tripled and the resistance is doubled?',
+            a: 'The new current is $\\tfrac{3}{2}I$.',
+            e: 'Since $$I \\propto \\frac{V}{R},$$ replacing $V$ by $3V$ multiplies current by 3, and replacing $R$ by $2R$ divides it by 2. Net effect: $$I_{new}=\\frac{3}{2}I.$$'
+          },
+          {
+            level: 'Level 4 · Multi-Step Reasoning',
+            q: 'A $9.0\\,\\text{V}$ battery is connected across a resistor and the current is measured to be $1.5\\,\\text{A}$. Find the resistance. Then determine the new current if the same resistor is connected to an $18\\,\\text{V}$ battery.',
+            a: 'First, $$R=\\frac{V}{I}=\\frac{9.0}{1.5}=6.0\\,\\Omega.$$ With the same resistor at $18\\,\\text{V}$, $$I=\\frac{18}{6.0}=3.0\\,\\text{A}.$$ ',
+            e: 'The first step is solving Ohm\'s law for resistance instead of current. The second step checks whether students understand that resistance is a property of the resistor here, so it stays constant while the applied voltage changes.'
+          }
+        ]
+      }
+    ];
+
+    function makeQuestionCard(item, idx, sectionId) {
+      return `
+        <article class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg shadow-black/20">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <span class="text-xs uppercase tracking-[0.2em] text-indigo-300 font-semibold">Question ${idx + 1}</span>
+            <span class="text-xs text-slate-400">${item.level}</span>
+          </div>
+          <div class="text-slate-100 text-lg leading-8">${item.q}</div>
+          <button
+            type="button"
+            class="answer-toggle mt-5 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-3 flex items-center justify-between text-sky-300 font-semibold hover:bg-slate-800/60"
+            data-target="answer-${sectionId}-${idx}"
+            aria-expanded="false"
+          >
+            <span class="toggle-label">Show answer</span>
+            <span class="toggle-symbol text-slate-400">+</span>
+          </button>
+          <div id="answer-${sectionId}-${idx}" class="hidden mt-3 rounded-xl border border-slate-800 bg-slate-950/70 px-4 py-4">
+            <h4 class="font-semibold text-emerald-300 mb-2">Answer</h4>
+            <div class="text-slate-200 leading-8">${item.a}</div>
+            <h4 class="font-semibold text-amber-300 mt-5 mb-2">Why this is correct</h4>
+            <div class="text-slate-300 leading-8">${item.e}</div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderSections() {
+      const root = document.getElementById('review-root');
+      root.innerHTML = sections.map((section) => `
+        <section id="${section.id}" class="scroll-mt-28">
+          <div class="bg-gradient-to-br from-slate-900 to-slate-900/60 border border-slate-800 rounded-3xl p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+              <div>
+                <p class="text-sm uppercase tracking-[0.25em] text-sky-300 font-semibold">Topic Review</p>
+                <h2 class="text-3xl font-bold mt-2">${section.title}</h2>
+                <p class="text-slate-300 mt-3 max-w-3xl">${section.blurb}</p>
+              </div>
+              <a href="#top" class="text-sm text-slate-400 hover:text-slate-200">Back to top</a>
+            </div>
+            <div class="grid gap-5">
+              ${section.questions.map((q, idx) => makeQuestionCard(q, idx, section.id)).join('')}
+            </div>
+          </div>
+        </section>
+      `).join('');
+    }
+
+    function bindToggleEvents() {
+      document.querySelectorAll('.answer-toggle').forEach((button) => {
+        button.addEventListener('click', () => {
+          const targetId = button.getAttribute('data-target');
+          const panel = document.getElementById(targetId);
+          if (!panel) return;
+
+          const isOpen = !panel.classList.contains('hidden');
+          panel.classList.toggle('hidden');
+          button.setAttribute('aria-expanded', String(!isOpen));
+
+          const label = button.querySelector('.toggle-label');
+          if (label) label.textContent = isOpen ? 'Show answer' : 'Hide answer';
+
+          const symbol = button.querySelector('.toggle-symbol');
+          if (symbol) symbol.textContent = isOpen ? '+' : '−';
+
+          if (!isOpen) {
+            typesetMath(panel);
+          }
+        });
+      });
+    }
+
+    function runDisplayChecks() {
+      const expectedSections = sections.length;
+      const renderedSections = document.querySelectorAll('#review-root section').length;
+      const toggleCount = document.querySelectorAll('.answer-toggle').length;
+      const answerCount = document.querySelectorAll('[id^="answer-"]').length;
+
+      console.assert(renderedSections === expectedSections, `Expected ${expectedSections} sections, found ${renderedSections}.`);
+      console.assert(toggleCount === answerCount, `Expected toggle count (${toggleCount}) to match answer count (${answerCount}).`);
+      console.assert(toggleCount === sections.reduce((sum, section) => sum + section.questions.length, 0), 'Toggle count does not match total number of questions.');
+    }
+
+    renderSections();
+    bindToggleEvents();
+    typesetMath();
+    runDisplayChecks();
+  </script>
+</body>
+</html>
