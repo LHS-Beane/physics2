@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics II Exam 1 Complete Review</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP & VARIABLES */
+        :root {
+            --bg-dark: #020617;
+            --bg-surface: #0f172a;
+            --bg-surface-alt: #1e293b;
+            --border-color: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --text-faint: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-blue-dark: #0284c7;
+            --accent-green: #10b981;
+            --accent-warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-muted);
+            font-family: 'Lato', sans-serif;
+            line-height: 1.6;
+            padding-top: 80px; /* Space for fixed header */
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        /* 2. NAVIGATION */
+        .navbar {
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 5px; /* For scrollbar on mobile */
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: color 0.2s;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+            background-color: rgba(56, 189, 248, 0.1);
+        }
+
+        /* 3. LAYOUT & SECTIONS */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 5vw, 64px);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(20px, 3vw, 28px);
+            color: var(--text-faint);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+        }
+
+        .topic-section {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 60px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), transparent);
+        }
+
+        .section-title {
+            font-size: 36px;
+            color: var(--accent-blue);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+            align-items: start;
+        }
+
+        /* 4. COMPONENTS */
+        .info-box {
+            background-color: var(--bg-surface-alt);
+            border-left: 6px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            font-size: 18px;
+        }
+
+        .info-box h3 {
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .info-box.warning {
+            border-left-color: var(--accent-warning);
+        }
+
+        .info-box.warning h3 {
+            color: var(--accent-warning);
+        }
+
+        .image-wrapper {
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-surface-alt);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .image-wrapper img {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        /* Practice Problem Styling */
+        .practice-problem {
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .practice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .practice-header h3 {
+            color: var(--text-main);
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .question-content {
+            font-size: 20px;
+            margin-bottom: 25px;
+        }
+
+        .btn-reveal {
+            background-color: var(--accent-blue);
+            color: var(--bg-dark);
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-reveal:hover {
+            background-color: var(--accent-blue-dark);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .solution-container {
+            display: none; /* Hidden by default */
+            margin-top: 25px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .answer-box {
+            background-color: var(--bg-surface-alt);
+            border-left: 6px solid var(--accent-green);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .answer-box h4 {
+            color: var(--accent-green);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .step-box {
+            background-color: rgba(2, 6, 23, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        .step-box h4 {
+            color: var(--text-faint);
+            margin-bottom: 15px;
+        }
+
+        /* Formulas */
+        .formula-container {
+            display: flex;
+            justify-content: center;
+            background-color: rgba(2, 6, 23, 0.6);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .formula-container math {
+            font-size: 24px;
+            color: var(--text-main);
+        }
+
+        @media (min-width: 768px) {
+            .formula-container math {
+                font-size: 32px;
+            }
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .badge-conceptual { background-color: rgba(139, 92, 246, 0.2); color: #c4b5fd; border: 1px solid #8b5cf6; }
+        .badge-standard { background-color: rgba(56, 189, 248, 0.2); color: #bae6fd; border: 1px solid #38bdf8; }
+        .badge-exam { background-color: rgba(244, 63, 94, 0.2); color: #fecdd3; border: 1px solid #f43f5e; }
+
+        /* Lists */
+        .bullet-list {
+            list-style: none;
+        }
+        .bullet-list li {
+            margin-bottom: 15px;
+            padding-left: 35px;
+            position: relative;
+            font-size: 18px;
+        }
+        .bullet-list i {
+            color: var(--accent-blue);
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+            top: 4px;
+        }
+
+        /* Summary Rules */
+        .summary-rule {
+            background-color: var(--bg-surface-alt);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--text-main);
+            font-size: 18px;
+        }
+        .summary-rule strong {
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .topic-section { padding: 25px 15px; }
+            .section-title { font-size: 28px; }
+            .navbar { padding: 0 15px; }
+            .nav-links { display: none; /* Can add hamburger menu for full implementation */ }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Navigation -->
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">Physics II Review</a>
+        <div class="nav-links">
+            <a href="#coulomb">Coulomb's Law</a>
+            <a href="#e-field">Electric Field</a>
+            <a href="#gauss">Gauss's Law</a>
+            <a href="#conductors">Conductors</a>
+            <a href="#potential">Potential</a>
+            <a href="#energy">Energy</a>
+            <a href="#capacitors">Capacitors</a>
+            <a href="#summary">Summary</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Physics II: Exam 1 Review</h1>
+        <p class="subtitle">Complete Student Guide: Concepts, Mechanics, & Board-Ready Problems</p>
+        <p style="margin-top: 20px; color: var(--accent-blue); font-weight: 600; text-transform: uppercase; letter-spacing: 2px;">
+            7 Core Topics | Tiered Practice | Step-by-Step Solutions
+        </p>
+    </div>
+
+    <main class="container">
+
+        <!-- Topic 1: Coulomb's Law -->
+        <section id="coulomb" class="topic-section">
+            <h2 class="section-title">Topic 1: Coulomb's Law</h2>
+            
+            <div class="grid-2">
+                <div>
+                    <div class="info-box">
+                        <h3>The Foundation</h3>
+                        <p>The force between two charges follows an inverse-square law. The key insight is the <math style="display: inline-math;"><msup><mi>r</mi><mn>2</mn></msup></math> in the denominator.</p>
+                        
+                        <div class="formula-container" style="background: transparent; border: none; padding: 10px 0;">
+                            <math style="display: math;">
+                                <mi>F</mi>
+                                <mo>=</mo>
+                                <msub><mi>k</mi><mi>e</mi></msub>
+                                <mfrac>
+                                    <mrow><mo>|</mo><msub><mi>q</mi><mn>1</mn></msub><msub><mi>q</mi><mn>2</mn></msub><mo>|</mo></mrow>
+                                    <msup><mi>r</mi><mn>2</mn></msup>
+                                </mfrac>
+                            </math>
+                        </div>
+                        <p><strong>Superposition:</strong> Every pair of charges interacts independently. Find each force as a vector (magnitude from formula, direction from signs), then add them.</p>
+                    </div>
+
+                    <div class="info-box warning">
+                        <h3><i class="fa-solid fa-triangle-exclamation"></i> Common Pitfall: Balance Problems</h3>
+                        <p>Students often forget to take the square root when setting forces equal in balance problems. If you reach a step like:</p>
+                        <div class="formula-container" style="background: transparent; border: none; padding: 10px 0;">
+                             <math style="display: math;">
+                                <mfrac><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup></mfrac>
+                                <mo>=</mo>
+                                <mfrac><mn>1</mn><msup><mrow><mo>(</mo><mn>3</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup></mfrac>
+                             </math>
+                        </div>
+                        <p><strong>STOP.</strong> Take the square root of <em>both</em> sides before you cross-multiply. That step is where most algebraic errors occur.</p>
+                    </div>
+                </div>
+                
+                <div class="image-wrapper">
+                    <img src="http://googleusercontent.com/image_collection/image_retrieval/11224481870053046829" alt="Coulomb's Law point charges diagram">
+                </div>
+            </div>
+
+            <!-- Practice 1 -->
+            <div class="practice-problem">
+                <div class="practice-header">
+                    <h3>Practice 1 <span class="badge badge-conceptual" style="margin-left: 10px;">Conceptual</span></h3>
+                    <button class="btn-reveal" id="btn-q1" onclick="toggleSolution('q1')"><i class="fa-solid fa-eye"></i> Show Solution</button>
+                </div>
+                <div class="question-content">
+                    <p>If the distance between two charges is tripled, by what factor does the electric force change?</p>
+                </div>
+                
+                <div class="solution-container" id="q1">
+                    <div class="answer-box">
+                        <h4>Answer</h4>
+                        <p>The force becomes <strong>1/9</strong> of its original value.</p>
+                    </div>
+                    <div class="step-box">
+                        <h4>Step-by-Step</h4>
+                        <p>Starting from Coulomb's Law, if the new distance is <math style="display: inline-math;"><mn>3</mn><mi>r</mi></math>:</p>
+                        <div class="formula-container">
+                            <math style="display: math;">
+                                <msub><mi>F</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub>
+                                <mo>=</mo>
+                                <msub><mi>k</mi><mi>e</mi></msub>
+                                <mfrac>
+                                    <mrow><mo>|</mo><msub><mi>q</mi><mn>1</mn></msub><msub><mi>q</mi><mn>2</mn></msub><mo>|</mo></mrow>
+                                    <msup><mrow><mo>(</mo><mn>3</mn><mi>r</mi><mo>)</mo></mrow><mn>2</mn></msup>
+                                </mfrac>
+                                <mo>=</mo>
+                                <mfrac><mn>1</mn><mn>9</mn></mfrac>
+                                <mfenced><mrow>
+                                    <msub><mi>k</mi><mi>e</mi></msub>
+                                    <mfrac>
+                                        <mrow><mo>|</mo><msub><mi>q</mi><mn>1</mn></msub><msub><mi>q</mi><mn>2</mn></msub><mo>|</mo></mrow>
+                                        <msup><mi>r</mi><mn>2</mn></msup>
+                                    </mfrac>
+                                </mrow></mfenced>
+                                <mo>=</mo>
+                                <mfrac><mn>1</mn><mn>9</mn></mfrac><mi>F</mi>
+                            </math>
+                        </div>
+                        <p style="color: var(--accent-blue); margin-top: 10px;"><em>Tip: Distance dominates in inverse-square laws. Tripling distance means nine times weaker—not three times.</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practice 2 -->
+            <div class="practice-problem">
+                <div class="practice-header">
+                    <h3>Practice 2 <span class="badge badge-exam" style="margin-left: 10px;">Exam-Level</span></h3>
+                    <button class="btn-reveal" id="btn-q2" onclick="toggleSolution('q2')"><i class="fa-solid fa-eye"></i> Show Solution</button>
+                </div>
+                <div class="question-content">
+                    <p>Two positive charges lie on the x-axis: <math style="display: inline-math;"><mo>+</mo><mn>4.0</mn><mo>&#x00A0;</mo><mi>&#x03BC;</mi><mi>C</mi></math> at <math style="display: inline-math;"><mi>x</mi><mo>=</mo><mn>0</mn></math> and <math style="display: inline-math;"><mo>+</mo><mn>1.0</mn><mo>&#x00A0;</mo><mi>&#x03BC;</mi><mi>C</mi></math> at <math style="display: inline-math;"><mi>x</mi><mo>=</mo><mn>3.0</mn><mo>&#x00A0;</mo><mi>m</mi></math>.</p>
+                    <p style="margin-top: 10px;">Where must a third charge be placed so the net force on it is zero?</p>
+                </div>
+                
+                <div class="solution-container" id="q2">
+                    <div class="answer-box">
+                        <h4>Answer</h4>
+                        <p><math style="display: inline-math;"><mi>x</mi><mo>=</mo><mn>2.0</mn><mo>&#x00A0;</mo><mi>m</mi></math> (between the two charges).</p>
+                    </div>
+                    <div class="step-box">
+                        <h4>Step-by-Step</h4>
+                        <p>The zero-force point lies between them. Let <math style="display: inline-math;"><mi>x</mi></math> = distance from the <math style="display: inline-math;"><mo>+</mo><mn>4</mn><mo>&#x00A0;</mo><mi>&#x03BC;</mi><mi>C</mi></math> charge.</p>
+                        <div class="formula-container">
+                            <math style="display: math;">
+                                <mfrac><mn>4</mn><msup><mi>x</mi><mn>2</mn></msup></mfrac>
+                                <mo>=</mo>
+                                <mfrac><mn>1</mn><msup><mrow><mo>(</mo><mn>3</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup></mfrac>
+                            </math>
+                        </div>
+                        <p>Take the square root of both sides <em>before</em> cross-multiplying:</p>
+                        <div class="formula-container">
+                            <math style="display: math;">
+                                <mfrac><mn>2</mn><mi>x</mi></mfrac>
+                                <mo>=</mo>
+                                <mfrac><mn>1</mn><mrow><mn>3</mn><mo>-</mo><mi>x</mi></mrow></mfrac>
+                                <mo>&#x21D2;</mo>
+                                <mn>2</mn><mo>(</mo><mn>3</mn><mo>-</mo><mi>x</mi><mo>)</mo>
+                                <mo>=</mo>
+                                <mi>x</mi>
+                                <mo>&#x21D2;</mo>
+                                <mn>6</mn>
+                                <mo>=</mo>
+                                <mn>3</mn><mi>x</mi>
+                                <mo>&#x21D2;</mo>
+                                <mi>x</mi>
+                                <mo>=</mo>
+                                <mn>2.0</mn><mo>&#x00A0;</mo><mi>m</mi>
+                            </math>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Topic 2: Electric Field -->
+        <section id="e-field" class="topic-section">
+            <h2 class="section-title">Topic 2: Electric Field</h2>
+            
+            <div class="grid-2">
+                <div>
+                    <div class="info-box">
+                        <h3>The Map of Space</h3>
+                        <p>The electric field is the force-per-charge that a source creates in the surrounding space:</p>
+                        <div class="formula-container" style="background: transparent; border: none; padding: 10px 0;">
+                            <math style="display: math;">
+                                <mi>E</mi>
+                                <mo>=</mo>
+                                <msub><mi>k</mi><mi>e</mi></msub>
+                                <mfrac><mrow><mo>|</mo><mi>q</mi><mo>|</mo></mrow><msup><mi>r</mi><mn>2</mn></msup></mfrac>
+                            </math>
+                        </div>
+                        <p>Force from field: <math style="display: inline-math;"><mover><mi>F</mi><mo>&#x2192;</mo></mover><mo>=</mo><mi>q</mi><mover><mi>E</mi><mo>&#x2192;</mo></mover></math></p>
+                        <p style="margin-top: 10px;">If the test charge is positive, force and field point the same way. If negative, force flips.</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="info-box warning">
+                        <h3><i class="fa-solid fa-triangle-exclamation"></i> Common Misconception</h3>
+                        <p><strong>"If the field is zero, there are no charges nearby."</strong></p>
+                        <p style="margin-top: 10px;"><strong>Wrong.</strong> Two equal positive charges can cancel each other's fields exactly at their midpoint—charges are very much present. Zero field means <em>vector cancellation</em>, not absence of charge.</p>
+                    </div>
+                    <div class="image-wrapper">
+                        <img src="http://googleusercontent.com/image_collection/image_retrieval/13432057746472414838" alt="Electric field lines diagram">
+                    </div>
+                </div>
+            </div>
+
+            <div class="practice-problem">
+                <div class="practice-header">
+                    <h3>Practice 1 <span class="badge badge-exam" style="margin-left: 10px;">Exam-Level</span></h3>
+                    <button class="btn-reveal" id="btn-q3" onclick="toggleSolution('q3')"><i class="fa-solid fa-eye"></i> Show Solution</button>
+                </div>
+                <div class="question-content">
+                    <p>A proton is placed in a uniform electric field <math style="display: inline-math;"><mi>E</mi><mo>=</mo><mn>3.0</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mn>4</mn></msup><mo>&#x00A0;</mo><mi>N</mi><mo>/</mo><mi>C</mi></math>. Find its acceleration.</p>
+                    <p style="margin-top: 15px; color: var(--text-faint); font-size: 16px;">Constants: <math style="display: inline-math;"><msub><mi>q</mi><mi>p</mi></msub><mo>=</mo><mn>1.60</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>19</mn></mrow></msup><mo>&#x00A0;</mo><mi>C</mi></math> ; <math style="display: inline-math;"><msub><mi>m</mi><mi>p</mi></msub><mo>=</mo><mn>1.67</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>27</mn></mrow></msup><mo>&#x00A0;</mo><mi>k</mi><mi>g</mi></math></p>
+                </div>
+                
+                <div class="solution-container" id="q3">
+                    <div class="answer-box">
+                        <h4>Answer</h4>
+                        <p><math style="display: inline-math;"><mi>a</mi><mo>&#x2248;</mo><mn>2.87</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mn>12</mn></msup><mo>&#x00A0;</mo><mi>m</mi><mo>/</mo><msup><mi>s</mi><mn>2</mn></msup></math></p>
+                    </div>
+                    <div class="step-box">
+                        <h4>Step-by-Step (Two Steps!)</h4>
+                        <p><strong>Step 1 - Force:</strong> <math style="display: inline-math;"><mi>F</mi><mo>=</mo><msub><mi>q</mi><mi>p</mi></msub><mi>E</mi><mo>=</mo><mo>(</mo><mn>1.60</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>19</mn></mrow></msup><mo>)</mo><mo>(</mo><mn>3.0</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mn>4</mn></msup><mo>)</mo><mo>=</mo><mn>4.8</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>15</mn></mrow></msup><mo>&#x00A0;</mo><mi>N</mi></math></p>
+                        <p style="margin-top: 15px;"><strong>Step 2 - Newton's 2nd Law:</strong></p>
+                        <div class="formula-container">
+                            <math style="display: math;">
+                                <mi>a</mi>
+                                <mo>=</mo>
+                                <mfrac><mi>F</mi><msub><mi>m</mi><mi>p</mi></msub></mfrac>
+                                <mo>=</mo>
+                                <mfrac>
+                                    <mrow><mn>4.8</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>15</mn></mrow></msup></mrow>
+                                    <mrow><mn>1.67</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>27</mn></mrow></msup></mrow>
+                                </mfrac>
+                                <mo>&#x2248;</mo>
+                                <mn>2.87</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mn>12</mn></msup><mo>&#x00A0;</mo><mi>m</mi><mo>/</mo><msup><mi>s</mi><mn>2</mn></msup>
+                            </math>
+                        </div>
+                        <p style="color: var(--accent-blue); margin-top: 10px;"><em>Tip: Fields don't just exist—they cause acceleration. Always two steps: field &rarr; force &rarr; acceleration.</em></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Topic 3 & 4: Gauss's Law & Conductors -->
+        <section id="gauss" class="topic-section">
+            <h2 class="section-title">Topic 3: Gauss's Law & Conductors</h2>
+            
+            <div class="grid-2">
+                <div>
+                    <div class="info-box">
+                        <h3>One Job: Enclosed Charge</h3>
+                        <p>Total electric flux through any closed surface equals the net enclosed charge divided by <math style="display: inline-math;"><msub><mi>&#x03B5;</mi><mn>0</mn></msub></math>.</p>
+                        <div class="formula-container">
+                            <math style="display: math;">
+                                <msub><mi>&#x03A6;</mi><mi>E</mi></msub>
+                                <mo>=</mo>
+                                <mo>&#x222E;</mo>
+                                <mover><mi>E</mi><mo>&#x2192;</mo></mover>
+                                <mo>&#x00B7;</mo>
+                                <mi>d</mi><mover><mi>A</mi><mo>&#x2192;</mo></mover>
+                                <mo>=</mo>
+                                <mfrac><msub><mi>Q</mi><mrow><mi>e</mi><mi>n</mi><mi>c</mi></mrow></msub><msub><mi>&#x03B5;</mi><mn>0</mn></msub></mfrac>
+                            </math>
+                        </div>
+                        <p>The shape and size of the surface do not matter. Only the enclosed charge matters.</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="info-box" style="border-left-color: #8b5cf6;">
+                        <h3 style="color: #c4b5fd;">Nested Conductors: The One Rule</h3>
+                        <p>Apply one rule region by region: <strong>the field inside any conducting material is zero.</strong></p>
+                        <p style="margin-top: 10px;">Draw a Gaussian surface inside the conducting shell's material. Zero field &rarr; zero flux &rarr; zero enclosed charge.</p>
+                        <p style="margin-top: 10px;">If the inner object has charge +Q, the shell's inner surface must carry -Q to cancel it. The remaining charge sits on the outer surface. It is bookkeeping—never guessing.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="conductors" class="practice-problem">
+                <div class="practice-header">
+                    <h3>Practice: Shells <span class="badge badge-exam" style="margin-left: 10px;">Exam-Level</span></h3>
+                    <button class="btn-reveal" id="btn-q4" onclick="toggleSolution('q4')"><i class="fa-solid fa-eye"></i> Show Solution</button>
+                </div>
+                <div class="question-content">
+                    <p>An inner solid conducting sphere has charge <math style="display: inline-math;"><mo>+</mo><mi>Q</mi></math>. It is surrounded by an outer conducting shell that has a net charge of <math style="display: inline-math;"><mo>-</mo><mn>3</mn><mi>Q</mi></math>.</p>
+                    <p style="margin-top: 10px;">Find the charge on the inner surface and the outer surface of the outer shell.</p>
+                </div>
+                
+                <div class="solution-container" id="q4">
+                    <div class="answer-box">
+                        <h4>Answer</h4>
+                        <p>Outer shell inner surface: <math style="display: inline-math;"><mo>-</mo><mi>Q</mi></math>. Outer shell outer surface: <math style="display: inline-math;"><mo>-</mo><mn>2</mn><mi>Q</mi></math>.</p>
+                    </div>
+                    <div class="step-box">
+                        <h4>Step-by-Step</h4>
+                        <p><strong>Step 1:</strong> Draw a Gaussian surface entirely within the solid material of the outer shell. Since it's a conductor in equilibrium, <math style="display: inline-math;"><mi>E</mi><mo>=</mo><mn>0</mn></math> there, so <math style="display: inline-math;"><msub><mi>Q</mi><mrow><mi>e</mi><mi>n</mi><mi>c</mi></mrow></msub><mo>=</mo><mn>0</mn></math>.</p>
+                        <div class="formula-container">
+                            <math style="display: math;">
+                                <msub><mi>Q</mi><mrow><mi>e</mi><mi>n</mi><mi>c</mi></mrow></msub>
+                                <mo>=</mo>
+                                <mo>+</mo><mi>Q</mi>
+                                <mo>+</mo>
+                                <msub><mi>Q</mi><mrow><mi>i</mi><mi>n</mi><mi>n</mi><mi>e</mi><mi>r</mi><mo>_</mo><mi>s</mi><mi>u</mi><mi>r</mi><mi>f</mi><mi>a</mi><mi>c</mi><mi>e</mi></mrow></msub>
+                                <mo>=</mo>
+                                <mn>0</mn>
+                                <mo>&#x21D2;</mo>
+                                <msub><mi>Q</mi><mrow><mi>i</mi><mi>n</mi><mi>n</mi><mi>e</mi><mi>r</mi><mo>_</mo><mi>s</mi><mi>u</mi><mi>r</mi><mi>f</mi><mi>a</mi><mi>c</mi><mi>e</mi></mrow></msub>
+                                <mo>=</mo>
+                                <mo>-</mo><mi>Q</mi>
+                            </math>
+                        </div>
+                        <p style="margin-top: 15px;"><strong>Step 2:</strong> The outer shell has a <em>total</em> net charge of <math style="display: inline-math;"><mo>-</mo><mn>3</mn><mi>Q</mi></math>. The total charge is the sum of its surfaces:</p>
+                        <div class="formula-container">
+                            <math style="display: math;">
+                                <msub><mi>Q</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi><mi>e</mi><mi>r</mi><mo>_</mo><mi>s</mi><mi>u</mi><mi>r</mi><mi>f</mi><mi>a</mi><mi>c</mi><mi>e</mi></mrow></msub>
+                                <mo>=</mo>
+                                <msub><mi>Q</mi><mrow><mi>t</mi><mi>o</mi><mi>t</mi><mi>a</mi><mi>l</mi></mrow></msub>
+                                <mo>-</mo>
+                                <msub><mi>Q</mi><mrow><mi>i</mi><mi>n</mi><mi>n</mi><mi>e</mi><mi>r</mi><mo>_</mo><mi>s</mi><mi>u</mi><mi>r</mi><mi>f</mi><mi>a</mi><mi>c</mi><mi>e</mi></mrow></msub>
+                                <mo>=</mo>
+                                <mo>-</mo><mn>3</mn><mi>Q</mi>
+                                <mo>-</mo>
+                                <mo>(</mo><mo>-</mo><mi>Q</mi><mo>)</mo>
+                                <mo>=</mo>
+                                <mo>-</mo><mn>2</mn><mi>Q</mi>
+                            </math>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Topic 5 & 6: Potential & Energy -->
+        <section id="potential" class="topic-section">
+            <h2 class="section-title">Topic 5 & 6: Potential & Energy Conservation</h2>
+            
+            <div class="grid-2">
+                <div>
+                    <div class="info-box">
+                        <h3>Electric Potential</h3>
+                        <p>Electric potential is energy per unit charge—a scalar, not a vector. The field points in the direction of decreasing potential (high to low).</p>
+                        <div class="formula-container" style="background: transparent; border: none; padding: 10px 0;">
+                            <math style="display: math;">
+                                <msub><mi>E</mi><mi>x</mi></msub>
+                                <mo>=</mo>
+                                <mo>-</mo>
+                                <mfrac><mrow><mi>d</mi><mi>V</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac>
+                            </math>
+                        </div>
+                    </div>
+                </div>
+                <div id="energy">
+                    <div class="info-box">
+                        <h3>The Most Powerful Application</h3>
+                        <p>A charge accelerated through voltage V gains kinetic energy:</p>
+                        <div class="formula-container" style="background: transparent; border: none; padding: 10px 0;">
+                            <math style="display: math;">
+                                <mo>|</mo><mi>q</mi><mo>|</mo><mi>V</mi>
+                                <mo>=</mo>
+                                <mfrac><mn>1</mn><mn>2</mn></mfrac><mi>m</mi><msup><mi>v</mi><mn>2</mn></msup>
+                            </math>
+                        </div>
+                        <p>Energy conservation does all the work without needing the field or the distance!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="practice-problem">
+                <div class="practice-header">
+                    <h3>Practice: Acceleration <span class="badge badge-standard" style="margin-left: 10px;">Standard</span></h3>
+                    <button class="btn-reveal" id="btn-q5" onclick="toggleSolution('q5')"><i class="fa-solid fa-eye"></i> Show Solution</button>
+                </div>
+                <div class="question-content">
+                    <p>An electron is accelerated from rest through a potential difference of 200 V. Find its final speed.</p>
+                    <p style="margin-top: 15px; color: var(--text-faint); font-size: 16px;">Constants: <math style="display: inline-math;"><mi>e</mi><mo>=</mo><mn>1.60</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>19</mn></mrow></msup><mo>&#x00A0;</mo><mi>C</mi></math> ; <math style="display: inline-math;"><msub><mi>m</mi><mi>e</mi></msub><mo>=</mo><mn>9.11</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>31</mn></mrow></msup><mo>&#x00A0;</mo><mi>k</mi><mi>g</mi></math></p>
+                </div>
+                
+                <div class="solution-container" id="q5">
+                    <div class="answer-box">
+                        <h4>Answer</h4>
+                        <p><math style="display: inline-math;"><mi>v</mi><mo>&#x2248;</mo><mn>8.39</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mn>6</mn></msup><mo>&#x00A0;</mo><mi>m</mi><mo>/</mo><mi>s</mi></math></p>
+                    </div>
+                    <div class="step-box">
+                        <h4>Step-by-Step</h4>
+                        <p>Energy conservation: <math style="display: inline-math;"><mo>|</mo><mi>q</mi><mo>|</mo><mi>V</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>m</mi><mi>e</mi></msub><msup><mi>v</mi><mn>2</mn></msup></math></p>
+                        <div class="formula-container">
+                            <math style="display: math;">
+                                <mi>v</mi>
+                                <mo>=</mo>
+                                <msqrt>
+                                    <mfrac><mrow><mn>2</mn><mo>|</mo><mi>q</mi><mo>|</mo><mi>V</mi></mrow><msub><mi>m</mi><mi>e</mi></msub></mfrac>
+                                </msqrt>
+                                <mo>=</mo>
+                                <msqrt>
+                                    <mfrac>
+                                        <mrow><mn>2</mn><mo>(</mo><mn>1.60</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>19</mn></mrow></msup><mo>)</mo><mo>(</mo><mn>200</mn><mo>)</mo></mrow>
+                                        <mrow><mn>9.11</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mrow><mo>-</mo><mn>31</mn></mrow></msup></mrow>
+                                    </mfrac>
+                                </msqrt>
+                                <mo>&#x2248;</mo>
+                                <mn>8.39</mn><mo>&#x00D7;</mo><msup><mn>10</mn><mn>6</mn></msup>
+                            </math>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Topic 7: Capacitors -->
+        <section id="capacitors" class="topic-section">
+            <h2 class="section-title">Topic 7: Capacitors & Energy Storage</h2>
+            
+            <div class="grid-2">
+                <div>
+                    <div class="info-box warning" style="height: 100%;">
+                        <h3>The Most Important Question</h3>
+                        <p style="margin-bottom: 20px;">Before solving any capacitor problem involving changes (moving plates, adding dielectrics), ask: <strong>Is the battery connected or disconnected?</strong></p>
+                        
+                        <ul class="bullet-list">
+                            <li><i class="fa-solid fa-plug"></i><strong>Connected:</strong> voltage <math style="display: inline-math;"><mi>V</mi></math> is fixed, charge adjusts. <br>Use <math style="display: inline-math;"><mi>U</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>C</mi><msup><mi>V</mi><mn>2</mn></msup></math>.</li>
+                            <li style="margin-top: 15px;"><i class="fa-solid fa-scissors"></i><strong>Disconnected:</strong> charge <math style="display: inline-math;"><mi>Q</mi></math> is fixed, voltage adjusts. <br>Use <math style="display: inline-math;"><mi>U</mi><mo>=</mo><mfrac><msup><mi>Q</mi><mn>2</mn></msup><mrow><mn>2</mn><mi>C</mi></mrow></mfrac></math>.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="image-wrapper">
+                    <img src="http://googleusercontent.com/image_collection/image_retrieval/6307798582372375443" alt="Parallel plate capacitor diagram">
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 40px; margin-bottom: 0;">
+                <!-- Practice 1 (Disconnected) -->
+                <div class="practice-problem" style="margin-top: 0;">
+                    <div class="practice-header">
+                        <h3 style="font-size: 20px;">Disconnected Case</h3>
+                        <button class="btn-reveal" id="btn-q6" onclick="toggleSolution('q6')" style="padding: 8px 16px; font-size: 14px;"><i class="fa-solid fa-eye"></i> Show</button>
+                    </div>
+                    <div class="question-content" style="font-size: 18px;">
+                        <p>A charged capacitor is <strong>disconnected</strong> from a battery. The plate separation then doubles. What happens to the voltage and stored energy?</p>
+                    </div>
+                    
+                    <div class="solution-container" id="q6">
+                        <div class="answer-box" style="padding: 15px;">
+                            <p>Voltage <strong>doubles</strong>. Energy <strong>doubles</strong>.</p>
+                        </div>
+                        <div class="step-box" style="font-size: 16px;">
+                            <p>Disconnected &rarr; <math style="display: inline-math;"><mi>Q</mi></math> is constant. Doubling d halves C: <math style="display: inline-math;"><msub><mi>C</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><mi>C</mi><mo>/</mo><mn>2</mn></math></p>
+                            <p style="margin-top: 10px;"><math style="display: inline-math;"><msub><mi>V</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><mfrac><mi>Q</mi><mrow><mi>C</mi><mo>/</mo><mn>2</mn></mrow></mfrac><mo>=</mo><mn>2</mn><mi>V</mi></math></p>
+                            <p style="margin-top: 5px;"><math style="display: inline-math;"><msub><mi>U</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><mfrac><msup><mi>Q</mi><mn>2</mn></msup><mrow><mn>2</mn><mo>(</mo><mi>C</mi><mo>/</mo><mn>2</mn><mo>)</mo></mrow></mfrac><mo>=</mo><mn>2</mn><mi>U</mi></math></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice 2 (Connected) -->
+                <div class="practice-problem" style="margin-top: 0;">
+                    <div class="practice-header">
+                        <h3 style="font-size: 20px;">Connected Case</h3>
+                        <button class="btn-reveal" id="btn-q7" onclick="toggleSolution('q7')" style="padding: 8px 16px; font-size: 14px;"><i class="fa-solid fa-eye"></i> Show</button>
+                    </div>
+                    <div class="question-content" style="font-size: 18px;">
+                        <p>A capacitor remains <strong>connected</strong> to a battery while a dielectric (<math style="display: inline-math;"><mi>&#x03BA;</mi><mo>=</mo><mn>2</mn></math>) is inserted. What happens to C, V, Q, and U?</p>
+                    </div>
+                    
+                    <div class="solution-container" id="q7">
+                        <div class="answer-box" style="padding: 15px;">
+                            <p>C <strong>doubles</strong>, V <strong>unchanged</strong>, Q <strong>doubles</strong>, U <strong>doubles</strong>.</p>
+                        </div>
+                        <div class="step-box" style="font-size: 16px;">
+                            <p>Connected &rarr; <math style="display: inline-math;"><mi>V</mi></math> is constant. Dielectric: <math style="display: inline-math;"><msup><mi>C</mi><mo>&#x2032;</mo></msup><mo>=</mo><mn>2</mn><mi>C</mi></math></p>
+                            <p style="margin-top: 10px;"><math style="display: inline-math;"><msup><mi>Q</mi><mo>&#x2032;</mo></msup><mo>=</mo><mo>(</mo><mn>2</mn><mi>C</mi><mo>)</mo><mi>V</mi><mo>=</mo><mn>2</mn><mi>Q</mi></math></p>
+                            <p style="margin-top: 5px;"><math style="display: inline-math;"><msup><mi>U</mi><mo>&#x2032;</mo></msup><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>(</mo><mn>2</mn><mi>C</mi><mo>)</mo><msup><mi>V</mi><mn>2</mn></msup><mo>=</mo><mn>2</mn><mi>U</mi></math></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section id="summary" class="topic-section" style="border-color: var(--accent-blue);">
+            <h2 class="section-title" style="text-align: center; border: none;">Exam-Day Summary: Five Rules of Thumb</h2>
+            
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="summary-rule">
+                    <strong>1. COULOMB</strong> 
+                    Tripling distance &rarr; force drops by 9x. Balance problems: set forces equal, take the square root of both sides <em>before</em> cross-multiplying.
+                </div>
+                
+                <div class="summary-rule">
+                    <strong>2. FIELD</strong> 
+                    Direction first, then magnitude. Force: <math style="display: inline-math;"><mover><mi>F</mi><mo>&#x2192;</mo></mover><mo>=</mo><mi>q</mi><mover><mi>E</mi><mo>&#x2192;</mo></mover></math>. Negative charge: force points opposite to the field. Then Newton: <math style="display: inline-math;"><mi>a</mi><mo>=</mo><mi>F</mi><mo>/</mo><mi>m</mi></math>.
+                </div>
+                
+                <div class="summary-rule">
+                    <strong>3. GAUSS & SHELLS</strong> 
+                    Only enclosed charge counts. Conductor interior: <math style="display: inline-math;"><mover><mi>E</mi><mo>&#x2192;</mo></mover><mo>=</mo><mn>0</mn></math>. For nested shells, draw a Gaussian surface inside the conductor material where <math style="display: inline-math;"><msub><mi>Q</mi><mrow><mi>e</mi><mi>n</mi><mi>c</mi></mrow></msub></math> must be zero.
+                </div>
+                
+                <div class="summary-rule">
+                    <strong>4. POTENTIAL</strong> 
+                    Field points downhill: <math style="display: inline-math;"><msub><mi>E</mi><mi>x</mi></msub><mo>=</mo><mo>-</mo><mi>d</mi><mi>V</mi><mo>/</mo><mi>d</mi><mi>x</mi></math>. Speed from voltage is pure energy conservation: <math style="display: inline-math;"><mo>|</mo><mi>q</mi><mo>|</mo><mi>V</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>m</mi><msup><mi>v</mi><mn>2</mn></msup></math>.
+                </div>
+                
+                <div class="summary-rule">
+                    <strong>5. CAPACITORS</strong> 
+                    Ask "connected or disconnected?" first. Connected = V fixed. Disconnected = Q fixed. Dielectric always raises C.
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Simple logic to toggle the display of the solutions
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            const btn = document.getElementById('btn-' + id);
+            
+            if (el.style.display === 'block') {
+                el.style.display = 'none';
+                btn.innerHTML = '<i class="fa-solid fa-eye"></i> Show Solution';
+                btn.style.backgroundColor = 'var(--accent-blue)';
+            } else {
+                el.style.display = 'block';
+                btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Hide Solution';
+                btn.style.backgroundColor = 'var(--bg-surface-alt)';
+                btn.style.color = 'var(--text-main)';
+                btn.style.border = '1px solid var(--border-color)';
+            }
+        }
+    </script>
+</body>
+</html>
+```
