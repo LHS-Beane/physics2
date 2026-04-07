@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Week 5 PhET Lab — Current, Resistance, and Circuits</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; }
+      .print-card {
+        box-shadow: none !important;
+        border: 1px solid #d1d5db !important;
+        break-inside: avoid;
+      }
+      textarea, input[type="text"], input[type="number"] {
+        border: 1px solid #9ca3af !important;
+        background: white !important;
+      }
+    }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900">
+  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40 no-print">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div>
+        <p class="text-sky-300 uppercase tracking-[0.25em] text-xs font-semibold">University Physics II</p>
+        <h1 class="text-2xl font-bold">Week 5 PhET Lab — Current, Resistance, and Circuits</h1>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button id="saveBtn" class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 font-semibold">Save Locally</button>
+        <button id="resetBtn" class="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 font-semibold">Reset Responses</button>
+        <button id="printBtn" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 font-semibold">Print / Save as PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 print-card">
+      <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <p class="text-sky-700 uppercase tracking-[0.25em] text-xs font-semibold">PhET Lab</p>
+          <h2 class="text-3xl font-bold mt-1">From Charges to Circuits</h2>
+          <p class="mt-3 text-slate-700 max-w-3xl">Use the PhET Circuit Construction Kit: DC simulation to explore how microscopic charge motion connects to current, voltage, resistance, and simple circuit behavior. Your responses autosave in your browser on this device.</p>
+        </div>
+        <div class="bg-slate-50 rounded-xl border border-slate-200 p-4 min-w-[280px]">
+          <label class="block text-sm font-semibold mb-1">Student Name</label>
+          <input data-save="studentName" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2" placeholder="Enter your name" />
+          <label class="block text-sm font-semibold mt-3 mb-1">Section / Date</label>
+          <input data-save="studentSection" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2" placeholder="Section or date" />
+        </div>
+      </div>
+      <div class="mt-5 grid lg:grid-cols-3 gap-4">
+        <div class="bg-sky-50 border border-sky-200 rounded-xl p-4">
+          <h3 class="font-semibold text-sky-900">Learning Goals</h3>
+          <ul class="mt-2 space-y-1 text-sm text-slate-700 list-disc ml-5">
+            <li>Describe current as moving charge.</li>
+            <li>Connect voltage, current, and resistance.</li>
+            <li>Compare series and parallel behavior.</li>
+            <li>Use observations to justify circuit reasoning.</li>
+          </ul>
+        </div>
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <h3 class="font-semibold text-amber-900">Simulation</h3>
+          <p class="text-sm text-slate-700 mt-2">Open the PhET Circuit Construction Kit: DC and keep it running in another tab or side-by-side with this lab page.</p>
+          <a class="inline-block mt-3 text-sky-700 font-semibold underline" href="https://phet.colorado.edu/en/simulations/circuit-construction-kit-dc" target="_blank" rel="noopener noreferrer">Open PhET Simulation</a>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+          <h3 class="font-semibold text-emerald-900">Submission</h3>
+          <p class="text-sm text-slate-700 mt-2">When finished, click <strong>Print / Save as PDF</strong> and choose your browser's <strong>Save as PDF</strong> option. Your responses remain saved locally unless you reset them.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 print-card">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <div>
+          <p class="text-sky-700 uppercase tracking-[0.25em] text-xs font-semibold">Auto-Graded Checkpoints</p>
+          <h2 class="text-2xl font-bold mt-1">Concept Checks</h2>
+          <p class="mt-2 text-slate-700">Complete these as you work. The score updates automatically. Written responses below are not auto-graded.</p>
+        </div>
+        <div class="bg-slate-900 text-white px-4 py-3 rounded-xl">
+          <div class="text-xs uppercase tracking-[0.2em] text-sky-300">Checkpoint Score</div>
+          <div class="text-2xl font-bold"><span id="scoreValue">0</span>/<span id="scoreTotal">7</span></div>
+        </div>
+      </div>
+      <div id="checkpointContainer" class="mt-6 grid gap-4"></div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 print-card" id="part1">
+      <p class="text-sky-700 uppercase tracking-[0.25em] text-xs font-semibold">Part 1</p>
+      <h2 class="text-2xl font-bold mt-1">Observing Current</h2>
+      <p class="mt-2 text-slate-700">Build a simple circuit with a battery, wires, and a bulb or resistor. Turn on electron flow visualization.</p>
+
+      <div class="mt-5 space-y-5">
+        <div>
+          <label class="block font-semibold mb-2">1. Describe how electrons move through the wire.</label>
+          <textarea data-save="q1" rows="4" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">2. Do electrons move quickly or slowly in terms of drift speed?</label>
+          <textarea data-save="q2" rows="3" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">3. When you close the circuit, does current begin everywhere at once? Explain.</label>
+          <textarea data-save="q3" rows="4" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">4. Explain how this connects to drift velocity.</label>
+          <textarea data-save="q4" rows="4" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 print-card" id="part2">
+      <p class="text-sky-700 uppercase tracking-[0.25em] text-xs font-semibold">Part 2</p>
+      <h2 class="text-2xl font-bold mt-1">Voltage and Current Relationship</h2>
+      <p class="mt-2 text-slate-700">Keep a simple battery + resistor circuit. Increase the battery voltage and observe current and electron motion.</p>
+      <div class="mt-5 space-y-5">
+        <div>
+          <label class="block font-semibold mb-2">5. What happens to current as voltage increases?</label>
+          <textarea data-save="q5" rows="3" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">6. What happens to electron drift speed?</label>
+          <textarea data-save="q6" rows="3" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">7. Write a proportional relationship between current and voltage for this setup.</label>
+          <div class="flex items-center gap-2 text-lg">
+            <span>\( I \propto \)</span>
+            <input data-save="q7" type="text" class="w-48 rounded-lg border border-slate-300 px-3 py-2" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 print-card" id="part3">
+      <p class="text-sky-700 uppercase tracking-[0.25em] text-xs font-semibold">Part 3</p>
+      <h2 class="text-2xl font-bold mt-1">Resistance and Material Effects</h2>
+      <p class="mt-2 text-slate-700">Increase the resistance value in the circuit and observe the response.</p>
+      <div class="mt-5 space-y-5">
+        <div>
+          <label class="block font-semibold mb-2">8. What happens to current when resistance increases?</label>
+          <textarea data-save="q8" rows="3" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">9. What happens to electron motion when resistance increases?</label>
+          <textarea data-save="q9" rows="3" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">10. Explain why increasing resistance reduces current.</label>
+          <textarea data-save="q10" rows="4" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 print-card" id="part4">
+      <p class="text-sky-700 uppercase tracking-[0.25em] text-xs font-semibold">Part 4</p>
+      <h2 class="text-2xl font-bold mt-1">Geometry and Resistivity Connection</h2>
+      <p class="mt-2 text-slate-700">Use the relationship \(R = \rho \frac{L}{A}\) to reason about geometry, even if the simulation does not directly change wire dimensions.</p>
+      <div class="mt-5 space-y-5">
+        <div>
+          <label class="block font-semibold mb-2">11. If wire length increases, resistance ________.</label>
+          <input data-save="q11" type="text" class="w-56 rounded-lg border border-slate-300 px-3 py-2" />
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">12. If cross-sectional area increases, resistance ________.</label>
+          <input data-save="q12" type="text" class="w-56 rounded-lg border border-slate-300 px-3 py-2" />
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">13. Explain using \(R = \rho \frac{L}{A}\).</label>
+          <textarea data-save="q13" rows="4" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 print-card" id="part5">
+      <p class="text-sky-700 uppercase tracking-[0.25em] text-xs font-semibold">Part 5</p>
+      <h2 class="text-2xl font-bold mt-1">Series vs. Parallel</h2>
+      <p class="mt-2 text-slate-700">Build two resistors in series. Then rebuild them in parallel. Compare brightness and current behavior.</p>
+      <div class="mt-5 space-y-5">
+        <div>
+          <label class="block font-semibold mb-2">14. In series, what happens to total resistance?</label>
+          <textarea data-save="q14" rows="3" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">15. In parallel, what happens to total resistance?</label>
+          <textarea data-save="q15" rows="3" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">16. Why does adding a parallel branch increase total current from the battery?</label>
+          <textarea data-save="q16" rows="4" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 print-card" id="part6">
+      <p class="text-sky-700 uppercase tracking-[0.25em] text-xs font-semibold">Part 6</p>
+      <h2 class="text-2xl font-bold mt-1">Challenge: Unequal Parallel Branches</h2>
+      <p class="mt-2 text-slate-700">Build a battery with two parallel branches, each containing a different resistor.</p>
+      <div class="mt-5 space-y-5">
+        <div>
+          <label class="block font-semibold mb-2">17. Which branch has more current? Why?</label>
+          <textarea data-save="q17" rows="4" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">18. What stays the same across both branches?</label>
+          <textarea data-save="q18" rows="3" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">19. If one branch is removed, what happens to the total current from the battery?</label>
+          <textarea data-save="q19" rows="3" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 print-card" id="reflection">
+      <p class="text-sky-700 uppercase tracking-[0.25em] text-xs font-semibold">Reflection</p>
+      <h2 class="text-2xl font-bold mt-1">Synthesis</h2>
+      <div class="mt-5 space-y-5">
+        <div>
+          <label class="block font-semibold mb-2">20. Explain how this lab connects microscopic electron motion, macroscopic current, and Ohm's law.</label>
+          <textarea data-save="q20" rows="5" class="w-full rounded-xl border border-slate-300 px-3 py-2"></textarea>
+        </div>
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+          <h3 class="font-semibold">Teacher signature / completion check</h3>
+          <div class="mt-5 border-b border-slate-400 h-10"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'week5_phet_lab_local_v1';
+
+    const checkpoints = [
+      {
+        id: 'cp1',
+        type: 'mc',
+        prompt: 'Checkpoint 1: If the battery voltage increases while resistance stays fixed, current will generally…',
+        options: ['decrease', 'stay the same', 'increase', 'become zero'],
+        answer: 'increase'
+      },
+      {
+        id: 'cp2',
+        type: 'mc',
+        prompt: 'Checkpoint 2: Drift velocity in a wire is typically…',
+        options: ['close to the speed of light', 'slow compared with signal propagation', 'always zero', 'independent of current'],
+        answer: 'slow compared with signal propagation'
+      },
+      {
+        id: 'cp3',
+        type: 'fill',
+        prompt: 'Checkpoint 3: Complete the relationship for current: I = ΔQ / ______',
+        answer: ['Δt', 'dt', 'time']
+      },
+      {
+        id: 'cp4',
+        type: 'mc',
+        prompt: 'Checkpoint 4: If wire length increases and all else stays fixed, resistance will…',
+        options: ['increase', 'decrease', 'stay the same', 'become negative'],
+        answer: 'increase'
+      },
+      {
+        id: 'cp5',
+        type: 'mc',
+        prompt: 'Checkpoint 5: In a parallel circuit, each branch has the same…',
+        options: ['current', 'charge flow rate', 'voltage', 'resistance'],
+        answer: 'voltage'
+      },
+      {
+        id: 'cp6',
+        type: 'mc',
+        prompt: 'Checkpoint 6: Adding a second path in parallel usually makes the equivalent resistance…',
+        options: ['larger', 'smaller', 'unchanged', 'equal to the largest resistor'],
+        answer: 'smaller'
+      },
+      {
+        id: 'cp7',
+        type: 'fill',
+        prompt: 'Checkpoint 7: Kirchhoff’s junction rule expresses conservation of ______.',
+        answer: ['charge']
+      }
+    ];
+
+    function normalize(str) {
+      return (str || '').toString().trim().toLowerCase().replace(/\s+/g, ' ');
+    }
+
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveState(state) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    let state = loadState();
+
+    function renderCheckpoints() {
+      const container = document.getElementById('checkpointContainer');
+      container.innerHTML = checkpoints.map((cp, i) => {
+        if (cp.type === 'mc') {
+          return `
+            <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+              <div class="font-semibold">${i + 1}. ${cp.prompt}</div>
+              <div class="mt-3 grid gap-2">
+                ${cp.options.map(opt => `
+                  <label class="flex items-center gap-2 rounded-lg bg-white border border-slate-200 px-3 py-2 cursor-pointer">
+                    <input type="radio" name="${cp.id}" value="${opt}" ${state[cp.id] === opt ? 'checked' : ''} />
+                    <span>${opt}</span>
+                  </label>
+                `).join('')}
+              </div>
+              <div class="mt-2 text-sm" id="feedback-${cp.id}"></div>
+            </div>
+          `;
+        }
+        return `
+          <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+            <div class="font-semibold">${i + 1}. ${cp.prompt}</div>
+            <input type="text" data-checkpoint="${cp.id}" value="${state[cp.id] || ''}" class="mt-3 w-full rounded-lg border border-slate-300 px-3 py-2 bg-white" />
+            <div class="mt-2 text-sm" id="feedback-${cp.id}"></div>
+          </div>
+        `;
+      }).join('');
+
+      container.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', () => {
+          state[input.name] = input.value;
+          saveState(state);
+          updateCheckpointFeedback();
+        });
+      });
+
+      container.querySelectorAll('input[data-checkpoint]').forEach(input => {
+        input.addEventListener('input', () => {
+          state[input.dataset.checkpoint] = input.value;
+          saveState(state);
+          updateCheckpointFeedback();
+        });
+      });
+
+      updateCheckpointFeedback();
+    }
+
+    function updateCheckpointFeedback() {
+      let score = 0;
+      checkpoints.forEach(cp => {
+        const feedback = document.getElementById(`feedback-${cp.id}`);
+        let correct = false;
+        if (cp.type === 'mc') {
+          correct = normalize(state[cp.id]) === normalize(cp.answer);
+        } else {
+          const value = normalize(state[cp.id]);
+          correct = cp.answer.some(ans => value === normalize(ans));
+        }
+        if (correct) {
+          score += 1;
+          feedback.textContent = 'Correct';
+          feedback.className = 'mt-2 text-sm text-emerald-700 font-semibold';
+        } else if (state[cp.id]) {
+          feedback.textContent = 'Not quite yet';
+          feedback.className = 'mt-2 text-sm text-amber-700 font-semibold';
+        } else {
+          feedback.textContent = 'Unanswered';
+          feedback.className = 'mt-2 text-sm text-slate-500';
+        }
+      });
+      document.getElementById('scoreValue').textContent = score;
+      document.getElementById('scoreTotal').textContent = checkpoints.length;
+    }
+
+    function bindSavedInputs() {
+      document.querySelectorAll('[data-save]').forEach(el => {
+        const key = el.dataset.save;
+        if (state[key] !== undefined) el.value = state[key];
+        el.addEventListener('input', () => {
+          state[key] = el.value;
+          saveState(state);
+        });
+      });
+    }
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      saveState(state);
+      const btn = document.getElementById('saveBtn');
+      const original = btn.textContent;
+      btn.textContent = 'Saved';
+      setTimeout(() => btn.textContent = original, 1200);
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      if (!confirm('Reset all saved responses on this device?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      state = {};
+      location.reload();
+    });
+
+    document.getElementById('printBtn').addEventListener('click', () => {
+      window.print();
+    });
+
+    bindSavedInputs();
+    renderCheckpoints();
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise();
+    }
+  </script>
+</body>
+</html>
