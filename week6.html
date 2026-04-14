@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>University Physics II — Magnetism Week</title>
+  <meta name="description" content="Student support site for magnetism week with embedded notes, guided review, and worked practice problems." />
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #131a2e;
+      --panel-2: #1a2340;
+      --text: #eef2ff;
+      --muted: #b7c0e0;
+      --accent: #7dd3fc;
+      --accent-2: #a78bfa;
+      --line: #2a355f;
+      --good: #86efac;
+      --warn: #fcd34d;
+      --shadow: 0 14px 40px rgba(0,0,0,.28);
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #0a0f1d 0%, #0e1630 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; }
+    .hero {
+      padding: 2.75rem 0 1.5rem;
+      border-bottom: 1px solid var(--line);
+      background: radial-gradient(circle at top right, rgba(125,211,252,.14), transparent 28%), radial-gradient(circle at top left, rgba(167,139,250,.14), transparent 22%);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.55fr .95fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+    h1, h2, h3 { line-height: 1.15; margin: 0; }
+    h1 { font-size: clamp(2rem, 5vw, 3.35rem); letter-spacing: -.03em; }
+    h2 { font-size: clamp(1.45rem, 3vw, 2rem); margin-bottom: .8rem; }
+    h3 { font-size: 1.05rem; margin-bottom: .6rem; }
+    .lede { color: var(--muted); font-size: 1.02rem; max-width: 70ch; margin-top: .85rem; }
+    .badges { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+    .badge {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: .4rem .72rem;
+      border-radius: 999px;
+      font-size: .88rem;
+    }
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card { padding: 1rem; }
+    .hero-card p { margin: .45rem 0; color: var(--muted); }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(10, 15, 29, .82);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      min-height: 64px;
+    }
+    .nav-links { display: flex; gap: .9rem; flex-wrap: wrap; }
+    .nav-links a {
+      color: var(--muted);
+      font-size: .94rem;
+      padding: .35rem .55rem;
+      border-radius: 10px;
+    }
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,.06); text-decoration: none; }
+    .search {
+      width: min(320px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: var(--text);
+      padding: .75rem .9rem;
+    }
+    main { padding: 1.25rem 0 3rem; }
+    .section-block { margin-top: 1.6rem; }
+    .section-header { margin-bottom: .9rem; }
+    .section-header p { color: var(--muted); margin: .45rem 0 0; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+    }
+    .col-8 { grid-column: span 8; }
+    .col-4 { grid-column: span 4; }
+    .col-6 { grid-column: span 6; }
+    .card, .section-card, .practice-card { padding: 1.1rem; }
+    .section-card + .section-card { margin-top: 1rem; }
+    .section-card h3 { display: flex; align-items: center; gap: .65rem; }
+    .section-card p { color: var(--muted); }
+    .mini-list { margin: .75rem 0 0; padding-left: 1.1rem; }
+    .mini-list li { margin: .42rem 0; color: var(--text); }
+    .callout {
+      margin-top: .9rem;
+      padding: .9rem 1rem;
+      border-left: 4px solid var(--accent-2);
+      background: rgba(167,139,250,.08);
+      border-radius: 14px;
+      color: #e9ddff;
+    }
+    .callout strong { color: #f5eeff; }
+    .toc { position: sticky; top: 88px; }
+    .toc a {
+      display: block;
+      padding: .55rem .65rem;
+      color: var(--muted);
+      border-radius: 10px;
+      margin-bottom: .25rem;
+      border: 1px solid transparent;
+    }
+    .toc a:hover { color: var(--text); background: rgba(255,255,255,.04); text-decoration: none; border-color: var(--line); }
+    .formula {
+      overflow-x: auto;
+      padding: .85rem 1rem;
+      background: rgba(125,211,252,.06);
+      border: 1px solid rgba(125,211,252,.16);
+      border-radius: 16px;
+      margin: .85rem 0;
+    }
+    .practice-head { display: flex; justify-content: space-between; gap: 1rem; align-items: start; }
+    .tag {
+      display: inline-block;
+      padding: .3rem .6rem;
+      font-size: .78rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      margin-top: .2rem;
+    }
+    .solution {
+      display: none;
+      margin-top: .95rem;
+      padding-top: .95rem;
+      border-top: 1px solid var(--line);
+    }
+    .solution.open { display: block; }
+    .btn-row { display: flex; gap: .65rem; flex-wrap: wrap; margin-top: .85rem; }
+    button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      color: var(--text);
+      border-radius: 14px;
+      padding: .75rem .95rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover { border-color: rgba(125,211,252,.45); }
+    .ghost { background: transparent; }
+    .footer {
+      margin-top: 2rem;
+      padding: 1.25rem 0 3rem;
+      color: var(--muted);
+      font-size: .95rem;
+      text-align: center;
+    }
+    .subtle { color: var(--muted); }
+    .checklist { padding-left: 1.15rem; }
+    .checklist li { margin: .35rem 0; }
+    @media (max-width: 980px) {
+      .hero-grid, .grid { grid-template-columns: 1fr; }
+      .col-8, .col-4, .col-6 { grid-column: auto; }
+      .toc { position: static; }
+      .nav-inner { flex-direction: column; align-items: stretch; padding: .75rem 0; }
+      .search { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Magnetism Week</h1>
+        <p class="lede">Everything for this week is embedded here so you can recover missed notes, review the ideas in order, and practice with fully worked solutions. Use Day 1 for field ideas, right-hand rules, and particle motion. Use Day 2 for currents, loops, solenoids, and applications.</p>
+        <div class="badges">
+          <span class="badge">University Physics II</span>
+          <span class="badge">Calculus-Based</span>
+          <span class="badge">Day 1 + Day 2 Notes</span>
+          <span class="badge">Worked Practice</span>
+          <span class="badge">GitHub Pages Ready</span>
+        </div>
+      </div>
+      <div class="panel hero-card">
+        <h3>How to use this site</h3>
+        <p>Read the section summary first, copy the embedded notes into your packet, then try the practice before opening the worked solution.</p>
+        <p><strong>Missed class?</strong> Follow the page top to bottom. Each section mirrors the weekly classroom flow.</p>
+        <div class="btn-row">
+          <a href="#day1"><button>Start Day 1</button></a>
+          <a href="#practice"><button class="ghost">Jump to Practice</button></a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <div class="nav-links">
+        <a href="#day1">Day 1</a>
+        <a href="#day2">Day 2</a>
+        <a href="#equations">Equations</a>
+        <a href="#practice">Practice</a>
+      </div>
+      <input id="searchBox" class="search" type="text" placeholder="Search sections or ideas..." aria-label="Search content" />
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section id="day1" class="section-block">
+      <div class="section-header">
+        <h2>Day 1 — Foundations of Magnetism</h2>
+        <p>Core ideas: what magnetism is, how Earth’s field matters, how to use the right-hand rules, and why magnetic forces bend motion.</p>
+      </div>
+      <div class="grid">
+        <div class="col-8" id="day1Sections"></div>
+        <aside class="col-4 toc panel card">
+          <h3>Day 1 map</h3>
+          <div id="day1Toc"></div>
+          <p class="subtle">Tip: if you got lost in class, work through sections in order and write the formulas into your notebook as you go.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="day2" class="section-block">
+      <div class="section-header">
+        <h2>Day 2 — Currents and Applications</h2>
+        <p>Core ideas: field from a wire, loops and solenoids, force and torque, magnetic materials, and the bridge to induction.</p>
+      </div>
+      <div class="grid">
+        <div class="col-8" id="day2Sections"></div>
+        <aside class="col-4 toc panel card">
+          <h3>Day 2 map</h3>
+          <div id="day2Toc"></div>
+          <p class="subtle">Keep comparing single moving charges to whole currents. That is one of the biggest unifying ideas this week.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="equations" class="section-block">
+      <div class="section-header">
+        <h2>Master Equation Reference</h2>
+        <p>These are the equations you should be comfortable recognizing and using by the end of the week.</p>
+      </div>
+      <div class="grid">
+        <div class="col-6 panel card">
+          <h3>Day 1 equations</h3>
+          <div class="formula">$$F = |q|vB\sin\theta$$</div>
+          <div class="formula">$$r = \frac{mv}{|q|B}$$</div>
+          <div class="formula">$$f = \frac{|q|B}{2\pi m}$$</div>
+          <div class="formula">$$B_{\text{moving charge}} = \frac{\mu_0}{4\pi}\frac{qv\sin\theta}{r^2}$$</div>
+        </div>
+        <div class="col-6 panel card">
+          <h3>Day 2 equations</h3>
+          <div class="formula">$$B_{\text{wire}} = \frac{\mu_0 I}{2\pi r}$$</div>
+          <div class="formula">$$B_{\text{loop center}} = \frac{\mu_0 N I}{2R}$$</div>
+          <div class="formula">$$B_{\text{solenoid}} = \mu_0 n I$$</div>
+          <div class="formula">$$F = ILB\sin\theta \qquad \tau = \mu B\sin\theta$$</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice" class="section-block">
+      <div class="section-header">
+        <h2>Practice Problems with Worked Solutions</h2>
+        <p>Try each one on paper first. Open the solution only after you have committed to an approach.</p>
+      </div>
+      <div id="practiceGrid" class="grid"></div>
+    </section>
+
+    <section class="section-block panel card">
+      <h2>Before the test, make sure you can do these</h2>
+      <ul class="checklist">
+        <li>Use the right-hand rules without guessing.</li>
+        <li>Explain why magnetic force does no work.</li>
+        <li>Find the field of a straight wire and interpret the direction.</li>
+        <li>Connect magnetic force to circular motion and solve for radius or frequency.</li>
+        <li>Explain why a current loop behaves like a magnetic dipole.</li>
+        <li>Describe how a solenoid creates a nearly uniform field inside.</li>
+      </ul>
+    </section>
+
+    <div class="footer">Mr. Beane • University Physics II support site • Built for GitHub Pages</div>
+  </main>
+
+  <script>
+    const day1 = [
+      {
+        id: 'd1-1',
+        title: 'What Is Magnetism?',
+        summary: 'Magnetism is the interaction associated with moving charges, and permanent magnets are dipoles.',
+        notes: [
+          'All magnets have both a north and south pole.',
+          'Cutting a magnet makes smaller dipoles, not isolated poles.',
+          'Magnetism is not the same as static electricity.'
+        ],
+        know: ['Moving charges create magnetic fields.', 'Like poles repel and opposite poles attract.', 'Magnetic monopoles have never been observed.'],
+        callout: 'Key idea: motion matters. This is the doorway from electricity into magnetism.'
+      },
+      {
+        id: 'd1-2',
+        title: 'Earth’s Magnetic Field and Compasses',
+        summary: 'Earth behaves like a giant magnet because currents in the molten core generate a large-scale field.',
+        notes: [
+          'A compass aligns with the net local magnetic field.',
+          'The geographic north region behaves like a magnetic south pole for a compass needle.',
+          'Earth’s field is weak but often still matters in compass problems.'
+        ],
+        know: ['A compass rotates because of torque.', 'Earth’s field is about 5 × 10^-5 T.', 'Always think about the net field.'],
+        callout: 'Common mistake: forgetting to combine Earth’s field with the field from a current-carrying wire.'
+      },
+      {
+        id: 'd1-3',
+        title: 'Field Lines and Symbols',
+        summary: 'Field lines help us visualize field direction and strength, and magnetism requires careful 3D notation.',
+        notes: [
+          'A tangent to a field line gives the direction of B.',
+          'Field line density indicates relative strength.',
+          '⊙ means out of the page and ⊗ means into the page.'
+        ],
+        know: ['Magnetic field lines form closed loops.', 'Outside a magnet, lines go from N to S.', 'Field lines never cross.'],
+        callout: 'Think about it: if field lines crossed, the field would have two directions at one point, which cannot happen.'
+      },
+      {
+        id: 'd1-4',
+        title: 'Oersted and the Right-Hand Rules',
+        summary: 'Current in a wire deflects a compass, revealing that electric current creates a magnetic field.',
+        notes: [
+          'RHR #1: thumb in current direction, curled fingers show field around the wire.',
+          'RHR #2: use velocity and field to get force on a positive charge.',
+          'RHR #3: use current and field to get force on a wire.'
+        ],
+        know: ['The field around a wire forms circles.', 'Direction depends on current direction.', 'Reverse the force for a negative charge.'],
+        callout: 'Common mistake: solve the force direction for a positive charge first, then reverse only at the end for a negative charge.'
+      },
+      {
+        id: 'd1-5',
+        title: 'Magnetic Force on a Moving Charge',
+        summary: 'A charge in motion through a magnetic field feels a force perpendicular to both its velocity and the field.',
+        notes: [
+          'Magnitude: F = |q|vB sinθ.',
+          'No force if the particle is at rest.',
+          'No force if velocity is parallel to the field.'
+        ],
+        know: ['Magnetic force does no work.', 'A magnetic field changes direction of motion, not speed.', 'The force is largest when velocity is perpendicular to the field.'],
+        callout: 'Key idea: if a force is always perpendicular to the motion, it can bend the path without changing the kinetic energy.'
+      },
+      {
+        id: 'd1-6',
+        title: 'Cyclotron Motion',
+        summary: 'Perpendicular magnetic force produces circular motion. With a parallel velocity component, the path becomes helical.',
+        notes: [
+          'Set qvB equal to mv²/r to get the orbit radius.',
+          'Radius grows with speed and mass.',
+          'Cyclotron frequency depends on charge, field, and mass only in the nonrelativistic model.'
+        ],
+        know: ['r = mv/(|q|B)', 'f = |q|B/(2πm)', 'Helical motion happens when some velocity lies along B.'],
+        callout: 'Think about it: faster particles make bigger circles, but not faster cycles, in this simplified model.'
+      }
+    ];
+
+    const day2 = [
+      {
+        id: 'd2-1',
+        title: 'Magnetic Field of a Long Straight Wire',
+        summary: 'A wire carrying current creates circular magnetic field lines centered on the wire.',
+        notes: [
+          'Magnitude: B = μ₀I/(2πr).',
+          'Field strength decreases as 1/r.',
+          'Direction comes from Right-Hand Rule #1.'
+        ],
+        know: ['Doubling I doubles B.', 'Doubling r halves B.', 'Opposite sides of the wire have opposite field directions.'],
+        callout: 'Common mistake: remembering the formula but not the circular geometry.'
+      },
+      {
+        id: 'd2-2',
+        title: 'Current Loops and Solenoids',
+        summary: 'A current loop acts like a magnetic dipole, and many loops in a row make a solenoid.',
+        notes: [
+          'Field at loop center: B = μ₀NI/(2R).',
+          'Dipole moment: μ = NIA.',
+          'Ideal solenoid field: B = μ₀nI.'
+        ],
+        know: ['The thumb points toward the loop’s north side.', 'Solenoids create strong nearly uniform fields inside.', 'The outside field of a solenoid resembles a bar magnet.'],
+        callout: 'Key idea: a current loop and a bar magnet are two versions of the same dipole picture.'
+      },
+      {
+        id: 'd2-3',
+        title: 'Force on a Wire and Torque on a Loop',
+        summary: 'A magnetic field can push on a current-carrying wire and twist a current loop.',
+        notes: [
+          'Wire force: F = ILB sinθ.',
+          'Torque: τ = μB sinθ.',
+          'Parallel currents attract; opposite currents repel.'
+        ],
+        know: ['Net force can be zero while net torque is not.', 'Torque tries to align μ with B.', 'Motor action comes from magnetic torque.'],
+        callout: 'Think about it: two equal and opposite forces can still create rotation if they act at different locations.'
+      },
+      {
+        id: 'd2-4',
+        title: 'Magnetic Materials and the Next Step',
+        summary: 'Domain alignment explains ferromagnetism, and changing magnetic fields lead into induction.',
+        notes: [
+          'Ferromagnets contain domains with aligned atomic moments.',
+          'External fields can align domains and induce magnetization.',
+          'Changing magnetic fields induce electric effects, which is the bridge to next week.'
+        ],
+        know: ['Iron, cobalt, and nickel are standard ferromagnets.', 'Domain alignment explains attraction to magnets.', 'Electromagnetism becomes more unified from here.'],
+        callout: 'Key idea: magnetism this week sets up induction next week.'
+      }
+    ];
+
+    const practice = [
+      {
+        title: 'Practice 1 — Force on a Proton',
+        tag: 'Day 1 • Core',
+        prompt: 'A proton moves at 2.0 × 10^6 m/s perpendicular to a 0.30 T magnetic field. Find the magnitude of the magnetic force.',
+        solution: 'Use $F = |q|vB\\sin\\theta$. Because the motion is perpendicular to the field, $\\sin\\theta = 1$. So $F = (1.60\\times10^{-19}\\,\\text{C})(2.0\\times10^6\\,\\text{m/s})(0.30\\,\\text{T}) = 9.6\\times10^{-14}\\,\\text{N}$.',
+      },
+      {
+        title: 'Practice 2 — Radius of Circular Motion',
+        tag: 'Day 1 • Core',
+        prompt: 'An electron enters a 0.40 T magnetic field at 3.0 × 10^6 m/s perpendicular to the field. Find the radius of its path.',
+        solution: 'Use $r = mv/(|q|B)$. With $m_e = 9.11\\times10^{-31}\\,\\text{kg}$ and $|q| = 1.60\\times10^{-19}\\,\\text{C}$, $r = \\dfrac{(9.11\\times10^{-31})(3.0\\times10^6)}{(1.60\\times10^{-19})(0.40)} \\approx 4.27\\times10^{-5}\\,\\text{m}$.',
+      },
+      {
+        title: 'Practice 3 — Cyclotron Frequency',
+        tag: 'Day 1 • Synthesis',
+        prompt: 'Find the cyclotron frequency of a proton in a 0.50 T magnetic field.',
+        solution: 'Use $f = |q|B/(2\\pi m)$. For a proton, $q = 1.60\\times10^{-19}\\,\\text{C}$ and $m = 1.67\\times10^{-27}\\,\\text{kg}$. So $f = \\dfrac{(1.60\\times10^{-19})(0.50)}{2\\pi(1.67\\times10^{-27})} \\approx 7.6\\times10^6\\,\\text{Hz}$.',
+      },
+      {
+        title: 'Practice 4 — Field Near a Straight Wire',
+        tag: 'Day 2 • Core',
+        prompt: 'A long straight wire carries 8.0 A. What is the magnetic field 2.0 cm from the wire?',
+        solution: 'Use $B = \\mu_0 I/(2\\pi r)$. With $\\mu_0 = 4\\pi\\times10^{-7}\\,\\text{T·m/A}$ and $r = 0.020\\,\\text{m}$, $B = \\dfrac{(4\\pi\\times10^{-7})(8.0)}{2\\pi(0.020)} = 8.0\\times10^{-5}\\,\\text{T}$.',
+      },
+      {
+        title: 'Practice 5 — Force on a Wire',
+        tag: 'Day 2 • Core',
+        prompt: 'A 0.50 m wire carries 3.0 A and lies perpendicular to a 0.40 T magnetic field. Find the force on the wire.',
+        solution: 'Use $F = ILB\\sin\\theta$. Since the wire is perpendicular to the field, $\\sin\\theta=1$. So $F = (3.0)(0.50)(0.40) = 0.60\\,\\text{N}$.',
+      },
+      {
+        title: 'Practice 6 — Solenoid Design',
+        tag: 'Day 2 • Synthesis',
+        prompt: 'A solenoid must create a 0.80 T field with 5.0 A current. Find the required turns per meter.',
+        solution: 'Use $B = \\mu_0 n I$, so $n = B/(\\mu_0 I) = \\dfrac{0.80}{(4\\pi\\times10^{-7})(5.0)} \\approx 1.27\\times10^5\\,\\text{turns/m}$.',
+      }
+    ];
+
+    function buildSections(targetId, tocId, items) {
+      const target = document.getElementById(targetId);
+      const toc = document.getElementById(tocId);
+      target.innerHTML = '';
+      toc.innerHTML = '';
+      items.forEach(item => {
+        const article = document.createElement('article');
+        article.className = 'panel section-card searchable';
+        article.id = item.id;
+        article.dataset.search = [item.title, item.summary, ...(item.notes || []), ...(item.know || [])].join(' ').toLowerCase();
+        article.innerHTML = `
+          <h3>${item.title}</h3>
+          <p>${item.summary}</p>
+          <div class="formula"><strong>Need to know</strong><ul class="mini-list">${item.know.map(x => `<li>${x}</li>`).join('')}</ul></div>
+          <h3>Embedded notes</h3>
+          <ul class="mini-list">${item.notes.map(x => `<li>${x}</li>`).join('')}</ul>
+          <div class="callout"><strong>Callout:</strong> ${item.callout}</div>
+        `;
+        target.appendChild(article);
+
+        const a = document.createElement('a');
+        a.href = `#${item.id}`;
+        a.textContent = item.title;
+        toc.appendChild(a);
+      });
+    }
+
+    function buildPractice() {
+      const grid = document.getElementById('practiceGrid');
+      grid.innerHTML = '';
+      practice.forEach((p, i) => {
+        const card = document.createElement('article');
+        card.className = 'col-6 panel practice-card searchable';
+        card.dataset.search = [p.title, p.tag, p.prompt, p.solution].join(' ').toLowerCase();
+        card.innerHTML = `
+          <div class="practice-head">
+            <div>
+              <h3>${p.title}</h3>
+              <span class="tag">${p.tag}</span>
+            </div>
+          </div>
+          <p>${p.prompt}</p>
+          <div class="btn-row">
+            <button type="button" data-solution="sol-${i}">Show worked solution</button>
+          </div>
+          <div id="sol-${i}" class="solution">
+            <h3>Worked solution</h3>
+            <p>${p.solution}</p>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      grid.querySelectorAll('button[data-solution]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const box = document.getElementById(btn.dataset.solution);
+          const open = box.classList.toggle('open');
+          btn.textContent = open ? 'Hide worked solution' : 'Show worked solution';
+          if (window.MathJax) safeTypeset([box]);
+        });
+      });
+    }
+
+    function safeTypeset(elements) {
+      if (!window.MathJax) return;
+      if (typeof MathJax.typesetPromise === 'function') {
+        MathJax.typesetPromise(elements || undefined);
+      } else if (typeof MathJax.typeset === 'function') {
+        if (elements && elements.length) {
+          MathJax.typeset(elements);
+        } else {
+          MathJax.typeset();
+        }
+      }
+    }
+
+    function setupSearch() {
+      const input = document.getElementById('searchBox');
+      input.addEventListener('input', () => {
+        const q = input.value.trim().toLowerCase();
+        document.querySelectorAll('.searchable').forEach(el => {
+          const show = !q || (el.dataset.search || '').includes(q);
+          el.style.display = show ? '' : 'none';
+        });
+      });
+    }
+
+    buildSections('day1Sections', 'day1Toc', day1);
+    buildSections('day2Sections', 'day2Toc', day2);
+    buildPractice();
+    setupSearch();
+    if (window.MathJax) safeTypeset();
+  </script>
+</body>
+</html>
