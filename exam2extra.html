@@ -1,0 +1,1187 @@
+import { useState, useRef, useEffect, useCallback } from "react";
+
+/* ═══════════════════════════════════════════════════════════
+   Physics II · Exam 2 Interactive Review
+   Resistance · DC Circuits · Magnetism
+   ═══════════════════════════════════════════════════════════ */
+
+// ──────────── Reveal wrapper ────────────
+function Reveal({ label = "Show Answer", children, accent = false }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={`reveal ${open ? "reveal--open" : ""} ${accent ? "reveal--accent" : ""}`}>
+      <button className="reveal__btn" onClick={() => setOpen(!open)}>
+        <span className="reveal__icon">{open ? "▾" : "▸"}</span>
+        {open ? "Hide" : label}
+      </button>
+      {open && <div className="reveal__body">{children}</div>}
+    </div>
+  );
+}
+
+// ──────────── Fill-in-the-blank ────────────
+function Blank({ answer, width = 120 }) {
+  const [val, setVal] = useState("");
+  const [show, setShow] = useState(false);
+  const correct = val.trim().toLowerCase() === answer.toLowerCase();
+  return (
+    <span className="blank-wrap">
+      <input
+        className={`blank ${show ? (correct ? "blank--correct" : "blank--wrong") : ""}`}
+        style={{ width }}
+        value={val}
+        onChange={(e) => { setVal(e.target.value); setShow(false); }}
+        placeholder="?"
+        spellCheck="false"
+      />
+      <button className="blank__check" onClick={() => setShow(true)} title="Check">✓</button>
+      {show && !correct && <span className="blank__answer">{answer}</span>}
+    </span>
+  );
+}
+
+// ──────────── Multiple choice ────────────
+function MC({ question, options, correctIndex, explanation }) {
+  const [selected, setSelected] = useState(null);
+  const answered = selected !== null;
+  return (
+    <div className="mc">
+      <p className="mc__q">{question}</p>
+      <div className="mc__opts">
+        {options.map((opt, i) => (
+          <button
+            key={i}
+            className={`mc__opt ${answered ? (i === correctIndex ? "mc__opt--correct" : i === selected ? "mc__opt--wrong" : "mc__opt--dim") : ""}`}
+            onClick={() => !answered && setSelected(i)}
+            disabled={answered}
+          >
+            <span className="mc__letter">{"ABCDE"[i]}</span>
+            {opt}
+          </button>
+        ))}
+      </div>
+      {answered && (
+        <div className={`mc__feedback ${selected === correctIndex ? "mc__feedback--right" : "mc__feedback--wrong"}`}>
+          {selected === correctIndex ? "✓ Correct!" : "✗ Not quite."}{" "}
+          {explanation && <span className="mc__explain">{explanation}</span>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ──────────── Equation display ────────────
+function Eq({ children, big = false, color = "primary" }) {
+  return <div className={`eq eq--${color} ${big ? "eq--big" : ""}`}>{children}</div>;
+}
+
+// ──────────── Concept card ────────────
+function Card({ title, accent, children }) {
+  return (
+    <div className={`card ${accent ? "card--" + accent : ""}`}>
+      {title && <div className="card__title">{title}</div>}
+      <div className="card__body">{children}</div>
+    </div>
+  );
+}
+
+// ──────────── Warning / trap box ────────────
+function Trap({ children }) {
+  return <div className="trap"><span className="trap__icon">⚠</span><div>{children}</div></div>;
+}
+
+// ──────────── Key insight ────────────
+function Insight({ children }) {
+  return <div className="insight"><span className="insight__flash">⚡</span><div>{children}</div></div>;
+}
+
+// ──────────── Section header ────────────
+function SectionHeader({ id, number, title, subtitle, color = "primary" }) {
+  return (
+    <div className={`sec-header sec-header--${color}`} id={id}>
+      <span className="sec-header__num">{number}</span>
+      <h2 className="sec-header__title">{title}</h2>
+      {subtitle && <p className="sec-header__sub">{subtitle}</p>}
+    </div>
+  );
+}
+
+// ──────────── Sidebar ────────────
+const SECTIONS = [
+  { id: "overview", label: "Big Picture", icon: "◉" },
+  { id: "resistance", label: "Resistance & Current", icon: "◉" },
+  { id: "circuits", label: "DC Circuits", icon: "◉" },
+  { id: "magnetism", label: "Magnetism", icon: "◉" },
+  { id: "fields", label: "Currents → Fields", icon: "◉" },
+  { id: "forces", label: "Forces & Applications", icon: "◉" },
+  { id: "induction", label: "Induction Preview", icon: "◉" },
+  { id: "exammode", label: "Exam Mode", icon: "◉" },
+];
+
+function Sidebar({ activeSection, onNav, open, onClose }) {
+  return (
+    <>
+      {open && <div className="sidebar-backdrop" onClick={onClose} />}
+      <nav className={`sidebar ${open ? "sidebar--open" : ""}`}>
+        <div className="sidebar__head">
+          <div className="sidebar__eyebrow">Calculus-Based Physics II</div>
+          <div className="sidebar__title">Exam 2 Review</div>
+          <div className="sidebar__sub">Resistance · Circuits · Magnetism</div>
+        </div>
+        <ul className="sidebar__list">
+          {SECTIONS.map((s) => (
+            <li key={s.id}>
+              <a
+                href={`#${s.id}`}
+                className={`sidebar__link ${activeSection === s.id ? "sidebar__link--active" : ""}`}
+                onClick={(e) => { e.preventDefault(); onNav(s.id); onClose(); }}
+              >
+                <span className="sidebar__dot" />
+                {s.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div className="sidebar__foot">
+          <p>Fill blanks · Reveal answers · Test yourself</p>
+        </div>
+      </nav>
+    </>
+  );
+}
+
+// ──────────── Progress tracker ────────────
+function ProgressBar({ sections, active }) {
+  const idx = sections.findIndex((s) => s.id === active);
+  const pct = ((idx + 1) / sections.length) * 100;
+  return (
+    <div className="progress">
+      <div className="progress__bar" style={{ width: `${pct}%` }} />
+    </div>
+  );
+}
+
+// ──────────── SVG diagrams ────────────
+function WireDiagram() {
+  return (
+    <svg viewBox="0 0 400 100" className="diagram" aria-label="Wire with length L and cross-section A">
+      <defs><linearGradient id="wg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#C9A97B"/><stop offset="100%" stopColor="#E8D5B5"/></linearGradient></defs>
+      <rect x="60" y="25" width="280" height="50" rx="6" fill="url(#wg)" stroke="#334155" strokeWidth="2"/>
+      <ellipse cx="60" cy="50" rx="12" ry="25" fill="#C9A97B" stroke="#334155" strokeWidth="2"/>
+      <ellipse cx="340" cy="50" rx="12" ry="25" fill="#C9A97B" stroke="#334155" strokeWidth="2"/>
+      <line x1="80" y1="88" x2="320" y2="88" stroke="#0F172A" strokeWidth="1.5" markerEnd="url(#arrowB)"/>
+      <text x="200" y="98" textAnchor="middle" fontSize="14" fontStyle="italic" fill="#0F172A" fontFamily="Georgia">L</text>
+      <line x1="38" y1="25" x2="38" y2="75" stroke="#0F172A" strokeWidth="1.5"/>
+      <text x="24" y="55" textAnchor="middle" fontSize="14" fontStyle="italic" fill="#0F172A" fontFamily="Georgia">A</text>
+      <defs><marker id="arrowB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6Z" fill="#0F172A"/></marker></defs>
+    </svg>
+  );
+}
+
+function SeriesCircuit() {
+  return (
+    <svg viewBox="0 0 300 180" className="diagram" aria-label="Series circuit">
+      <rect x="30" y="30" width="240" height="120" rx="0" fill="none" stroke="#334155" strokeWidth="2"/>
+      {/* Battery */}
+      <line x1="30" y1="75" x2="30" y2="85" stroke="#334155" strokeWidth="4"/>
+      <line x1="30" y1="88" x2="30" y2="95" stroke="#334155" strokeWidth="4"/>
+      <text x="12" y="95" fontSize="14" fontStyle="italic" fill="#334155" fontFamily="Georgia">ε</text>
+      {/* R1 */}
+      <rect x="90" y="22" width="40" height="16" fill="white" stroke="#065A82" strokeWidth="2"/>
+      <text x="110" y="18" textAnchor="middle" fontSize="12" fontWeight="600" fill="#065A82">R₁</text>
+      {/* R2 */}
+      <rect x="170" y="22" width="40" height="16" fill="white" stroke="#065A82" strokeWidth="2"/>
+      <text x="190" y="18" textAnchor="middle" fontSize="12" fontWeight="600" fill="#065A82">R₂</text>
+      {/* Current arrow */}
+      <line x1="130" y1="155" x2="170" y2="155" stroke="#E76F51" strokeWidth="2.5" markerEnd="url(#arrI)"/>
+      <text x="152" y="172" textAnchor="middle" fontSize="13" fontStyle="italic" fontWeight="bold" fill="#E76F51" fontFamily="Georgia">I</text>
+      <defs><marker id="arrI" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6Z" fill="#E76F51"/></marker></defs>
+    </svg>
+  );
+}
+
+function ParallelCircuit() {
+  return (
+    <svg viewBox="0 0 300 200" className="diagram" aria-label="Parallel circuit">
+      {/* Outer wires */}
+      <line x1="40" y1="30" x2="260" y2="30" stroke="#334155" strokeWidth="2"/>
+      <line x1="40" y1="170" x2="260" y2="170" stroke="#334155" strokeWidth="2"/>
+      <line x1="40" y1="30" x2="40" y2="170" stroke="#334155" strokeWidth="2"/>
+      <line x1="260" y1="30" x2="260" y2="170" stroke="#334155" strokeWidth="2"/>
+      {/* Battery */}
+      <line x1="33" y1="85" x2="47" y2="85" stroke="#334155" strokeWidth="4"/>
+      <line x1="36" y1="95" x2="44" y2="95" stroke="#334155" strokeWidth="4"/>
+      <text x="18" y="95" fontSize="14" fontStyle="italic" fill="#334155" fontFamily="Georgia">ε</text>
+      {/* Branch wires */}
+      <line x1="120" y1="30" x2="120" y2="170" stroke="#334155" strokeWidth="2"/>
+      <line x1="190" y1="30" x2="190" y2="170" stroke="#334155" strokeWidth="2"/>
+      {/* R1 */}
+      <rect x="110" y="85" width="20" height="35" fill="white" stroke="#065A82" strokeWidth="2"/>
+      <text x="100" y="107" textAnchor="end" fontSize="12" fontWeight="600" fill="#065A82">R₁</text>
+      {/* R2 */}
+      <rect x="180" y="85" width="20" height="35" fill="white" stroke="#065A82" strokeWidth="2"/>
+      <text x="210" y="107" fontSize="12" fontWeight="600" fill="#065A82">R₂</text>
+    </svg>
+  );
+}
+
+function RHRDiagram() {
+  return (
+    <svg viewBox="0 0 280 200" className="diagram" aria-label="Right hand rule: v right, B up, F out of page">
+      {/* Charge */}
+      <circle cx="140" cy="120" r="18" fill="#E63946"/>
+      <text x="140" y="127" textAnchor="middle" fontSize="22" fontWeight="bold" fill="white">+</text>
+      {/* v arrow right */}
+      <line x1="162" y1="120" x2="250" y2="120" stroke="#E76F51" strokeWidth="3" markerEnd="url(#av)"/>
+      <text x="255" y="125" fontSize="16" fontStyle="italic" fontWeight="bold" fill="#E76F51" fontFamily="Georgia">v</text>
+      {/* B arrow up */}
+      <line x1="140" y1="98" x2="140" y2="20" stroke="#1C7293" strokeWidth="3" markerEnd="url(#aB)"/>
+      <text x="150" y="20" fontSize="16" fontStyle="italic" fontWeight="bold" fill="#1C7293" fontFamily="Georgia">B</text>
+      {/* F out of page */}
+      <circle cx="60" cy="120" r="14" fill="none" stroke="#2A9D8F" strokeWidth="2.5"/>
+      <circle cx="60" cy="120" r="4" fill="#2A9D8F"/>
+      <text x="60" y="148" textAnchor="middle" fontSize="13" fontStyle="italic" fontWeight="bold" fill="#2A9D8F" fontFamily="Georgia">F (out)</text>
+      <defs>
+        <marker id="av" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6Z" fill="#E76F51"/></marker>
+        <marker id="aB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6Z" fill="#1C7293"/></marker>
+      </defs>
+    </svg>
+  );
+}
+
+function FieldIntoPage() {
+  const positions = [];
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 5; c++) positions.push({ x: 40 + c * 55, y: 30 + r * 50 });
+  return (
+    <svg viewBox="0 0 300 180" className="diagram" aria-label="B field into page with proton moving right">
+      {positions.map((p, i) => (
+        <g key={i}>
+          <circle cx={p.x} cy={p.y} r="10" fill="none" stroke="#1C7293" strokeWidth="1.5"/>
+          <line x1={p.x - 5} y1={p.y - 5} x2={p.x + 5} y2={p.y + 5} stroke="#1C7293" strokeWidth="1.5"/>
+          <line x1={p.x - 5} y1={p.y + 5} x2={p.x + 5} y2={p.y - 5} stroke="#1C7293" strokeWidth="1.5"/>
+        </g>
+      ))}
+      <text x="10" y="15" fontSize="12" fontStyle="italic" fontWeight="bold" fill="#1C7293" fontFamily="Georgia">B (into page)</text>
+      {/* Proton */}
+      <circle cx="70" cy="80" r="14" fill="#E63946"/>
+      <text x="70" y="86" textAnchor="middle" fontSize="18" fontWeight="bold" fill="white">+</text>
+      <line x1="88" y1="80" x2="220" y2="80" stroke="#E76F51" strokeWidth="3" markerEnd="url(#apv)"/>
+      <text x="232" y="85" fontSize="16" fontStyle="italic" fontWeight="bold" fill="#E76F51" fontFamily="Georgia">v</text>
+      <defs><marker id="apv" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6Z" fill="#E76F51"/></marker></defs>
+    </svg>
+  );
+}
+
+function CyclotronDiagram() {
+  return (
+    <svg viewBox="0 0 240 240" className="diagram" aria-label="Cyclotron circular motion">
+      <circle cx="120" cy="120" r="70" fill="none" stroke="#E76F51" strokeWidth="2.5"/>
+      {/* Charge at right */}
+      <circle cx="190" cy="120" r="12" fill="#E63946"/>
+      <text x="190" y="126" textAnchor="middle" fontSize="16" fontWeight="bold" fill="white">+</text>
+      {/* v tangent up */}
+      <line x1="190" y1="105" x2="190" y2="40" stroke="#E76F51" strokeWidth="2.5" markerEnd="url(#acv)"/>
+      <text x="200" y="40" fontSize="14" fontStyle="italic" fontWeight="bold" fill="#E76F51" fontFamily="Georgia">v</text>
+      {/* F inward */}
+      <line x1="175" y1="120" x2="140" y2="120" stroke="#2A9D8F" strokeWidth="2.5" markerEnd="url(#acf)"/>
+      <text x="145" y="112" fontSize="14" fontStyle="italic" fontWeight="bold" fill="#2A9D8F" fontFamily="Georgia">F</text>
+      {/* r */}
+      <line x1="120" y1="120" x2="185" y2="120" stroke="#334155" strokeWidth="1" strokeDasharray="4,3"/>
+      <text x="155" y="138" fontSize="13" fontStyle="italic" fill="#334155" fontFamily="Georgia">r</text>
+      <defs>
+        <marker id="acv" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6Z" fill="#E76F51"/></marker>
+        <marker id="acf" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M8,0 L0,3 L8,6Z" fill="#2A9D8F"/></marker>
+      </defs>
+    </svg>
+  );
+}
+
+// ──────────── MAIN APP ────────────
+export default function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("overview");
+  const mainRef = useRef(null);
+
+  const handleNav = useCallback((id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    setSidebarOpen(false);
+  }, []);
+
+  // Track which section is in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        }
+      },
+      { rootMargin: "-20% 0px -60% 0px" }
+    );
+    SECTIONS.forEach((s) => {
+      const el = document.getElementById(s.id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="app">
+      {/* Top bar */}
+      <header className="topbar">
+        <button className="topbar__menu" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Menu">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="16" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+        </button>
+        <div className="topbar__brand">Physics II<span className="topbar__dot">·</span>Exam 2 Review</div>
+        <ProgressBar sections={SECTIONS} active={activeSection} />
+      </header>
+
+      <Sidebar activeSection={activeSection} onNav={handleNav} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      <main className="main" ref={mainRef}>
+
+        {/* ═══════════════ SECTION 0: BIG PICTURE ═══════════════ */}
+        <SectionHeader id="overview" number="00" title="Big Picture" subtitle="The three layers of physics that unify this exam" color="primary" />
+
+        <div className="content">
+          <h3 className="content__h3">The Three Layers</h3>
+          <div className="layers">
+            <Card title="01 · MICRO" accent="primary">
+              <Eq big>I = nqv<sub>d</sub>A</Eq>
+              <p>What the charges do — drift velocity, carrier density, geometry.</p>
+            </Card>
+            <Card title="02 · MACRO" accent="teal">
+              <Eq big color="teal">V = IR</Eq>
+              <p>What we measure — Ohm's law, resistance, power dissipation.</p>
+            </Card>
+            <Card title="03 · CONSERVATION" accent="accent">
+              <Eq big color="accent">ΣI = 0 &nbsp;&nbsp; ΣΔV = 0</Eq>
+              <p>What must balance — Kirchhoff's junction & loop rules.</p>
+            </Card>
+          </div>
+          <Insight>If you can move between these three layers — micro, macro, conservation — you're exam ready.</Insight>
+
+          <h3 className="content__h3">What You Must Be Able To Do</h3>
+          <ol className="checklist">
+            <li><strong>Predict before calculating</strong> — estimate the answer first.</li>
+            <li><strong>Choose the correct model</strong> — Ohm's law? Kirchhoff? Biot–Savart? Ampère?</li>
+            <li><strong>Use the right-hand rule without guessing</strong> — fingers, palm, thumb, every time.</li>
+            <li><strong>Set up Kirchhoff's laws cleanly</strong> — consistent signs, labeled loops, clean algebra.</li>
+            <li><strong>Explain physically, not just mathematically</strong> — math is how; physics is why.</li>
+          </ol>
+        </div>
+
+        {/* ═══════════════ SECTION 1: RESISTANCE & CURRENT ═══════════════ */}
+        <SectionHeader id="resistance" number="01" title="Resistance & Current" subtitle="Microscopic model → macroscopic measurements → power" color="gold" />
+
+        <div className="content">
+          <h3 className="content__h3">Microscopic Current Model</h3>
+          <p>Fill in each variable in the current equation:</p>
+          <Eq big>I = <Blank answer="n" width={50}/> · <Blank answer="q" width={50}/> · <Blank answer="vd" width={60}/> · <Blank answer="A" width={50}/></Eq>
+
+          <Reveal label="Reveal Variables">
+            <div className="var-grid">
+              <div><strong className="var-sym">n</strong> charge-carrier density (m⁻³)</div>
+              <div><strong className="var-sym">q</strong> charge per carrier (C)</div>
+              <div><strong className="var-sym">v<sub>d</sub></strong> drift velocity (m/s)</div>
+              <div><strong className="var-sym">A</strong> cross-sectional area (m²)</div>
+            </div>
+            <p style={{marginTop:12, fontStyle:"italic", color:"#E76F51"}}>Current = (how many carriers) × (charge each) × (how fast) × (how wide).</p>
+          </Reveal>
+
+          <MC
+            question="If the wire's cross-sectional area A is halved (same n, q, v_d), what happens to the current?"
+            options={["Doubles", "Halves", "Stays the same", "Quadruples"]}
+            correctIndex={1}
+            explanation="I = nqv_dA → halving A halves I."
+          />
+
+          <h3 className="content__h3">Drift Velocity Reality Check</h3>
+          <Eq big>v<sub>d</sub> ~ 10⁻⁴ m/s</Eq>
+          <p>That's roughly a tenth of a millimeter per second. So…</p>
+
+          <MC
+            question="If electrons drift so slowly, why do lights turn on instantly when you flip the switch?"
+            options={["Electrons travel at the speed of light", "The electric field propagates at nearly c, not the electrons", "The wire is very short", "Electrons have no mass"]}
+            correctIndex={1}
+            explanation="The field sets all charges in motion nearly simultaneously — like pushing one end of a full hose."
+          />
+
+          <h3 className="content__h3">Resistance of a Wire</h3>
+          <WireDiagram />
+          <p>Fill in the resistance formula:</p>
+          <Eq big>R = <Blank answer="ρ" width={50}/> · ( <Blank answer="L" width={50}/> / <Blank answer="A" width={50}/> )</Eq>
+
+          <Reveal label="Show Answer & Traps">
+            <Eq color="success">R = ρ (L / A)</Eq>
+            <div className="var-grid">
+              <div><strong className="var-sym">ρ</strong> resistivity — material property (Ω·m)</div>
+              <div><strong className="var-sym">L</strong> length (m)</div>
+              <div><strong className="var-sym">A</strong> cross-sectional area (m²)</div>
+            </div>
+            <Trap>
+              <p><strong>Doubling the diameter ≠ doubling the area.</strong> A scales as r², so doubling d → area × 4.</p>
+              <p><strong>Resistivity (ρ) ≠ Resistance (R).</strong> ρ is intrinsic to the material; R depends on geometry.</p>
+            </Trap>
+          </Reveal>
+
+          <MC
+            question="A wire's length doubles and its radius doubles. What happens to R?"
+            options={["× 2", "× 4", "÷ 2", "÷ 4", "Stays the same"]}
+            correctIndex={2}
+            explanation="R = ρL/A. L → 2L (×2). r → 2r → A = π(2r)² = 4πr² (×4). Net: R × 2/4 = R/2."
+          />
+
+          <h3 className="content__h3">Electrical Power — Three Forms</h3>
+          <p>Fill in the three power forms:</p>
+          <div className="power-grid">
+            <div className="power-row"><span className="power-label">General:</span><Eq>P = <Blank answer="IV" width={60}/></Eq></div>
+            <div className="power-row"><span className="power-label">Current known:</span><Eq>P = <Blank answer="I²R" width={70}/></Eq></div>
+            <div className="power-row"><span className="power-label">Voltage fixed:</span><Eq>P = <Blank answer="V²/R" width={70}/></Eq></div>
+          </div>
+
+          <Reveal label="Show When To Use Each">
+            <Card accent="success">
+              <p><strong>P = IV</strong> — always true when power is delivered by current through ΔV.</p>
+              <p><strong>P = I²R</strong> — use when current I is known (e.g., same series current).</p>
+              <p><strong>P = V²/R</strong> — use when voltage V is fixed (e.g., battery or outlet).</p>
+            </Card>
+          </Reveal>
+        </div>
+
+        {/* ═══════════════ SECTION 2: DC CIRCUITS ═══════════════ */}
+        <SectionHeader id="circuits" number="02" title="DC Circuits" subtitle="Series vs parallel · Kirchhoff's laws · sign conventions" color="accent" />
+
+        <div className="content">
+          <h3 className="content__h3">Series vs Parallel</h3>
+          <div className="circuit-compare">
+            <Card title="SERIES" accent="accent">
+              <SeriesCircuit />
+              <Eq color="accent">Same current: I₁ = I₂ = I</Eq>
+              <Eq>R<sub>eq</sub> = R₁ + R₂ + …</Eq>
+            </Card>
+            <Card title="PARALLEL" accent="teal">
+              <ParallelCircuit />
+              <Eq color="teal">Same voltage: V₁ = V₂ = ε</Eq>
+              <Eq>1/R<sub>eq</sub> = 1/R₁ + 1/R₂ + …</Eq>
+            </Card>
+          </div>
+
+          <MC
+            question="Three identical bulbs: A is in series with a parallel pair (B ∥ C). All powered by one battery. Rank brightness."
+            options={["A = B = C", "A > B = C", "B = C > A", "A > B > C"]}
+            correctIndex={1}
+            explanation="A carries the full current; B and C each carry half. P = I²R, so A is brightest."
+          />
+
+          <h3 className="content__h3">Kirchhoff's Laws — Strategy</h3>
+          <p>Fill in each step:</p>
+          <ol className="kirch-steps">
+            <li>Assume current <Blank answer="directions" width={100}/> in each branch.</li>
+            <li>Apply KCL (Junction): Σ I<sub>in</sub> = <Blank answer="Σ I_out" width={100}/></li>
+            <li>Apply KVL (Loop): Σ ΔV around a loop = <Blank answer="0" width={50}/></li>
+            <li>Solve the system of equations.</li>
+          </ol>
+
+          <Reveal label="Show Full Strategy">
+            <Card accent="success">
+              <p><strong>Step 1:</strong> Guess current directions — if wrong, the answer comes out negative. That's information, not an error.</p>
+              <p><strong>Step 2 (KCL):</strong> Conservation of charge — what flows in must flow out at every junction.</p>
+              <p><strong>Step 3 (KVL):</strong> Conservation of energy — voltage drops + rises around any closed loop = 0.</p>
+              <p><strong>Step 4:</strong> One equation per unknown current. Solve the system.</p>
+            </Card>
+          </Reveal>
+
+          <h3 className="content__h3">Sign Conventions</h3>
+          <div className="sign-grid">
+            <Card title="BATTERY (EMF)" accent="teal">
+              <p>Cross − to +: <strong>ΔV = +ε</strong></p>
+              <p>Cross + to −: <strong>ΔV = −ε</strong></p>
+            </Card>
+            <Card title="RESISTOR" accent="accent">
+              <p>With current: <strong>ΔV = −IR</strong></p>
+              <p>Against current: <strong>ΔV = +IR</strong></p>
+            </Card>
+          </div>
+          <Trap>Most exam errors are sign errors. Stay ruthless about direction.</Trap>
+
+          <h3 className="content__h3">Real Battery — Internal Resistance</h3>
+          <Eq big>V<sub>terminal</sub> = ε − Ir</Eq>
+          <MC
+            question="Why do car headlights dim when the starter motor draws high current?"
+            options={["The battery dies", "Internal resistance causes a larger voltage drop (Ir), leaving less V for the headlights", "The headlights' resistance increases", "The wires heat up"]}
+            correctIndex={1}
+            explanation="V_terminal = ε − Ir. When I increases (starter motor), Ir increases, so V_terminal drops."
+          />
+        </div>
+
+        {/* ═══════════════ SECTION 3: MAGNETISM ═══════════════ */}
+        <SectionHeader id="magnetism" number="03" title="Magnetism" subtitle="Moving charges · fields · forces · right-hand rules" color="red" />
+
+        <div className="content">
+          <h3 className="content__h3">The Two Big Ideas</h3>
+          <div className="two-ideas">
+            <div className="idea idea--dark">Moving charges <em>create</em> magnetic fields.</div>
+            <div className="idea idea--accent">Magnetic fields exert <em>forces</em> on other moving charges.</div>
+          </div>
+
+          <h3 className="content__h3">Field Around a Straight Wire</h3>
+          <p>Fill in the equation:</p>
+          <Eq big>B = <Blank answer="μ₀" width={50}/> · <Blank answer="I" width={40}/> / (2π · <Blank answer="r" width={40}/>)</Eq>
+
+          <Reveal label="Show Answer — Why 1/r?">
+            <Eq color="success">B = μ₀I / (2πr)</Eq>
+            <Card accent="accent">
+              <p><strong>Why 1/r and not 1/r²?</strong></p>
+              <p>A long wire is a 1D source — its field spreads over circles of circumference 2πr, so B ~ 1/r. Point sources spread over spheres of area 4πr², giving 1/r².</p>
+            </Card>
+          </Reveal>
+
+          <h3 className="content__h3">Right-Hand Rule #1 — Field Around a Wire</h3>
+          <Card accent="primary">
+            <ol>
+              <li><strong>Point your right thumb</strong> in the direction of the current.</li>
+              <li><strong>Your curled fingers</strong> show the direction B wraps around the wire.</li>
+              <li>Reverse the current → fingers curl the other way.</li>
+            </ol>
+          </Card>
+
+          <h3 className="content__h3">Right-Hand Rule #2 — Force on a Moving Charge</h3>
+          <Eq big>F = qv × B</Eq>
+          <RHRDiagram />
+          <Card accent="primary">
+            <p><strong>Positive charge:</strong> Fingers → v, curl toward B, thumb → F.</p>
+            <p><strong>Negative charge:</strong> Same rule, then <em>reverse</em> the direction of F.</p>
+          </Card>
+
+          <h3 className="content__h3">Force Concept Check</h3>
+          <FieldIntoPage />
+          <MC
+            question="A proton moves to the RIGHT through B pointing INTO the page. What direction is the magnetic force?"
+            options={["Up", "Down", "Into the page", "Out of the page", "Zero"]}
+            correctIndex={0}
+            explanation="RHR: Fingers right (v), curl into page (B), thumb points UP. Positive charge → F is UP."
+          />
+
+          <h3 className="content__h3">Key Insight</h3>
+          <div className="big-insight">
+            <div className="big-insight__main">Magnetic forces do <span className="big-insight__em">NO WORK</span></div>
+            <p>F ⊥ v always — the force is perpendicular to motion.</p>
+            <div className="big-insight__compare">
+              <div className="big-insight__box big-insight__box--yes">
+                <div className="big-insight__label">CHANGES</div>
+                Direction of velocity
+              </div>
+              <div className="big-insight__box big-insight__box--no">
+                <div className="big-insight__label">DOESN'T CHANGE</div>
+                Speed · Kinetic energy
+              </div>
+            </div>
+          </div>
+
+          <h3 className="content__h3">Cyclotron Motion</h3>
+          <CyclotronDiagram />
+          <p>Fill in the radius and cyclotron frequency:</p>
+          <div className="two-eq">
+            <Eq>r = <Blank answer="mv" width={50}/> / (<Blank answer="qB" width={50}/>)</Eq>
+            <Eq>f = <Blank answer="qB" width={50}/> / (2π · <Blank answer="m" width={40}/>)</Eq>
+          </div>
+          <MC
+            question="If the speed v doubles, what happens to the cyclotron frequency f?"
+            options={["Doubles", "Halves", "Unchanged", "Quadruples"]}
+            correctIndex={2}
+            explanation="f = qB/(2πm) — frequency is independent of speed. That's why cyclotrons work."
+          />
+        </div>
+
+        {/* ═══════════════ SECTION 4: CURRENTS → FIELDS ═══════════════ */}
+        <SectionHeader id="fields" number="04" title="Currents Creating Fields" subtitle="Loops · solenoids · Ampère's law" color="teal" />
+
+        <div className="content">
+          <h3 className="content__h3">Field at the Center of a Current Loop</h3>
+          <Eq big>B = <Blank answer="μ₀" width={50}/> · <Blank answer="NI" width={60}/> / (2 · <Blank answer="R" width={40}/>)</Eq>
+          <Reveal label="Show Answer">
+            <Eq color="success">B = μ₀NI / (2R)</Eq>
+            <p><strong>N</strong> = number of turns, <strong>R</strong> = radius of the loop (m).</p>
+          </Reveal>
+
+          <h3 className="content__h3">Field Inside a Solenoid</h3>
+          <Eq big>B = <Blank answer="μ₀" width={50}/> · <Blank answer="n" width={40}/> · <Blank answer="I" width={40}/></Eq>
+          <Reveal label="Show Answer">
+            <Eq color="success">B = μ₀nI</Eq>
+            <p><strong>n</strong> = turns per unit length (N/L). <strong>Diameter doesn't matter</strong> for a long, tightly-wound solenoid — only n and I.</p>
+          </Reveal>
+
+          <h3 className="content__h3">Ampère's Law</h3>
+          <Eq big>∮ B · dℓ = <Blank answer="μ₀" width={50}/> · <Blank answer="I_enc" width={80}/></Eq>
+          <Reveal label="When to Use It">
+            <Card accent="primary">
+              <p>Use Ampère's law when there's <strong>enough symmetry</strong> that B is constant along the Amperian loop you choose.</p>
+              <p style={{fontStyle:"italic", color:"#64748B"}}>Good candidates: long straight wires, solenoids, toroids, coaxial cables.</p>
+            </Card>
+          </Reveal>
+        </div>
+
+        {/* ═══════════════ SECTION 5: FORCES & APPLICATIONS ═══════════════ */}
+        <SectionHeader id="forces" number="05" title="Forces & Applications" subtitle="Force on wires · parallel wires · torque · motors" color="accent" />
+
+        <div className="content">
+          <h3 className="content__h3">Force on a Current-Carrying Wire</h3>
+          <Eq big>F = <Blank answer="I" width={40}/> · <Blank answer="L" width={40}/> · <Blank answer="B" width={40}/> · sin <Blank answer="θ" width={40}/></Eq>
+          <Reveal><Eq color="success">F = ILB sin θ</Eq></Reveal>
+
+          <h3 className="content__h3">Parallel Wires</h3>
+          <div className="sign-grid">
+            <Card title="SAME DIRECTION" accent="success"><p style={{fontSize:22, textAlign:"center", fontWeight:700}}>→ ATTRACT</p></Card>
+            <Card title="OPPOSITE DIRECTION" accent="accent"><p style={{fontSize:22, textAlign:"center", fontWeight:700}}>→ REPEL</p></Card>
+          </div>
+          <Insight>Use RHR #1 to find B from wire 1 at wire 2, then RHR #2 for the force on wire 2's current.</Insight>
+
+          <h3 className="content__h3">Torque on a Current Loop</h3>
+          <Eq big>τ = μB sin θ</Eq>
+          <p>where <strong>μ = NIA</strong> is the magnetic moment.</p>
+          <Reveal label="Connection to Motors">
+            <Card accent="accent">
+              <p>A rotating current loop in a uniform B field experiences torque toward alignment. A <strong>commutator</strong> reverses the current every half-turn, keeping the torque pushing the same rotational direction.</p>
+              <p>That's how electrical energy → mechanical rotation.</p>
+            </Card>
+          </Reveal>
+        </div>
+
+        {/* ═══════════════ SECTION 6: INDUCTION PREVIEW ═══════════════ */}
+        <SectionHeader id="induction" number="06" title="Induction · Preview" subtitle="Flux and Faraday's law — the core ideas" color="gold" />
+
+        <div className="content">
+          <h3 className="content__h3">Magnetic Flux</h3>
+          <Eq big>Φ = <Blank answer="B" width={40}/> · <Blank answer="A" width={40}/> · cos <Blank answer="θ" width={40}/></Eq>
+          <Reveal><Eq color="success">Φ = BA cos θ</Eq><p>θ is the angle between B and the area normal n̂.</p></Reveal>
+
+          <h3 className="content__h3">Faraday's Law</h3>
+          <Eq big>ℰ = − <Blank answer="ΔΦ" width={60}/> / <Blank answer="Δt" width={50}/></Eq>
+          <Reveal>
+            <Eq color="success">ℰ = −ΔΦ/Δt</Eq>
+            <div className="big-insight" style={{marginTop:16}}>
+              <div className="big-insight__main">What matters: <span className="big-insight__em">CHANGE</span></div>
+              <p>A steady field through a loop induces nothing. Only a <em>changing</em> flux drives an EMF — and by Lenz's law, the induced current opposes the change.</p>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* ═══════════════ SECTION 7: EXAM MODE ═══════════════ */}
+        <SectionHeader id="exammode" number="07" title="Exam Mode" subtitle="Rapid-fire concept round + strategy" color="gold" />
+
+        <div className="content">
+          <h3 className="content__h3">Rapid-Fire Concept Round</h3>
+          <p style={{fontStyle:"italic", color:"#64748B", marginBottom:16}}>No calculator. No paper. Just physics intuition.</p>
+
+          <MC question="Two identical bulbs in series. One is unscrewed. What happens to the other?" options={["It gets brighter", "It stays the same", "It goes out", "It dims"]} correctIndex={2} explanation="Series circuit — removing one bulb breaks the circuit. No current flows." />
+          <MC question="Current flows EAST through a wire. What direction is B directly ABOVE the wire?" options={["North", "South", "East", "West"]} correctIndex={1} explanation="RHR #1: Thumb east, above the wire fingers point south." />
+          <MC question="A proton moves NORTH through B pointing UP. Direction of magnetic force?" options={["East", "West", "North", "Zero"]} correctIndex={3} explanation="v ∥ B → sin θ = 0 → F = qvB sin 0 = 0. No force when v is parallel to B." />
+          <MC question="Double the turns in a solenoid (same length, same current). How does B change?" options={["Doubles", "Halves", "Unchanged", "Quadruples"]} correctIndex={0} explanation="B = μ₀nI. Doubling N at same L doubles n, so B doubles." />
+          <MC question="Double the speed of a charged particle in a cyclotron. How does the period change?" options={["Doubles", "Halves", "Unchanged", "Quadruples"]} correctIndex={2} explanation="T = 2πm/(qB). Period is independent of speed." />
+
+          <h3 className="content__h3">Exam Strategy</h3>
+          <div className="strategy-grid">
+            {[
+              ["DRAW", "Sketch the circuit or field geometry before writing a single equation."],
+              ["IDENTIFY", "Which model? Ohm's law? Kirchhoff? F = qv×B? Faraday?"],
+              ["CHOOSE VARIABLES", "What's known? What's unknown? Assign symbols, check units."],
+              ["ESTIMATE", "Predict the magnitude and sign before solving."],
+              ["SOLVE", "Algebra. Keep units inline. Simplify symbolically, plug in last."],
+              ["CHECK DIRECTION", "Run RHR one more time. Does the sign match physical intuition?"],
+            ].map(([step, desc], i) => (
+              <div key={i} className="strategy-card">
+                <div className="strategy-card__num">{i + 1}</div>
+                <div><strong>{step}</strong><p>{desc}</p></div>
+              </div>
+            ))}
+          </div>
+
+          <div className="closer">
+            <div className="closer__text">If you can <em>explain</em> it, you can <em>solve</em> it.</div>
+            <div className="closer__sub">Good luck on Exam 2.</div>
+          </div>
+        </div>
+
+      </main>
+
+      <style>{`
+        /* ═══════ ROOT & RESET ═══════ */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        .app {
+          --navy: #0A1F3D;
+          --primary: #065A82;
+          --teal: #1C7293;
+          --accent: #E76F51;
+          --accent-light: #FBE6DE;
+          --gold: #E9B44C;
+          --gold-light: #FDF4D9;
+          --success: #2A9D8F;
+          --success-light: #E1F3EF;
+          --red: #E63946;
+          --ink: #0F172A;
+          --ink2: #334155;
+          --muted: #64748B;
+          --rule: #E2E8F0;
+          --bg: #F8FAFB;
+          --card-bg: #FFFFFF;
+          --f-display: "Georgia", "Crimson Pro", serif;
+          --f-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+          font-family: var(--f-body);
+          color: var(--ink);
+          background: var(--bg);
+          min-height: 100vh;
+        }
+
+        /* ═══════ TOPBAR ═══════ */
+        .topbar {
+          position: sticky; top: 0; z-index: 100;
+          display: flex; align-items: center; gap: 12px;
+          height: 54px; padding: 0 16px;
+          background: var(--navy);
+          color: white;
+          box-shadow: 0 2px 12px rgba(10,31,61,0.15);
+        }
+        .topbar__menu {
+          background: none; border: none; color: white; cursor: pointer;
+          width: 36px; height: 36px; border-radius: 8px;
+          display: flex; align-items: center; justify-content: center;
+          transition: background 0.15s;
+        }
+        .topbar__menu:hover { background: rgba(255,255,255,0.12); }
+        .topbar__brand {
+          font-family: var(--f-display);
+          font-size: 17px; font-weight: 700; flex: 1;
+          letter-spacing: 0.2px;
+        }
+        .topbar__dot { color: var(--gold); margin: 0 6px; }
+
+        /* ═══════ PROGRESS BAR ═══════ */
+        .progress { width: 120px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
+        .progress__bar { height: 100%; background: var(--gold); border-radius: 4px; transition: width 0.4s ease; }
+
+        /* ═══════ SIDEBAR ═══════ */
+        .sidebar {
+          position: fixed; top: 54px; left: 0; bottom: 0;
+          width: 280px; background: var(--card-bg);
+          border-right: 1px solid var(--rule);
+          transform: translateX(-100%);
+          transition: transform 0.25s ease;
+          z-index: 90; overflow-y: auto;
+          display: flex; flex-direction: column;
+        }
+        .sidebar--open { transform: translateX(0); }
+        .sidebar-backdrop {
+          position: fixed; inset: 54px 0 0 0;
+          background: rgba(10,31,61,0.35);
+          backdrop-filter: blur(2px);
+          z-index: 85;
+        }
+        .sidebar__head {
+          padding: 24px 20px 20px;
+          border-bottom: 1px solid var(--rule);
+        }
+        .sidebar__eyebrow {
+          font-size: 10px; font-weight: 700;
+          letter-spacing: 2px; text-transform: uppercase;
+          color: var(--gold); margin-bottom: 6px;
+        }
+        .sidebar__title {
+          font-family: var(--f-display);
+          font-size: 24px; font-weight: 700;
+          line-height: 1.1; margin-bottom: 4px;
+        }
+        .sidebar__sub { font-size: 13px; color: var(--accent); font-style: italic; }
+        .sidebar__list { list-style: none; padding: 12px 10px; flex: 1; }
+        .sidebar__link {
+          display: flex; align-items: center; gap: 10px;
+          padding: 10px 12px; margin-bottom: 3px;
+          border-radius: 8px; text-decoration: none;
+          font-size: 14px; color: var(--ink2);
+          border-left: 3px solid transparent;
+          transition: all 0.12s;
+        }
+        .sidebar__link:hover { background: var(--bg); color: var(--ink); }
+        .sidebar__link--active {
+          background: var(--navy); color: white;
+          border-left-color: var(--accent);
+        }
+        .sidebar__dot {
+          width: 7px; height: 7px; border-radius: 50%;
+          background: var(--primary); flex-shrink: 0;
+        }
+        .sidebar__link--active .sidebar__dot { background: var(--gold); }
+        .sidebar__foot {
+          padding: 14px 20px;
+          border-top: 1px solid var(--rule);
+          font-size: 12px; color: var(--muted);
+        }
+
+        /* ═══════ MAIN CONTENT ═══════ */
+        .main {
+          max-width: 820px;
+          margin: 0 auto;
+          padding: 0 20px 80px;
+        }
+
+        /* ═══════ SECTION HEADER ═══════ */
+        .sec-header {
+          margin: 56px 0 32px;
+          padding: 40px 32px;
+          border-radius: 16px;
+          position: relative;
+          overflow: hidden;
+          background: var(--navy);
+          color: white;
+        }
+        .sec-header::before {
+          content: '';
+          position: absolute; left: 0; top: 0; bottom: 0;
+          width: 5px;
+        }
+        .sec-header--primary::before { background: var(--primary); }
+        .sec-header--gold::before { background: var(--gold); }
+        .sec-header--accent::before { background: var(--accent); }
+        .sec-header--teal::before { background: var(--teal); }
+        .sec-header--red::before { background: var(--red); }
+        .sec-header__num {
+          font-size: 13px; font-weight: 700;
+          letter-spacing: 3px; opacity: 0.5;
+          margin-bottom: 8px; display: block;
+        }
+        .sec-header__title {
+          font-family: var(--f-display);
+          font-size: clamp(26px, 5vw, 36px);
+          font-weight: 700; line-height: 1.15;
+          margin: 0;
+        }
+        .sec-header__sub {
+          margin-top: 8px; font-size: 15px;
+          color: rgba(255,255,255,0.65); font-style: italic;
+        }
+
+        /* ═══════ CONTENT AREA ═══════ */
+        .content { padding: 0 4px; }
+        .content p { line-height: 1.65; margin-bottom: 12px; color: var(--ink2); }
+        .content__h3 {
+          font-family: var(--f-display);
+          font-size: 22px; font-weight: 700;
+          color: var(--ink); margin: 36px 0 14px;
+          padding-bottom: 8px;
+          border-bottom: 2px solid var(--rule);
+        }
+
+        /* ═══════ LAYERS GRID ═══════ */
+        .layers { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 16px 0; }
+
+        /* ═══════ CARD ═══════ */
+        .card {
+          background: var(--card-bg);
+          border: 1px solid var(--rule);
+          border-radius: 12px;
+          padding: 20px;
+          position: relative;
+          overflow: hidden;
+        }
+        .card::before {
+          content: ''; position: absolute;
+          left: 0; top: 0; bottom: 0; width: 4px;
+        }
+        .card--primary::before { background: var(--primary); }
+        .card--teal::before { background: var(--teal); }
+        .card--accent::before { background: var(--accent); }
+        .card--success::before { background: var(--success); }
+        .card--gold::before { background: var(--gold); }
+        .card__title {
+          font-size: 11px; font-weight: 700;
+          letter-spacing: 2px; text-transform: uppercase;
+          color: var(--muted); margin-bottom: 12px;
+        }
+        .card--primary .card__title { color: var(--primary); }
+        .card--teal .card__title { color: var(--teal); }
+        .card--accent .card__title { color: var(--accent); }
+        .card--success .card__title { color: var(--success); }
+        .card__body { font-size: 14px; line-height: 1.6; }
+        .card__body p { margin-bottom: 8px; }
+        .card__body ol { padding-left: 20px; }
+        .card__body li { margin-bottom: 6px; }
+
+        /* ═══════ EQUATION ═══════ */
+        .eq {
+          font-family: var(--f-display);
+          font-size: 22px; font-weight: 700;
+          font-style: italic;
+          color: var(--primary);
+          padding: 14px 20px;
+          background: var(--bg);
+          border: 1px solid var(--rule);
+          border-radius: 10px;
+          text-align: center;
+          margin: 12px 0;
+          line-height: 1.5;
+          display: flex; align-items: center; justify-content: center;
+          flex-wrap: wrap; gap: 4px;
+        }
+        .eq--big { font-size: clamp(24px, 4.5vw, 34px); padding: 20px 24px; }
+        .eq--teal { color: var(--teal); }
+        .eq--accent { color: var(--accent); }
+        .eq--success { color: var(--success); border-color: var(--success); background: var(--success-light); }
+
+        /* ═══════ FILL-IN BLANK ═══════ */
+        .blank-wrap { display: inline-flex; align-items: center; gap: 4px; position: relative; }
+        .blank {
+          font-family: var(--f-display);
+          font-size: inherit; font-weight: 700;
+          text-align: center;
+          border: none; border-bottom: 2.5px dashed var(--accent);
+          background: transparent;
+          color: var(--ink); padding: 2px 4px;
+          outline: none; transition: border-color 0.15s;
+        }
+        .blank:focus { border-color: var(--primary); border-style: solid; }
+        .blank--correct { border-color: var(--success); border-style: solid; color: var(--success); }
+        .blank--wrong { border-color: var(--red); border-style: solid; color: var(--red); }
+        .blank__check {
+          width: 24px; height: 24px; border-radius: 50%;
+          background: var(--primary); color: white;
+          font-size: 13px; border: none; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0; transition: background 0.15s;
+        }
+        .blank__check:hover { background: var(--navy); }
+        .blank__answer {
+          position: absolute; top: 100%; left: 0;
+          font-size: 13px; color: var(--success);
+          font-style: italic; white-space: nowrap;
+          font-weight: 600; margin-top: 2px;
+        }
+
+        /* ═══════ REVEAL ═══════ */
+        .reveal {
+          margin: 16px 0;
+          border: 1px solid var(--rule);
+          border-radius: 10px;
+          overflow: hidden;
+          background: var(--card-bg);
+        }
+        .reveal__btn {
+          display: flex; align-items: center; gap: 8px;
+          width: 100%; padding: 12px 16px;
+          font-size: 14px; font-weight: 600;
+          color: var(--primary); cursor: pointer;
+          border: none; background: none;
+          text-align: left;
+          transition: background 0.12s;
+        }
+        .reveal__btn:hover { background: var(--bg); }
+        .reveal__icon { font-size: 12px; flex-shrink: 0; }
+        .reveal__body { padding: 0 16px 16px; }
+        .reveal--open { border-color: var(--primary); }
+
+        /* ═══════ MULTIPLE CHOICE ═══════ */
+        .mc { margin: 20px 0; }
+        .mc__q {
+          font-family: var(--f-display);
+          font-size: 16px; font-weight: 600;
+          color: var(--ink); margin-bottom: 12px;
+          line-height: 1.4;
+        }
+        .mc__opts { display: flex; flex-direction: column; gap: 8px; }
+        .mc__opt {
+          display: flex; align-items: center; gap: 10px;
+          padding: 10px 14px;
+          border: 1.5px solid var(--rule);
+          border-radius: 8px;
+          background: var(--card-bg);
+          font-size: 14px; color: var(--ink2);
+          cursor: pointer; text-align: left;
+          transition: all 0.12s;
+        }
+        .mc__opt:hover:not(:disabled) { border-color: var(--primary); background: #F0F7FB; }
+        .mc__letter {
+          width: 26px; height: 26px;
+          border-radius: 50%; background: var(--bg);
+          display: flex; align-items: center; justify-content: center;
+          font-weight: 700; font-size: 12px; color: var(--muted);
+          flex-shrink: 0; border: 1px solid var(--rule);
+        }
+        .mc__opt--correct { border-color: var(--success); background: var(--success-light); }
+        .mc__opt--correct .mc__letter { background: var(--success); color: white; border-color: var(--success); }
+        .mc__opt--wrong { border-color: var(--red); background: #FDE8EA; }
+        .mc__opt--wrong .mc__letter { background: var(--red); color: white; border-color: var(--red); }
+        .mc__opt--dim { opacity: 0.45; }
+        .mc__feedback {
+          margin-top: 10px; padding: 10px 14px;
+          border-radius: 8px; font-size: 14px;
+          font-weight: 600; line-height: 1.5;
+        }
+        .mc__feedback--right { background: var(--success-light); color: #166058; }
+        .mc__feedback--wrong { background: #FDE8EA; color: #9B1B2A; }
+        .mc__explain { font-weight: 400; font-style: italic; }
+
+        /* ═══════ TRAP / INSIGHT ═══════ */
+        .trap {
+          display: flex; gap: 10px; align-items: flex-start;
+          padding: 14px 16px; margin: 14px 0;
+          background: var(--accent-light);
+          border-left: 4px solid var(--accent);
+          border-radius: 0 8px 8px 0;
+          font-size: 14px; line-height: 1.5;
+        }
+        .trap__icon { font-size: 18px; flex-shrink: 0; }
+        .trap p { margin-bottom: 6px; }
+        .insight {
+          display: flex; gap: 10px; align-items: flex-start;
+          padding: 14px 16px; margin: 14px 0;
+          background: var(--gold-light);
+          border-left: 4px solid var(--gold);
+          border-radius: 0 8px 8px 0;
+          font-family: var(--f-display);
+          font-size: 16px; font-weight: 600;
+          font-style: italic; color: var(--ink);
+          line-height: 1.45;
+        }
+        .insight__flash { font-size: 18px; flex-shrink: 0; }
+
+        /* ═══════ VARIABLE GRID ═══════ */
+        .var-grid {
+          display: grid; grid-template-columns: 1fr 1fr;
+          gap: 8px; margin: 12px 0;
+          font-size: 14px; line-height: 1.5;
+        }
+        .var-sym {
+          font-family: var(--f-display);
+          font-style: italic; font-size: 18px;
+          color: var(--primary); margin-right: 6px;
+        }
+
+        /* ═══════ POWER GRID ═══════ */
+        .power-grid { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+        .power-row { display: flex; align-items: center; gap: 14px; }
+        .power-label { font-size: 13px; font-weight: 600; color: var(--muted); width: 120px; flex-shrink: 0; }
+        .power-row .eq { flex: 1; margin: 0; }
+
+        /* ═══════ CIRCUIT COMPARE ═══════ */
+        .circuit-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+        @media (max-width: 600px) { .circuit-compare { grid-template-columns: 1fr; } }
+
+        /* ═══════ SIGN GRID ═══════ */
+        .sign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+        @media (max-width: 600px) { .sign-grid { grid-template-columns: 1fr; } }
+
+        /* ═══════ KIRCHHOFF STEPS ═══════ */
+        .kirch-steps {
+          padding-left: 24px; margin: 12px 0;
+          font-family: var(--f-display);
+          font-size: 17px; line-height: 2;
+        }
+        .kirch-steps li { margin-bottom: 6px; }
+
+        /* ═══════ TWO IDEAS ═══════ */
+        .two-ideas { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+        .idea {
+          padding: 20px 24px;
+          border-radius: 12px;
+          font-family: var(--f-display);
+          font-size: clamp(18px, 3.5vw, 24px);
+          font-weight: 700; font-style: italic;
+          text-align: center;
+        }
+        .idea--dark { background: var(--navy); color: white; }
+        .idea--accent { background: var(--accent); color: white; }
+
+        /* ═══════ BIG INSIGHT ═══════ */
+        .big-insight {
+          background: var(--navy);
+          color: white; padding: 32px;
+          border-radius: 14px; margin: 20px 0;
+          text-align: center;
+        }
+        .big-insight__main {
+          font-family: var(--f-display);
+          font-size: clamp(18px, 4vw, 28px);
+          font-weight: 700;
+          line-height: 1.3; margin-bottom: 8px;
+        }
+        .big-insight__em {
+          color: var(--accent);
+          font-size: 1.4em;
+          letter-spacing: 3px;
+        }
+        .big-insight p { color: rgba(255,255,255,0.7); font-size: 15px; }
+        .big-insight__compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+        .big-insight__box { padding: 16px; border-radius: 10px; font-family: var(--f-display); font-size: 16px; font-weight: 600; }
+        .big-insight__box--yes { background: rgba(202,220,252,0.2); color: #CADCFC; }
+        .big-insight__box--no { background: rgba(231,111,81,0.25); color: #FBD0C4; }
+        .big-insight__label { font-size: 10px; letter-spacing: 2px; margin-bottom: 6px; opacity: 0.65; font-weight: 700; }
+
+        /* ═══════ TWO-EQ ROW ═══════ */
+        .two-eq { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+        @media (max-width: 600px) { .two-eq { grid-template-columns: 1fr; } }
+
+        /* ═══════ DIAGRAM SVG ═══════ */
+        .diagram {
+          width: 100%; max-width: 360px;
+          margin: 12px auto; display: block;
+        }
+
+        /* ═══════ CHECKLIST ═══════ */
+        .checklist {
+          padding-left: 24px; margin: 12px 0;
+          line-height: 1.7; font-size: 15px;
+        }
+        .checklist li { margin-bottom: 8px; }
+        .checklist strong { color: var(--ink); }
+
+        /* ═══════ STRATEGY ═══════ */
+        .strategy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+        @media (max-width: 600px) { .strategy-grid { grid-template-columns: 1fr; } }
+        .strategy-card {
+          display: flex; gap: 12px; align-items: flex-start;
+          padding: 16px; background: var(--card-bg);
+          border: 1px solid var(--rule); border-radius: 10px;
+          border-left: 4px solid var(--primary);
+        }
+        .strategy-card__num {
+          width: 30px; height: 30px; border-radius: 50%;
+          background: var(--primary); color: white;
+          font-family: var(--f-display); font-weight: 700;
+          font-size: 15px;
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0;
+        }
+        .strategy-card strong {
+          font-size: 12px; letter-spacing: 1.5px;
+          text-transform: uppercase; color: var(--primary);
+        }
+        .strategy-card p { font-size: 13px; color: var(--ink2); margin: 4px 0 0; line-height: 1.4; }
+
+        /* ═══════ CLOSER ═══════ */
+        .closer {
+          margin: 48px 0 24px; padding: 48px 32px;
+          background: var(--navy); color: white;
+          border-radius: 16px; text-align: center;
+        }
+        .closer__text {
+          font-family: var(--f-display);
+          font-size: clamp(22px, 5vw, 38px);
+          font-weight: 700; font-style: italic;
+          line-height: 1.3;
+        }
+        .closer__text em { color: var(--accent); font-style: italic; }
+        .closer__sub { margin-top: 14px; font-size: 16px; color: var(--gold); font-style: italic; }
+
+        /* ═══════ RESPONSIVE ═══════ */
+        @media (max-width: 600px) {
+          .var-grid { grid-template-columns: 1fr; }
+          .layers { grid-template-columns: 1fr; }
+          .big-insight__compare { grid-template-columns: 1fr; }
+          .main { padding: 0 12px 60px; }
+          .sec-header { padding: 28px 20px; margin: 36px 0 20px; }
+          .power-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+          .power-label { width: auto; }
+        }
+      `}</style>
+    </div>
+  );
+}
