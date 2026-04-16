@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exam 2 Review | Circuits, Resistance, Magnetism</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,0.75); }
+    .topic-card.active { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(15,23,42,.12); }
+    .question-card details[open] summary { margin-bottom: 0.75rem; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <header class="bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-800 text-white">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+        <div class="max-w-3xl">
+          <p class="uppercase tracking-[0.3em] text-cyan-200 text-sm font-semibold mb-3">College Physics II Review Hub</p>
+          <h1 class="text-4xl md:text-5xl font-black leading-tight">Exam 2 Review: Resistance, DC Circuits, and Magnetism</h1>
+          <p class="mt-5 text-lg text-slate-200 leading-relaxed">
+            A GitHub-ready study site built around the review bank, your recent circuit work, and the magnetism content we have been developing.
+            Use this page to review concepts, practice equations, check reasoning, and work through mixed exam-style problems.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3 text-sm">
+            <span class="px-4 py-2 rounded-full bg-white/10 border border-white/20">Single-file HTML</span>
+            <span class="px-4 py-2 rounded-full bg-white/10 border border-white/20">MathJax Ready</span>
+            <span class="px-4 py-2 rounded-full bg-white/10 border border-white/20">GitHub Pages Friendly</span>
+            <span class="px-4 py-2 rounded-full bg-white/10 border border-white/20">College Level Review</span>
+          </div>
+        </div>
+        <div class="glass rounded-3xl p-6 text-slate-900 shadow-2xl lg:w-[360px]">
+          <h2 class="text-xl font-bold mb-4">How to Use This Site</h2>
+          <ol class="space-y-3 text-sm leading-relaxed list-decimal list-inside">
+            <li>Start with the formula and concept section.</li>
+            <li>Choose a topic tab and complete the practice set.</li>
+            <li>Reveal hints first, then solutions.</li>
+            <li>Finish with the mixed challenge round.</li>
+            <li>Use the self-check tracker before the exam.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap gap-2 text-sm font-semibold">
+      <a href="#overview" class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200">Overview</a>
+      <a href="#formula-sheet" class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200">Formula Sheet</a>
+      <a href="#topic-review" class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200">Topic Review</a>
+      <a href="#practice" class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200">Practice Bank</a>
+      <a href="#mixed-challenge" class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200">Mixed Challenge</a>
+      <a href="#checklist" class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200">Exam Checklist</a>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-6 py-10 space-y-16">
+    <section id="overview" class="grid lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 bg-white rounded-3xl shadow-sm border border-slate-200 p-8">
+        <h2 class="text-3xl font-black mb-4">What this exam review covers</h2>
+        <p class="text-slate-600 leading-relaxed mb-6">
+          This review is centered on three major units: microscopic current and resistance, resistor networks and Kirchhoff analysis,
+          and magnetic fields and magnetic forces. The goal is not just answer recognition. Students should be able to determine the correct model,
+          choose an equation, apply sign conventions, and explain the physical reasoning.
+        </p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="rounded-2xl bg-blue-50 p-5 border border-blue-100">
+            <h3 class="font-bold text-blue-900 text-lg mb-2">Resistance + Current</h3>
+            <p class="text-sm text-blue-950/80">Drift velocity, resistivity, current density, electric field in a wire, power, temperature effects.</p>
+          </div>
+          <div class="rounded-2xl bg-emerald-50 p-5 border border-emerald-100">
+            <h3 class="font-bold text-emerald-900 text-lg mb-2">DC Circuits</h3>
+            <p class="text-sm text-emerald-950/80">Series/parallel reduction, internal resistance, equivalent resistance, Kirchhoff loop and junction rules.</p>
+          </div>
+          <div class="rounded-2xl bg-fuchsia-50 p-5 border border-fuchsia-100">
+            <h3 class="font-bold text-fuchsia-900 text-lg mb-2">Magnetism</h3>
+            <p class="text-sm text-fuchsia-950/80">Right-hand rules, forces on charges and currents, long-wire fields, Ampère's law, solenoids, induction.</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-slate-900 text-white rounded-3xl p-8 shadow-sm">
+        <h3 class="text-2xl font-black mb-4">Target Skills</h3>
+        <ul class="space-y-3 text-sm leading-relaxed text-slate-200 list-disc pl-5">
+          <li>Translate a physical situation into a circuit or field model.</li>
+          <li>Predict directions before calculating magnitudes.</li>
+          <li>Use proportional reasoning for ranking questions.</li>
+          <li>Work symbolically before substituting numbers.</li>
+          <li>Check units at every stage.</li>
+          <li>Distinguish between field, force, current, and potential difference.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="formula-sheet" class="space-y-6">
+      <div>
+        <h2 class="text-3xl font-black mb-2">Core formula sheet</h2>
+        <p class="text-slate-600">These are the equations students should know how to use, interpret, and connect conceptually.</p>
+      </div>
+      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-lg mb-3">Current and Drift</h3>
+          <div class="space-y-3 text-sm">
+            <p>$I = \dfrac{\Delta q}{\Delta t}$</p>
+            <p>$I = nqAv_d$</p>
+            <p>$J = \dfrac{I}{A} = nqv_d$</p>
+            <p class="text-slate-600">Narrower wire means larger drift speed for the same current.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-lg mb-3">Resistance and Resistivity</h3>
+          <div class="space-y-3 text-sm">
+            <p>$R = \rho \dfrac{L}{A}$</p>
+            <p>$\rho(T) = \rho_0[1+\alpha(T-T_0)]$</p>
+            <p>$A = \pi r^2$</p>
+            <p class="text-slate-600">Resistivity is a material property. Resistance depends on both material and geometry.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-lg mb-3">Microscopic Ohm's Law</h3>
+          <div class="space-y-3 text-sm">
+            <p>$V = IR$</p>
+            <p>$E = \rho J$</p>
+            <p>$\Delta V = EL$</p>
+            <p class="text-slate-600">Inside a resistor, the electric field drives the current density.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-lg mb-3">Power</h3>
+          <div class="space-y-3 text-sm">
+            <p>$P = IV$</p>
+            <p>$P = I^2R$</p>
+            <p>$P = \dfrac{V^2}{R}$</p>
+            <p>$E_{\text{thermal}} = Pt$</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-lg mb-3">Equivalent Resistance</h3>
+          <div class="space-y-3 text-sm">
+            <p>Series: $R_{eq}=R_1+R_2+\cdots$</p>
+            <p>Parallel: $\dfrac{1}{R_{eq}}=\dfrac{1}{R_1}+\dfrac{1}{R_2}+\cdots$</p>
+            <p class="text-slate-600">Series → same current. Parallel → same voltage.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-lg mb-3">Kirchhoff Rules</h3>
+          <div class="space-y-3 text-sm">
+            <p>Junction: $\sum I_{in}=\sum I_{out}$</p>
+            <p>Loop: $\sum \Delta V = 0$</p>
+            <p class="text-slate-600">Be consistent with current directions and battery/resistor signs.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-lg mb-3">Magnetic Force</h3>
+          <div class="space-y-3 text-sm">
+            <p>$\vec{F}=q\vec{v}\times\vec{B}$</p>
+            <p>$F=qvB\sin\theta$</p>
+            <p>$\vec{F}=I\vec{L}\times\vec{B}$</p>
+            <p class="text-slate-600">A negative charge reverses the right-hand-rule result.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-lg mb-3">Fields from Currents</h3>
+          <div class="space-y-3 text-sm">
+            <p>$B=\dfrac{\mu_0 I}{2\pi r}$</p>
+            <p>$B_{solenoid}=\mu_0 n I$</p>
+            <p>$\oint \vec{B}\cdot d\vec{\ell}=\mu_0 I_{enc}$</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-lg mb-3">Induction</h3>
+          <div class="space-y-3 text-sm">
+            <p>$\Phi_B = BA\cos\theta$</p>
+            <p>$\mathcal{E}=\left|\dfrac{\Delta \Phi_B}{\Delta t}\right|$</p>
+            <p>$\mathcal{E}=N\left|\dfrac{\Delta \Phi_B}{\Delta t}\right|$</p>
+            <p class="text-slate-600">Lenz's law determines the sign and direction.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="topic-review" class="space-y-6">
+      <div>
+        <h2 class="text-3xl font-black mb-2">Topic review</h2>
+        <p class="text-slate-600">Click a topic to switch the focused review panel.</p>
+      </div>
+      <div class="grid lg:grid-cols-[280px_1fr] gap-6">
+        <div class="space-y-3">
+          <button class="topic-card active w-full text-left bg-white border border-slate-200 rounded-2xl p-4 shadow-sm" data-topic="resistance">Resistance + Current</button>
+          <button class="topic-card w-full text-left bg-white border border-slate-200 rounded-2xl p-4 shadow-sm" data-topic="circuits">DC Circuits + Kirchhoff</button>
+          <button class="topic-card w-full text-left bg-white border border-slate-200 rounded-2xl p-4 shadow-sm" data-topic="magnetism">Magnetism + Induction</button>
+        </div>
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+          <div class="topic-panel" id="topic-resistance">
+            <h3 class="text-2xl font-black mb-4">Resistance + Current</h3>
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+              <div>
+                <h4 class="font-bold mb-2">Big ideas</h4>
+                <ul class="space-y-2 list-disc pl-5 text-slate-700">
+                  <li>For steady current, the same current passes through every cross section of a single series path.</li>
+                  <li>Drift speed is typically tiny even though the electric field signal is established quickly.</li>
+                  <li>Changing length or area changes resistance geometrically; changing material changes resistivity.</li>
+                  <li>Microscopic and macroscopic Ohm's law tell the same story from different scales.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-bold mb-2">Common mistakes</h4>
+                <ul class="space-y-2 list-disc pl-5 text-slate-700">
+                  <li>Thinking electrons move near the speed of light in ordinary wires.</li>
+                  <li>Confusing resistance with resistivity.</li>
+                  <li>Forgetting area scales with radius squared.</li>
+                  <li>Using $P=V/R$ instead of one of the correct power relations.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="topic-panel hidden" id="topic-circuits">
+            <h3 class="text-2xl font-black mb-4">DC Circuits + Kirchhoff</h3>
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+              <div>
+                <h4 class="font-bold mb-2">Big ideas</h4>
+                <ul class="space-y-2 list-disc pl-5 text-slate-700">
+                  <li>Series branches share current; parallel branches share potential difference.</li>
+                  <li>Equivalent resistance simplifies structure before detailed current calculations.</li>
+                  <li>Kirchhoff's junction rule is charge conservation.</li>
+                  <li>Kirchhoff's loop rule is energy conservation.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-bold mb-2">Common mistakes</h4>
+                <ul class="space-y-2 list-disc pl-5 text-slate-700">
+                  <li>Mixing up resistor drops and battery rises when tracing a loop.</li>
+                  <li>Combining resistors that are not truly in simple series or parallel.</li>
+                  <li>Assuming current splits equally even when branch resistances differ.</li>
+                  <li>Ignoring internal resistance when bulb brightness changes after a switch closes.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="topic-panel hidden" id="topic-magnetism">
+            <h3 class="text-2xl font-black mb-4">Magnetism + Induction</h3>
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+              <div>
+                <h4 class="font-bold mb-2">Big ideas</h4>
+                <ul class="space-y-2 list-disc pl-5 text-slate-700">
+                  <li>Magnetic fields wrap around currents according to a right-hand rule.</li>
+                  <li>Magnetic force is always perpendicular to both velocity and magnetic field.</li>
+                  <li>A changing magnetic flux induces an emf.</li>
+                  <li>Lenz's law means induced effects oppose the change in flux, not the original field itself.</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-bold mb-2">Common mistakes</h4>
+                <ul class="space-y-2 list-disc pl-5 text-slate-700">
+                  <li>Forgetting to reverse direction for negative charges.</li>
+                  <li>Using $\sin\theta$ incorrectly for magnetic force or flux.</li>
+                  <li>Confusing field direction with force direction.</li>
+                  <li>Choosing induced current direction without first deciding whether flux is increasing or decreasing.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice" class="space-y-6">
+      <div>
+        <h2 class="text-3xl font-black mb-2">Practice bank</h2>
+        <p class="text-slate-600">Each problem includes a hint and an answer reveal. These are adapted into a cleaner study format from the exam bank.</p>
+      </div>
+
+      <div class="grid xl:grid-cols-3 gap-6">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
+          <h3 class="text-xl font-black mb-4 text-blue-900">Resistance + Current</h3>
+          <div class="space-y-4">
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">1. If a wire narrows while carrying the same steady current, what happens to drift speed in the narrow region?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-blue-700">Hint</summary><p>Use $I=nqAv_d$.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>It increases because the area decreases while current stays constant.</p></details>
+            </div>
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">2. A resistor keeps the same material and length, but its diameter triples. How does current change for the same applied voltage?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-blue-700">Hint</summary><p>$R \propto 1/A$ and area scales with diameter squared.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>Area becomes $9A$, resistance becomes $R/9$, so current becomes 9 times larger.</p></details>
+            </div>
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">3. A wire's length and diameter are both cut in half. What happens to resistance?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-blue-700">Hint</summary><p>$R=\rho L/A$ and $A\propto d^2$.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>Area becomes one fourth, length becomes one half, so $R' = \rho(L/2)/(A/4)=2R$.</p></details>
+            </div>
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">4. Why is resistivity not changed when a wire is shortened or reshaped?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-blue-700">Hint</summary><p>Ask whether resistivity is geometric or material-based.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>Resistivity is a material property, so it stays the same unless the material or temperature changes.</p></details>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
+          <h3 class="text-xl font-black mb-4 text-emerald-900">DC Circuits + Kirchhoff</h3>
+          <div class="space-y-4">
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">5. As more resistors are added in parallel across an ideal constant-voltage source, what happens to total source power?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-emerald-700">Hint</summary><p>Think about what happens to equivalent resistance.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>Equivalent resistance decreases, so total current increases and source power increases.</p></details>
+            </div>
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">6. Two wires of the same material and length are connected separately to the same voltage. One wire has twice the diameter. Which carries greater current?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-emerald-700">Hint</summary><p>Resistance depends on area.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>The thicker wire carries 4 times the current because its area is 4 times larger and its resistance is 4 times smaller.</p></details>
+            </div>
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">7. What is the key sign rule for a resistor when you move through it in the same direction as current?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-emerald-700">Hint</summary><p>Charges lose electric potential energy through resistors.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>You write a potential drop of $-IR$.</p></details>
+            </div>
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">8. Why can bulb brightness decrease when a new branch is added if the battery has internal resistance?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-emerald-700">Hint</summary><p>Consider terminal voltage when total current rises.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>The larger total current causes a bigger drop across the battery's internal resistance, lowering terminal voltage available to the bulbs.</p></details>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
+          <h3 class="text-xl font-black mb-4 text-fuchsia-900">Magnetism + Induction</h3>
+          <div class="space-y-4">
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">9. A vertical wire carries current downward. At a point east of the wire, what direction is the magnetic field?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-fuchsia-700">Hint</summary><p>Use the right-hand grip rule around the wire.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>Toward the south.</p></details>
+            </div>
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">10. An electron moves in the +x direction and feels a magnetic force in the -y direction. What is the magnetic field direction?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-fuchsia-700">Hint</summary><p>Work first with a positive charge, then reverse for the electron.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>The field points in the $-z$ direction.</p></details>
+            </div>
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">11. Does a larger magnetic flux automatically mean a larger induced emf?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-fuchsia-700">Hint</summary><p>Faraday's law depends on change, not just amount.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>No. Induced emf depends on the rate of change of flux, not simply the size of the flux.</p></details>
+            </div>
+            <div class="question-card border border-slate-200 rounded-2xl p-4">
+              <p class="font-semibold">12. A magnetic field out of the page is increasing through a loop. What is the induced current direction?</p>
+              <details class="mt-3 text-sm"><summary class="cursor-pointer font-semibold text-fuchsia-700">Hint</summary><p>The induced field must oppose the increase.</p></details>
+              <details class="mt-2 text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Answer</summary><p>Clockwise, so the loop creates a field into the page.</p></details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-slate-900 text-white rounded-3xl p-8 shadow-sm">
+      <h2 class="text-3xl font-black mb-5">Worked example structure</h2>
+      <div class="grid lg:grid-cols-3 gap-5 text-sm">
+        <div class="rounded-2xl bg-white/5 p-5 border border-white/10">
+          <h3 class="font-bold text-lg mb-2">1. Identify the model</h3>
+          <p>Is this microscopic current, resistor reduction, Kirchhoff analysis, magnetic force, or induction?</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 p-5 border border-white/10">
+          <h3 class="font-bold text-lg mb-2">2. Set up symbols first</h3>
+          <p>Write the governing equation before plugging in numbers. Add signs and directions clearly.</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 p-5 border border-white/10">
+          <h3 class="font-bold text-lg mb-2">3. Check reasonableness</h3>
+          <p>Ask whether the answer matches the physical trend: bigger area, smaller resistance; increasing flux, induced current opposes change.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="mixed-challenge" class="space-y-6">
+      <div>
+        <h2 class="text-3xl font-black mb-2">Mixed challenge round</h2>
+        <p class="text-slate-600">These are meant to feel closer to the exam. Try them without opening the hint first.</p>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <h3 class="text-xl font-black">Challenge A: Equivalent Resistance</h3>
+          <p class="text-sm text-slate-700">A 5.0-$\Omega$ resistor and a 9.0-$\Omega$ resistor are connected in parallel. That combination is connected in series with a 4.0-$\Omega$ resistor and a 6.0-V ideal battery. Find the current through each resistor.</p>
+          <details class="text-sm"><summary class="cursor-pointer font-semibold text-blue-700">Hint</summary><p>Reduce the parallel branch first, then find total current, then use the branch voltage to split currents.</p></details>
+          <details class="text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Solution outline</summary><p>$R_p=(1/5+1/9)^{-1}=3.21\,\Omega$. Then $R_{tot}=7.21\,\Omega$, so total current is about $0.83\,A$. The 4-$\Omega$ resistor carries $0.83\,A$. Parallel branch voltage is about $2.68\,V$, so the 5-$\Omega$ branch carries about $0.53\,A$ and the 9-$\Omega$ branch carries about $0.30\,A$.</p></details>
+        </div>
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <h3 class="text-xl font-black">Challenge B: Magnetic Force</h3>
+          <p class="text-sm text-slate-700">An electron moves at $8.0\times10^6\,m/s$ along the +x-axis into a field of 2.5 T making a 60° angle with the +x-axis in the xy-plane. Find the magnetic force magnitude and acceleration magnitude.</p>
+          <details class="text-sm"><summary class="cursor-pointer font-semibold text-fuchsia-700">Hint</summary><p>Use $F=qvB\sin\theta$, then $a=F/m$.</p></details>
+          <details class="text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Solution outline</summary><p>$F=(1.60\times10^{-19})(8.0\times10^6)(2.5)\sin60^\circ\approx2.8\times10^{-12}\,N$. Then $a=F/m_e\approx3.0\times10^{18}\,m/s^2$.</p></details>
+        </div>
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <h3 class="text-xl font-black">Challenge C: Solenoid Field</h3>
+          <p class="text-sm text-slate-700">A solenoid has 400 turns, length 0.40 m, and current 12 A. Find the field near its center.</p>
+          <details class="text-sm"><summary class="cursor-pointer font-semibold text-fuchsia-700">Hint</summary><p>$n=N/L$ and $B=\mu_0 nI$.</p></details>
+          <details class="text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Solution outline</summary><p>$n=400/0.40=1000\,m^{-1}$, so $B=(4\pi\times10^{-7})(1000)(12)\approx1.5\times10^{-2}\,T=15\,mT$.</p></details>
+        </div>
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <h3 class="text-xl font-black">Challenge D: Induced EMF</h3>
+          <p class="text-sm text-slate-700">A 60-turn circular coil of radius 6.0 cm is in a perpendicular magnetic field that increases from 0.20 T to 1.8 T in 0.20 s. Find the induced emf magnitude.</p>
+          <details class="text-sm"><summary class="cursor-pointer font-semibold text-fuchsia-700">Hint</summary><p>$\mathcal{E}=N A \dfrac{\Delta B}{\Delta t}$ for perpendicular field.</p></details>
+          <details class="text-sm"><summary class="cursor-pointer font-semibold text-slate-700">Solution outline</summary><p>$A=\pi(0.060)^2$, $\Delta B=1.6\,T$, so $\mathcal{E}\approx5.4\,V$.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section id="checklist" class="space-y-6">
+      <div>
+        <h2 class="text-3xl font-black mb-2">Self-check checklist</h2>
+        <p class="text-slate-600">Students can use this right before the exam. Progress saves locally on their device.</p>
+      </div>
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4" id="checklist-grid">
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="1" class="mt-1 scale-125"><span>I can explain the difference between current, drift speed, and current density.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="2" class="mt-1 scale-125"><span>I can use $R=\rho L/A$ correctly when geometry changes.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="3" class="mt-1 scale-125"><span>I can choose the correct power equation for the information given.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="4" class="mt-1 scale-125"><span>I can reduce series and parallel resistor networks.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="5" class="mt-1 scale-125"><span>I can write Kirchhoff loop equations with correct signs.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="6" class="mt-1 scale-125"><span>I can predict bulb brightness changes conceptually.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="7" class="mt-1 scale-125"><span>I can use right-hand rules for fields and forces.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="8" class="mt-1 scale-125"><span>I can calculate magnetic force on a moving charge or current-carrying wire.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="9" class="mt-1 scale-125"><span>I can use $B=\mu_0I/(2\pi r)$ and $B=\mu_0 nI$ appropriately.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="10" class="mt-1 scale-125"><span>I can determine induced current direction using Lenz's law.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="11" class="mt-1 scale-125"><span>I can calculate flux and induced emf.</span></label>
+          <label class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200"><input type="checkbox" data-check="12" class="mt-1 scale-125"><span>I can explain my reasoning, not just give a final answer.</span></label>
+        </div>
+        <div class="mt-6 flex flex-wrap items-center gap-4">
+          <button id="reset-progress" class="px-5 py-3 rounded-2xl bg-slate-900 text-white font-semibold hover:bg-slate-800">Reset Checklist</button>
+          <p id="progress-text" class="font-semibold text-slate-700">Progress: 0 / 12</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-8 text-sm text-slate-600 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <p>Exam 2 Review Hub • Resistance • DC Circuits • Magnetism</p>
+      <p>Built for GitHub Pages classroom use</p>
+    </div>
+  </footer>
+
+  <script>
+    const topicButtons = document.querySelectorAll('.topic-card');
+    const panels = {
+      resistance: document.getElementById('topic-resistance'),
+      circuits: document.getElementById('topic-circuits'),
+      magnetism: document.getElementById('topic-magnetism')
+    };
+
+    topicButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        topicButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        Object.values(panels).forEach(p => p.classList.add('hidden'));
+        panels[btn.dataset.topic].classList.remove('hidden');
+        if (window.MathJax?.typesetPromise) {
+          MathJax.typesetPromise();
+        }
+      });
+    });
+
+    const checks = document.querySelectorAll('input[type="checkbox"][data-check]');
+    const progressText = document.getElementById('progress-text');
+    const storageKey = 'exam2-review-checklist';
+
+    function updateProgress() {
+      let done = 0;
+      checks.forEach(c => { if (c.checked) done++; });
+      progressText.textContent = `Progress: ${done} / ${checks.length}`;
+      const state = {};
+      checks.forEach(c => state[c.dataset.check] = c.checked);
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    }
+
+    function loadProgress() {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      checks.forEach(c => {
+        c.checked = Boolean(saved[c.dataset.check]);
+      });
+      updateProgress();
+    }
+
+    checks.forEach(c => c.addEventListener('change', updateProgress));
+    document.getElementById('reset-progress').addEventListener('click', () => {
+      checks.forEach(c => c.checked = false);
+      updateProgress();
+    });
+
+    loadProgress();
+  </script>
+</body>
+</html>
