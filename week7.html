@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive guided notes for Electromagnetic Waves in calculus-based Physics II." />
+  <title>Electromagnetic Waves Notes | Physics II</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --surface: #ffffff;
+      --surface-2: #f1f5f9;
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #dbe2ea;
+      --primary: #0f766e;
+      --primary-2: #14b8a6;
+      --accent: #b45309;
+      --accent-soft: #ffedd5;
+      --danger: #b91c1c;
+      --blue-soft: #eff6ff;
+      --green-soft: #ecfdf5;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --max: 1180px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, monospace;
+      --sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      --serif: Cambria, Georgia, Times, serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      background: linear-gradient(180deg, #fbfcff 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 0;
+      background: var(--text);
+      color: #fff;
+      padding: .75rem 1rem;
+      z-index: 999;
+    }
+    .skip-link:focus { left: 1rem; top: 1rem; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.88);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: .8rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: var(--primary);
+      font-size: 1.08rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+      align-items: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .95rem;
+      padding: .35rem .55rem;
+      border-radius: 999px;
+    }
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      background: var(--surface-2);
+      color: var(--primary);
+      outline: none;
+    }
+
+    .hero {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 2.4rem 1rem 1.2rem;
+      display: grid;
+      grid-template-columns: 1.45fr .95fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+    .hero-card, .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card { padding: 2rem; }
+    .eyebrow {
+      display: inline-flex;
+      gap: .45rem;
+      align-items: center;
+      padding: .35rem .7rem;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: .82rem;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: .9rem 0 .7rem;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1.02;
+      letter-spacing: -.04em;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 1.04rem;
+      max-width: 65ch;
+    }
+    .hero-actions {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: .8rem 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s ease;
+      font-size: .95rem;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      background: #115e59;
+      outline: none;
+    }
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border-color: var(--line);
+    }
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+      background: #e7edf4;
+      outline: none;
+    }
+
+    .summary-card {
+      padding: 1.25rem;
+      display: grid;
+      gap: .85rem;
+      align-content: start;
+    }
+    .summary-card h2 {
+      margin: .15rem 0 .25rem;
+      font-size: 1.05rem;
+    }
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: .65rem;
+    }
+    .mini {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: .8rem;
+    }
+    .mini .label {
+      display: block;
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: .18rem;
+    }
+    .mini .value {
+      font-weight: 800;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .layout {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: .5rem 1rem 5rem;
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr);
+      gap: 1.2rem;
+      align-items: start;
+    }
+    .sidebar {
+      position: sticky;
+      top: 82px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      max-height: calc(100vh - 100px);
+      overflow: auto;
+    }
+    .sidebar h3 {
+      margin: 0 0 .9rem;
+      font-size: .95rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--muted);
+    }
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      border-radius: 12px;
+      padding: .7rem .8rem;
+      font-weight: 650;
+      margin-bottom: .35rem;
+      border: 1px solid transparent;
+    }
+    .sidebar a small {
+      display: block;
+      color: var(--muted);
+      font-weight: 500;
+      margin-top: .1rem;
+    }
+    .sidebar a:hover,
+    .sidebar a:focus-visible,
+    .sidebar a.active {
+      background: var(--blue-soft);
+      color: var(--primary);
+      border-color: #bfdbfe;
+      outline: none;
+    }
+
+    main { min-width: 0; }
+    .section {
+      scroll-margin-top: 90px;
+      margin-bottom: 1rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: .9rem;
+    }
+    .section-kicker {
+      color: var(--accent);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-size: .78rem;
+      margin-bottom: .25rem;
+    }
+    h2.section-title {
+      margin: 0;
+      font-size: clamp(1.4rem, 2.8vw, 2rem);
+      letter-spacing: -.03em;
+    }
+    .section-intro {
+      color: var(--muted);
+      margin: 0;
+      max-width: 72ch;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 1rem;
+    }
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: .9rem;
+    }
+
+    .callout {
+      border-left: 5px solid var(--primary);
+      background: var(--surface-2);
+      border-radius: 14px;
+      padding: .95rem 1rem;
+    }
+    .callout strong { color: var(--primary); }
+    .callout.warn {
+      border-left-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .callout.warn strong { color: var(--accent); }
+
+    .equation-box {
+      background: #fcfdff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    .equation-box .eq-label {
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: .45rem;
+    }
+    .equation {
+      font-family: var(--serif);
+      font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+      white-space: nowrap;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .95rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      display: block;
+    }
+    table thead, table tbody, table tr {
+      width: 100%;
+      display: table;
+      table-layout: fixed;
+    }
+    thead {
+      background: var(--surface-2);
+    }
+    th, td {
+      padding: .72rem .75rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    th { font-size: .84rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+    tbody tr:last-child td { border-bottom: none; }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 1rem;
+    }
+    .tool {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1rem;
+    }
+    .tool h4 {
+      margin: .1rem 0 .4rem;
+      font-size: 1.05rem;
+    }
+    .tool p {
+      color: var(--muted);
+      font-size: .94rem;
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      font-size: .88rem;
+      font-weight: 700;
+      margin: .6rem 0 .3rem;
+      color: var(--text);
+    }
+    input[type="number"], input[type="range"], select {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+    input[type="number"], select {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: .75rem .85rem;
+      font: inherit;
+      color: var(--text);
+    }
+    input[type="number"]:focus, select:focus {
+      outline: 2px solid rgba(20,184,166,.25);
+      border-color: var(--primary-2);
+    }
+    .result {
+      margin-top: .75rem;
+      padding: .9rem 1rem;
+      background: var(--blue-soft);
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: .75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .result strong { color: var(--primary); }
+    .result .value {
+      font-weight: 800;
+      font-family: var(--mono);
+      font-size: 1rem;
+    }
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: .65rem;
+    }
+    .pill {
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      color: var(--text);
+      border-radius: 999px;
+      padding: .55rem .8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .pill[aria-pressed="true"] {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .diagram {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1rem;
+    }
+    .diagram h4 { margin-top: 0; margin-bottom: .3rem; }
+    .diagram p { margin-top: 0; color: var(--muted); font-size: .93rem; }
+    .diagram-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-top: .5rem;
+    }
+
+    .formula-list {
+      display: grid;
+      gap: .8rem;
+    }
+    .formula-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: .9rem;
+      background: #fff;
+    }
+    .formula-item .equation { font-size: 1.15rem; }
+    .formula-item p { margin-bottom: 0; color: var(--muted); }
+
+    .accordion {
+      display: grid;
+      gap: .75rem;
+    }
+    details {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      overflow: hidden;
+    }
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 1rem 1rem;
+      font-weight: 800;
+    }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-2);
+    }
+    .details-body {
+      padding: 1rem;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .92rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    code.kbd {
+      font-family: var(--mono);
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      padding: .12rem .35rem;
+      border-radius: 8px;
+      font-size: .92em;
+    }
+
+    @media (max-width: 1000px) {
+      .hero,
+      .layout,
+      .two-col,
+      .three-col,
+      .tool-grid { grid-template-columns: 1fr; }
+      .sidebar {
+        position: static;
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .nav-links {
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: .25rem;
+      }
+      .hero-card, .summary-card, .card, .sidebar { border-radius: 18px; }
+      .hero-card { padding: 1.35rem; }
+      .card { padding: 1rem; }
+      .equation { font-size: 1rem; }
+      th, td { font-size: .9rem; }
+    }
+
+    @media print {
+      :root {
+        --shadow: none;
+        --bg: #fff;
+        --surface: #fff;
+      }
+      body { background: #fff; }
+      .topbar, .sidebar, .hero-actions, .tool-grid, .footer-note {
+        display: none !important;
+      }
+      .hero, .layout { display: block; max-width: 100%; padding: 0; }
+      .hero-card, .summary-card, .card {
+        box-shadow: none;
+        border: 1px solid #d1d5db;
+        margin-bottom: 12pt;
+        break-inside: avoid;
+      }
+      .section { break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+      .diagram svg { max-height: 260px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#content" class="skip-link">Skip to content</a>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top">EM Waves Notes</a>
+      <nav class="nav-links" aria-label="Top navigation">
+        <a href="#spectrum">Spectrum</a>
+        <a href="#fields">Induction</a>
+        <a href="#mechanics">Wave Mechanics</a>
+        <a href="#energy">Energy</a>
+        <a href="#review">Review</a>
+      </nav>
+    </div>
+  </div>
+
+  <header class="hero" id="top">
+    <section class="hero-card" aria-labelledby="hero-title">
+      <div class="eyebrow">Physics II · Calculus-Based</div>
+      <h1 id="hero-title">Electromagnetic Waves</h1>
+      <p>
+        A GitHub Pages friendly, single-file interactive notes site for Maxwell’s equations, wave structure,
+        energy transport, and radiation pressure. No build tools. No SVG libraries. Just HTML, CSS, and vanilla JavaScript.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#fields">Start with Maxwell’s big idea</a>
+        <button class="btn btn-secondary" type="button" onclick="window.print()">Print / Save PDF</button>
+      </div>
+    </section>
+
+    <aside class="summary-card" aria-label="Quick reference">
+      <h2>Quick Reference</h2>
+      <div class="mini-grid">
+        <div class="mini"><span class="label">Wave Speed</span><span class="value">c = 3.00 × 10<sup>8</sup> m/s</span></div>
+        <div class="mini"><span class="label">Permittivity</span><span class="value">ε<sub>0</sub> = 8.854 × 10<sup>-12</sup></span></div>
+        <div class="mini"><span class="label">Permeability</span><span class="value">μ<sub>0</sub> = 4π × 10<sup>-7</sup></span></div>
+        <div class="mini"><span class="label">Core Idea</span><span class="value">Changing E ↔ Changing B</span></div>
+      </div>
+      <div class="callout">
+        <strong>Best classroom use:</strong> have students keep this open beside the packet, use the calculators for quick checks,
+        and print the site to PDF for absent students.
+      </div>
+    </aside>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Section navigation">
+      <h3>On this page</h3>
+      <a href="#spectrum"><span>1. Electromagnetic Spectrum</span><small>Big-picture context</small></a>
+      <a href="#fields"><span>2. Induction & Fields</span><small>Maxwell’s core ideas</small></a>
+      <a href="#mechanics"><span>3. Wave Mechanics</span><small>E, B, c, and λ</small></a>
+      <a href="#energy"><span>4. Energy & Pressure</span><small>Poynting, intensity, momentum</small></a>
+      <a href="#review"><span>5. Concept Review</span><small>Short answer checks</small></a>
+    </aside>
+
+    <main id="content">
+      <section class="section" id="spectrum">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-kicker">Section 1</div>
+              <h2 class="section-title">The Electromagnetic Spectrum</h2>
+            </div>
+            <p class="section-intro">All electromagnetic waves obey the same physics. What changes is frequency, wavelength, and therefore where they sit on the spectrum.</p>
+          </div>
+
+          <div class="two-col">
+            <div>
+              <div class="callout">
+                <strong>Big idea:</strong> in a vacuum, every electromagnetic wave travels at the same speed, <span class="equation">c = fλ</span>.
+                Radio waves, visible light, X-rays, and gamma rays are one family.
+              </div>
+              <div class="diagram" style="margin-top:1rem;">
+                <h4>Spectrum map</h4>
+                <p>Move the slider to see how wavelength shrinks as frequency rises.</p>
+                <label for="freq-slider">Frequency scale (10<sup>x</sup> Hz)</label>
+                <input id="freq-slider" type="range" min="4" max="22" step="0.1" value="8" />
+                <div class="result">
+                  <span><strong>Frequency</strong></span>
+                  <span class="value" id="disp-freq">1.00 × 10^8 Hz</span>
+                </div>
+                <div class="result">
+                  <span><strong>Wavelength</strong></span>
+                  <span class="value" id="disp-wave">3.00 m</span>
+                </div>
+                <div class="result">
+                  <span><strong>Region</strong></span>
+                  <span class="value" id="disp-type">Radio Wave</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="formula-list">
+                <div class="formula-item"><div class="equation">c = fλ</div><p>The wave speed in vacuum is fixed, so wavelength and frequency are inversely related.</p></div>
+                <div class="formula-item"><div class="equation">f ↑ ⇒ λ ↓</div><p>Shorter wavelength means higher frequency and more energetic photons.</p></div>
+              </div>
+              <table style="margin-top:1rem;">
+                <thead>
+                  <tr><th>Region</th><th>Typical λ</th><th>Common Uses</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Radio</td><td>&gt; 0.1 m</td><td>Broadcasting, communication</td></tr>
+                  <tr><td>Microwave</td><td>1 mm – 0.1 m</td><td>Radar, Wi‑Fi, ovens</td></tr>
+                  <tr><td>Infrared</td><td>700 nm – 1 mm</td><td>Thermal imaging, remotes</td></tr>
+                  <tr><td>Visible</td><td>400 – 700 nm</td><td>Human vision</td></tr>
+                  <tr><td>Ultraviolet</td><td>10 – 400 nm</td><td>Sterilization, sunburn</td></tr>
+                  <tr><td>X-ray</td><td>0.01 – 10 nm</td><td>Medical imaging</td></tr>
+                  <tr><td>Gamma</td><td>&lt; 0.01 nm</td><td>Nuclear processes</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="fields">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-kicker">Section 2</div>
+              <h2 class="section-title">Maxwell’s Core Ideas: Induction & Fields</h2>
+            </div>
+            <p class="section-intro">The heart of the unit: changing electric fields create magnetic fields, and changing magnetic fields create electric fields.</p>
+          </div>
+
+          <div class="two-col">
+            <div class="diagram">
+              <h4>Capacitor paradox</h4>
+              <p>The original Ampère’s law works until a charging capacitor forces two valid surfaces to give different enclosed currents.</p>
+              <svg class="diagram-svg" viewBox="0 0 560 320" role="img" aria-label="Charging capacitor with loop C and surfaces S1 and S2">
+                <defs>
+                  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#0f766e"/></marker>
+                  <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#b45309"/></marker>
+                </defs>
+                <rect x="225" y="60" width="110" height="10" rx="4" fill="#cbd5e1" stroke="#64748b"/>
+                <rect x="225" y="240" width="110" height="10" rx="4" fill="#cbd5e1" stroke="#64748b"/>
+                <line x1="280" y1="10" x2="280" y2="60" stroke="#334155" stroke-width="5"/>
+                <line x1="280" y1="250" x2="280" y2="310" stroke="#334155" stroke-width="5"/>
+                <path d="M190 32 C130 50, 120 270, 205 286" fill="none" stroke="#0f766e" stroke-width="4" stroke-dasharray="8 6"/>
+                <path d="M360 32 C430 55, 440 265, 352 286" fill="none" stroke="#0f766e" stroke-width="4" stroke-dasharray="8 6"/>
+                <path d="M190 32 Q280 -5 360 32" fill="none" stroke="#0f766e" stroke-width="4" stroke-dasharray="8 6"/>
+                <path d="M205 286 Q280 325 352 286" fill="none" stroke="#0f766e" stroke-width="4" stroke-dasharray="8 6"/>
+                <text x="368" y="44" fill="#0f766e" font-size="18" font-weight="700">Loop C</text>
+                <path d="M280 70 L280 240" stroke="#b45309" stroke-width="3" marker-end="url(#arrowOrange)"/>
+                <path d="M255 74 L255 235" stroke="#b45309" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrowOrange)"/>
+                <path d="M305 74 L305 235" stroke="#b45309" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrowOrange)"/>
+                <text x="318" y="160" fill="#b45309" font-size="18" font-weight="700">E increasing</text>
+                <path d="M280 8 L280 44" stroke="#0f766e" stroke-width="3" marker-end="url(#arrow)"/>
+                <text x="292" y="29" fill="#0f766e" font-size="18" font-weight="700">I</text>
+                <text x="154" y="134" fill="#0f766e" font-size="18" font-weight="700">S₁</text>
+                <text x="360" y="172" fill="#0f766e" font-size="18" font-weight="700">S₂</text>
+                <path d="M280 70 C365 120, 364 190, 280 240" fill="rgba(20,184,166,.08)" stroke="#14b8a6" stroke-width="3"/>
+                <text x="385" y="140" fill="#14b8a6" font-size="16">Bulged surface</text>
+              </svg>
+            </div>
+
+            <div>
+              <div class="equation-box">
+                <div class="eq-label">Original Ampère's Law</div>
+                <div class="equation">∮ <b>B</b> · d<b>l</b> = μ<sub>0</sub> I<sub>through</sub></div>
+              </div>
+              <table style="margin-top:1rem;">
+                <thead><tr><th>Symbol</th><th>Meaning</th><th>Units</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="equation">B</span></td><td>Magnetic field</td><td>T</td></tr>
+                  <tr><td><span class="equation">d<b>l</b></span></td><td>Small path segment around the loop</td><td>m</td></tr>
+                  <tr><td><span class="equation">μ<sub>0</sub></span></td><td>Permeability of free space</td><td>T·m/A</td></tr>
+                  <tr><td><span class="equation">I</span></td><td>Current enclosed by the surface</td><td>A</td></tr>
+                </tbody>
+              </table>
+              <div class="callout warn" style="margin-top:1rem;">
+                <strong>Why it fails for a capacitor:</strong> surface S₁ cuts the wire and encloses a real current, but surface S₂ passes through the gap and encloses no conduction current.
+                Same loop, different answers.
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-grid" style="margin-top:1rem;">
+            <div class="tool">
+              <h4>Displacement current</h4>
+              <p>A changing electric flux acts like a current for creating a magnetic field.</p>
+              <div class="equation-box">
+                <div class="eq-label">Equation</div>
+                <div class="equation">I<sub>d</sub> = ε<sub>0</sub> (dΦ<sub>E</sub> / dt)</div>
+              </div>
+              <label for="calc-flux-change">Rate of change of electric flux, dΦ<sub>E</sub>/dt</label>
+              <input type="number" id="calc-flux-change" value="30000000000" />
+              <div class="result"><span><strong>I<sub>d</sub></strong></span><span class="value" id="res-displacement">0.2656 A</span></div>
+            </div>
+
+            <div class="tool">
+              <h4>Faraday’s law</h4>
+              <p>A changing magnetic flux induces an emf and therefore an electric field.</p>
+              <div class="equation-box">
+                <div class="eq-label">Equation</div>
+                <div class="equation">ℰ = - dΦ<sub>B</sub> / dt</div>
+              </div>
+              <label for="calc-mag-flux">Rate of change of magnetic flux, dΦ<sub>B</sub>/dt</label>
+              <input type="number" id="calc-mag-flux" value="-1.2" step="0.1" />
+              <div class="result"><span><strong>Induced emf</strong></span><span class="value" id="res-emf">1.20 V</span></div>
+            </div>
+          </div>
+
+          <div class="two-col" style="margin-top:1rem;">
+            <div class="diagram">
+              <h4>Induced field symmetry</h4>
+              <p>Faraday and Ampère-Maxwell are mirror ideas: changing B induces E, and changing E induces B.</p>
+              <svg class="diagram-svg" viewBox="0 0 560 270" role="img" aria-label="Side-by-side induced field symmetry diagrams">
+                <defs>
+                  <marker id="arrowGray" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#334155"/></marker>
+                </defs>
+                <text x="95" y="28" fill="#0f172a" font-size="18" font-weight="700">Changing B → E</text>
+                <circle cx="145" cy="145" r="52" fill="none" stroke="#334155" stroke-width="3" stroke-dasharray="7 7"/>
+                <circle cx="145" cy="145" r="82" fill="none" stroke="#334155" stroke-width="3" stroke-dasharray="7 7"/>
+                <circle cx="145" cy="145" r="112" fill="none" stroke="#334155" stroke-width="3" stroke-dasharray="7 7"/>
+                <text x="135" y="150" font-size="26" font-weight="700" fill="#b91c1c">×</text>
+                <text x="130" y="176" font-size="14" fill="#b91c1c">B in</text>
+                <path d="M65 145 A80 80 0 0 1 145 65" fill="none" stroke="#0f766e" stroke-width="4" marker-end="url(#arrowGray)"/>
+                <text x="48" y="130" fill="#0f766e" font-size="15">E loop</text>
+
+                <text x="345" y="28" fill="#0f172a" font-size="18" font-weight="700">Changing E → B</text>
+                <circle cx="415" cy="145" r="52" fill="none" stroke="#334155" stroke-width="3" stroke-dasharray="7 7"/>
+                <circle cx="415" cy="145" r="82" fill="none" stroke="#334155" stroke-width="3" stroke-dasharray="7 7"/>
+                <circle cx="415" cy="145" r="112" fill="none" stroke="#334155" stroke-width="3" stroke-dasharray="7 7"/>
+                <text x="407" y="148" font-size="24" font-weight="700" fill="#b45309">↑</text>
+                <text x="398" y="176" font-size="14" fill="#b45309">E up</text>
+                <path d="M495 145 A80 80 0 0 1 415 225" fill="none" stroke="#2563eb" stroke-width="4" marker-end="url(#arrowGray)"/>
+                <text x="485" y="130" fill="#2563eb" font-size="15">B loop</text>
+              </svg>
+            </div>
+
+            <div class="callout">
+              <strong>Maxwell’s synthesis:</strong> changing <span class="equation">E</span>-fields create <span class="equation">B</span>-fields,
+              and changing <span class="equation">B</span>-fields create <span class="equation">E</span>-fields.
+              That mutual induction is the mechanism behind electromagnetic waves.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="mechanics">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-kicker">Section 3</div>
+              <h2 class="section-title">Wave Mechanics</h2>
+            </div>
+            <p class="section-intro">Electromagnetic waves are transverse waves: the electric field, magnetic field, and direction of travel are all perpendicular.</p>
+          </div>
+
+          <div class="two-col">
+            <div class="diagram">
+              <h4>Wave geometry</h4>
+              <p>Red = electric field, blue = magnetic field, black = propagation direction.</p>
+              <svg class="diagram-svg" viewBox="0 0 560 280" role="img" aria-label="Electromagnetic wave showing perpendicular electric and magnetic fields">
+                <defs>
+                  <marker id="arrowBlack" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#111827"/></marker>
+                </defs>
+                <line x1="50" y1="220" x2="515" y2="220" stroke="#111827" stroke-width="3" marker-end="url(#arrowBlack)"/>
+                <text x="436" y="206" font-size="16" fill="#111827">Propagation (+x)</text>
+                <text x="56" y="238" font-size="15" fill="#475569">distance</text>
+
+                <path d="M65 220 C95 140, 125 140, 155 220 S215 300, 245 220 S305 140, 335 220 S395 300, 425 220 S485 140, 515 220" fill="none" stroke="#dc2626" stroke-width="4"/>
+                <text x="72" y="118" fill="#dc2626" font-size="17" font-weight="700">E</text>
+                <path d="M65 220 C95 185, 125 185, 155 220 S215 255, 245 220 S305 185, 335 220 S395 255, 425 220 S485 185, 515 220" fill="none" stroke="#2563eb" stroke-width="4" stroke-dasharray="7 6"/>
+                <text x="72" y="173" fill="#2563eb" font-size="17" font-weight="700">B</text>
+
+                <line x1="120" y1="220" x2="120" y2="120" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowBlack)"/>
+                <text x="129" y="131" font-size="15" fill="#dc2626">ŷ</text>
+                <line x1="120" y1="220" x2="55" y2="170" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowBlack)"/>
+                <text x="30" y="165" font-size="15" fill="#2563eb">ẑ</text>
+              </svg>
+            </div>
+
+            <div>
+              <div class="equation-box">
+                <div class="eq-label">Speed from Maxwell's equations</div>
+                <div class="equation">c = 1 / √(μ<sub>0</sub> ε<sub>0</sub>)</div>
+              </div>
+              <div class="equation-box" style="margin-top:.8rem;">
+                <div class="eq-label">Field relationship</div>
+                <div class="equation">E = cB</div>
+              </div>
+              <div class="callout" style="margin-top:.8rem;">
+                <strong>Interpretation:</strong> a strong electric field is always accompanied by a magnetic field with magnitude <span class="equation">B = E/c</span>.
+                The fields are in phase and locked together.
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-grid" style="margin-top:1rem;">
+            <div class="tool">
+              <h4>Field relationship calculator</h4>
+              <p>Given <span class="equation">E</span>, compute the matching magnetic field <span class="equation">B</span>.</p>
+              <label for="calc-e-field">Electric field, E (V/m)</label>
+              <input type="number" id="calc-e-field" value="300" />
+              <div class="result"><span><strong>Magnetic field B</strong></span><span class="value" id="res-b-field">1.00 × 10^-6 T</span></div>
+            </div>
+
+            <div class="tool">
+              <h4>Worked wave relation</h4>
+              <p>Use <span class="equation">c = fλ</span> to move between frequency and wavelength.</p>
+              <label for="example-freq">Frequency, f (Hz)</label>
+              <input type="number" id="example-freq" value="600000000000000" />
+              <div class="result"><span><strong>Wavelength λ</strong></span><span class="value" id="res-example-wave">5.00 × 10^-7 m</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="energy">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-kicker">Section 4</div>
+              <h2 class="section-title">Energy & Radiation Pressure</h2>
+            </div>
+            <p class="section-intro">Light does real work. Electromagnetic waves transport energy, and because they also carry momentum, they can push on matter.</p>
+          </div>
+
+          <div class="three-col">
+            <div class="formula-item">
+              <div class="eq-label">Poynting vector</div>
+              <div class="equation">S = (1/μ<sub>0</sub>) E × B</div>
+              <p>Direction of energy flow. The cross product points along the wave’s propagation direction.</p>
+            </div>
+            <div class="formula-item">
+              <div class="eq-label">Intensity</div>
+              <div class="equation">I = ½ c ε<sub>0</sub> E<sub>0</sub><sup>2</sup></div>
+              <p>Average energy per unit area per unit time. Doubling the field amplitude quadruples the intensity.</p>
+            </div>
+            <div class="formula-item">
+              <div class="eq-label">Radiation pressure</div>
+              <div class="equation">p = I/c &nbsp;&nbsp; or &nbsp;&nbsp; p = 2I/c</div>
+              <p>Absorbing surfaces get <span class="equation">I/c</span>; perfect reflectors get twice that.</p>
+            </div>
+          </div>
+
+          <div class="two-col" style="margin-top:1rem;">
+            <div class="diagram">
+              <h4>Right-hand rule for energy flow</h4>
+              <p>The wave moves in the direction of <span class="equation">E × B</span>.</p>
+              <svg class="diagram-svg" viewBox="0 0 560 280" role="img" aria-label="Right-hand rule showing E, B, and S directions">
+                <defs>
+                  <marker id="arrowWide" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#111827"/></marker>
+                </defs>
+                <line x1="110" y1="210" x2="110" y2="70" stroke="#dc2626" stroke-width="4" marker-end="url(#arrowWide)"/>
+                <text x="123" y="85" fill="#dc2626" font-size="18" font-weight="700">E</text>
+                <line x1="110" y1="210" x2="260" y2="210" stroke="#2563eb" stroke-width="4" marker-end="url(#arrowWide)"/>
+                <text x="246" y="198" fill="#2563eb" font-size="18" font-weight="700">B</text>
+                <line x1="110" y1="210" x2="350" y2="95" stroke="#111827" stroke-width="5" marker-end="url(#arrowWide)"/>
+                <text x="360" y="98" fill="#111827" font-size="18" font-weight="700">S = E × B</text>
+                <circle cx="110" cy="210" r="5" fill="#111827"/>
+              </svg>
+            </div>
+
+            <div class="tool-grid">
+              <div class="tool">
+                <h4>Intensity calculator</h4>
+                <p>Compute the average intensity from the peak electric field amplitude.</p>
+                <label for="calc-intensity-e">Peak electric field, E<sub>0</sub> (V/m)</label>
+                <input type="number" id="calc-intensity-e" value="1000" />
+                <div class="result"><span><strong>Average intensity</strong></span><span class="value" id="res-intensity">1328.10 W/m²</span></div>
+              </div>
+
+              <div class="tool">
+                <h4>Radiation pressure calculator</h4>
+                <p>Toggle between a perfectly absorbing and perfectly reflecting surface.</p>
+                <label for="calc-pressure-i">Intensity, I (W/m²)</label>
+                <input type="number" id="calc-pressure-i" value="600" />
+                <div class="pill-group" role="group" aria-label="Radiation pressure mode">
+                  <button class="pill" id="btn-absorb" aria-pressed="true" type="button">Absorbing</button>
+                  <button class="pill" id="btn-reflect" aria-pressed="false" type="button">Reflecting</button>
+                </div>
+                <div class="result"><span><strong>Pressure</strong></span><span class="value" id="res-pressure">2.00 × 10^-6 Pa</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="review">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-kicker">Section 5</div>
+              <h2 class="section-title">Concept Review</h2>
+            </div>
+            <p class="section-intro">Use these as end-of-class checks or embedded review before the final.</p>
+          </div>
+
+          <div class="accordion">
+            <details>
+              <summary>Why can’t an EM wave exist with only an electric field?</summary>
+              <div class="details-body">A traveling electromagnetic wave depends on mutual induction. A changing electric field creates a magnetic field, and a changing magnetic field creates an electric field. If one is missing, the self-sustaining process breaks.</div>
+            </details>
+            <details>
+              <summary>What physical properties determine the speed of light?</summary>
+              <div class="details-body">The speed of light in vacuum is determined entirely by the electrical and magnetic properties of free space: <span class="equation">ε<sub>0</sub></span> and <span class="equation">μ<sub>0</sub></span>.</div>
+            </details>
+            <details>
+              <summary>If wavelength increases, what must happen to frequency?</summary>
+              <div class="details-body">It must decrease. Because <span class="equation">c = fλ</span> is constant in vacuum, wavelength and frequency are inversely proportional.</div>
+            </details>
+            <details>
+              <summary>Why can EM waves travel through empty space while sound cannot?</summary>
+              <div class="details-body">Sound needs particles to push and pull on each other. Electromagnetic waves do not need a material medium; the oscillating electric and magnetic fields sustain the disturbance themselves.</div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <p class="footer-note">Designed as a single-file GitHub Pages note site. External dependencies removed for easy hosting and fewer classroom surprises.</p>
+    </main>
+  </div>
+
+  <script>
+    const C = 3.0e8;
+    const EPS0 = 8.854e-12;
+
+    const $ = (id) => document.getElementById(id);
+
+    function formatSci(num, digits = 2) {
+      if (!isFinite(num)) return '—';
+      if (num === 0) return '0';
+      const abs = Math.abs(num);
+      if (abs >= 0.01 && abs < 10000) return num.toFixed(Math.abs(num) < 1 ? 4 : 2).replace(/\.00$/, '');
+      const exponent = Math.floor(Math.log10(abs));
+      const mantissa = num / Math.pow(10, exponent);
+      return `${mantissa.toFixed(digits)} × 10^${exponent}`;
+    }
+
+    function updateDisplacement() {
+      const dPhi = parseFloat($('calc-flux-change').value) || 0;
+      const id = EPS0 * dPhi;
+      $('res-displacement').textContent = `${id.toFixed(4)} A`;
+    }
+
+    function updateEmf() {
+      const dPhiB = parseFloat($('calc-mag-flux').value) || 0;
+      const emf = -dPhiB;
+      $('res-emf').textContent = `${emf.toFixed(2)} V`;
+    }
+
+    function updateFieldRelation() {
+      const eField = parseFloat($('calc-e-field').value) || 0;
+      const bField = eField / C;
+      $('res-b-field').textContent = `${formatSci(bField)} T`;
+    }
+
+    function updateExampleWave() {
+      const f = parseFloat($('example-freq').value) || 0;
+      if (f <= 0) {
+        $('res-example-wave').textContent = '—';
+        return;
+      }
+      const lambda = C / f;
+      $('res-example-wave').textContent = `${formatSci(lambda)} m`;
+    }
+
+    function updateIntensity() {
+      const e0 = parseFloat($('calc-intensity-e').value) || 0;
+      const intensity = 0.5 * C * EPS0 * e0 * e0;
+      $('res-intensity').textContent = `${intensity.toFixed(2)} W/m²`;
+    }
+
+    let pressureMode = 'absorb';
+    function updatePressure() {
+      const intensity = parseFloat($('calc-pressure-i').value) || 0;
+      const pressure = pressureMode === 'absorb' ? intensity / C : (2 * intensity) / C;
+      $('res-pressure').textContent = `${formatSci(pressure)} Pa`;
+      $('btn-absorb').setAttribute('aria-pressed', String(pressureMode === 'absorb'));
+      $('btn-reflect').setAttribute('aria-pressed', String(pressureMode === 'reflect'));
+    }
+
+    function updateSpectrum() {
+      const exponent = parseFloat($('freq-slider').value);
+      const f = Math.pow(10, exponent);
+      const lambda = C / f;
+      $('disp-freq').textContent = `${formatSci(f)} Hz`;
+      $('disp-wave').textContent = `${formatSci(lambda)} m`;
+
+      let type = 'Gamma Ray';
+      if (f < 3e9) type = 'Radio Wave';
+      else if (f < 3e11) type = 'Microwave';
+      else if (f < 4e14) type = 'Infrared';
+      else if (f < 7.5e14) type = 'Visible Light';
+      else if (f < 3e16) type = 'Ultraviolet';
+      else if (f < 3e19) type = 'X-Ray';
+      $('disp-type').textContent = type;
+    }
+
+    ['calc-flux-change','calc-mag-flux','calc-e-field','calc-intensity-e','calc-pressure-i','freq-slider','example-freq'].forEach(id => {
+      $(id).addEventListener('input', () => {
+        updateDisplacement();
+        updateEmf();
+        updateFieldRelation();
+        updateIntensity();
+        updatePressure();
+        updateSpectrum();
+        updateExampleWave();
+      });
+    });
+
+    $('btn-absorb').addEventListener('click', () => { pressureMode = 'absorb'; updatePressure(); });
+    $('btn-reflect').addEventListener('click', () => { pressureMode = 'reflect'; updatePressure(); });
+
+    // active nav state
+    const navLinks = Array.from(document.querySelectorAll('.sidebar a'));
+    const sections = navLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = '#' + entry.target.id;
+          navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === id));
+        }
+      });
+    }, { rootMargin: '-25% 0px -60% 0px', threshold: 0.1 });
+    sections.forEach(section => observer.observe(section));
+
+    updateDisplacement();
+    updateEmf();
+    updateFieldRelation();
+    updateIntensity();
+    updatePressure();
+    updateSpectrum();
+    updateExampleWave();
+  </script>
+</body>
+</html>
