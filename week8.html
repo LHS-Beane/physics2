@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Special & General Relativity Notes</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --navy:#0f172a; --teal:#0f766e; --gold:#f59e0b; --red:#b91c1c; --bg:#f8fafc; }
+    html { scroll-behavior:smooth; }
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:var(--bg); color:#111827; }
+    .hero { background:linear-gradient(135deg,#0f172a,#134e4a); }
+    .card { background:white; border:1px solid #e2e8f0; border-radius:1.25rem; box-shadow:0 14px 32px rgba(15,23,42,.08); }
+    .section-label { display:inline-block; padding:.35rem .75rem; border-radius:999px; background:#ccfbf1; color:#115e59; font-size:.75rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .callout { border-left:5px solid var(--teal); background:#f0fdfa; border-radius:.8rem; padding:1rem; }
+    .teacher-note { border-left:5px solid var(--gold); background:#fffbeb; border-radius:.8rem; padding:1rem; }
+    .danger-note { border-left:5px solid var(--red); background:#fef2f2; border-radius:.8rem; padding:1rem; }
+    .eqbox { background:#0f172a; color:white; padding:1rem; border-radius:1rem; font-size:1.1rem; overflow-x:auto; }
+    .diagram-card { background:#071326; border-radius:1.25rem; padding:1rem; border:1px solid #1e3a5f; color:white; }
+    .diagram-card svg { width:100%; height:auto; display:block; }
+    .diagram-caption { color:#cbd5e1; font-size:.85rem; margin-top:.5rem; text-align:center; }
+    .answer { display:none; }
+    .answer.open { display:block; }
+    .btn { border-radius:999px; padding:.6rem 1rem; font-weight:800; transition:.15s ease; }
+    .btn:hover { transform:translateY(-1px); opacity:.95; }
+    .btn-dark { background:#0f172a; color:white; }
+    .btn-teal { background:#0f766e; color:white; }
+    .sticky-nav { position:sticky; top:0; z-index:30; backdrop-filter:blur(14px); background:rgba(255,255,255,.9); border-bottom:1px solid #e2e8f0; }
+    table { width:100%; border-collapse:collapse; }
+    th { background:#0f172a; color:white; }
+    th,td { border:1px solid #cbd5e1; padding:.75rem; text-align:left; vertical-align:top; }
+    tr:nth-child(even) td { background:#f8fafc; }
+    @media print {
+      .no-print, button, .sticky-nav { display:none !important; }
+      body { background:white; }
+      .card { box-shadow:none; break-inside:avoid; }
+      .diagram-card { background:white; color:#111; border:1px solid #999; }
+      .diagram-caption { color:#111; }
+      .answer { display:block !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero text-white px-6 py-12">
+    <div class="max-w-6xl mx-auto">
+      <p class="uppercase tracking-[.25em] text-teal-100 font-black text-sm">Physics II · Calculus-Based</p>
+      <h1 class="text-4xl md:text-6xl font-black mt-3">Special & General Relativity Notes</h1>
+      <p class="mt-5 text-lg md:text-xl max-w-3xl text-slate-100">A traditional lesson site students can use to complete the guided packet, review the main ideas, and see worked examples for time dilation and length contraction.</p>
+      <div class="mt-7 flex flex-wrap gap-3 no-print">
+        <a class="btn btn-teal" href="#start">Start Notes</a>
+        <button class="btn bg-white text-slate-900" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sticky-nav no-print px-4 py-3">
+    <div class="max-w-6xl mx-auto flex flex-wrap gap-2 text-sm">
+      <a class="btn bg-slate-100" href="#start">Hook</a>
+      <a class="btn bg-slate-100" href="#postulates">Postulates</a>
+      <a class="btn bg-slate-100" href="#time-dilation">Time Dilation</a>
+      <a class="btn bg-slate-100" href="#muons-gps">Muons/GPS</a>
+      <a class="btn bg-slate-100" href="#length-contraction">Length Contraction</a>
+      <a class="btn bg-slate-100" href="#simultaneity">Simultaneity</a>
+      <a class="btn bg-slate-100" href="#energy">Energy</a>
+      <a class="btn bg-slate-100" href="#gravity">GR</a>
+      <a class="btn bg-slate-100" href="#black-holes">Black Holes</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <section id="start" class="card p-6 space-y-5">
+      <span class="section-label">§1 Hook</span>
+      <h2 class="text-3xl font-black">Why classical physics breaks down</h2>
+      <p>In everyday physics, velocities add the way Newton and Galileo expected. If a train moves at 60 mph and a ball is thrown forward at 40 mph, a ground observer measures the ball moving at 100 mph.</p>
+      <div class="eqbox">$$v_{total}=v_{train}+v_{ball}$$</div>
+      <p>The problem appears when the ball is replaced with light. Classical physics predicts that a flashlight on a fast train should produce light moving faster than $c$ to someone on the ground. Experiments show this never happens.</p>
+      <div class="callout"><strong>Packet answer:</strong> A train at 60 mph plus a ball at 40 mph gives 100 mph. A train at $0.5c$ plus a flashlight would classically predict $1.5c$, but the real measured value is always $c=3.00\times10^8\,\text{m/s}$.</div>
+      <h3 class="text-2xl font-black">Michelson-Morley experiment</h3>
+      <p>Physicists expected light to travel through a medium called the <strong>luminiferous aether</strong>. If Earth moved through that aether, light should have traveled at slightly different speeds in different directions. Michelson and Morley measured no difference.</p>
+      <div class="callout"><strong>Packet answer:</strong> The medium was the <strong>luminiferous aether</strong>. The result was a <strong>null result</strong>: no directional difference in light speed was detected.</div>
+    </section>
+
+    <section id="postulates" class="card p-6 space-y-5">
+      <span class="section-label">§2 Postulates</span>
+      <h2 class="text-3xl font-black">Einstein's two postulates</h2>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="p-5 rounded-2xl bg-slate-50 border">
+          <h3 class="text-xl font-black">Postulate 1: Principle of Relativity</h3>
+          <p class="mt-2">The laws of physics are the same in all inertial, non-accelerating reference frames.</p>
+          <p class="mt-2"><strong>Inertial frame:</strong> a frame that is not accelerating. It may be at rest or moving at constant velocity.</p>
+          <p class="mt-2"><strong>Example:</strong> On a smooth airplane with the windows closed, you cannot use a local physics experiment to tell whether you are moving at constant velocity.</p>
+        </div>
+        <div class="p-5 rounded-2xl bg-slate-50 border">
+          <h3 class="text-xl font-black">Postulate 2: Constant Speed of Light</h3>
+          <p class="mt-2">The speed of light in vacuum is the same for all observers, regardless of the motion of the source or observer.</p>
+          <p class="mt-2">Even if you run toward a light beam at $0.5c$, you still measure the beam moving at $c$, not $1.5c$.</p>
+        </div>
+      </div>
+      <div class="danger-note"><strong>Deep implication:</strong> If every observer must measure the same light speed, then space and time cannot be absolute. Time intervals and lengths must change between observers.</div>
+    </section>
+
+    <section id="time-dilation" class="card p-6 space-y-5">
+      <span class="section-label">§3 Time Dilation</span>
+      <h2 class="text-3xl font-black">Moving clocks run slow</h2>
+      <p>A light clock is a thought experiment using two mirrors and a photon bouncing between them. In the clock's own rest frame, the photon moves straight up and down. To an outside observer who sees the clock moving sideways, the photon follows a diagonal path.</p>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="diagram-card">
+          <svg viewBox="0 0 520 360" role="img" aria-label="Light clock at rest diagram">
+            <defs>
+              <marker id="arrowTeal" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#2dd4bf"/></marker>
+              <marker id="arrowGold" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#fbbf24"/></marker>
+            </defs>
+            <rect x="0" y="0" width="520" height="360" rx="18" fill="#071326"/>
+            <text x="260" y="35" text-anchor="middle" fill="#e2e8f0" font-size="20" font-weight="800">Light Clock — Rest Frame</text>
+            <rect x="145" y="70" width="230" height="24" rx="4" fill="#14b8a6"/>
+            <rect x="145" y="270" width="230" height="24" rx="4" fill="#14b8a6"/>
+            <text x="260" y="62" text-anchor="middle" fill="#99f6e4" font-size="14">top mirror</text>
+            <text x="260" y="318" text-anchor="middle" fill="#99f6e4" font-size="14">bottom mirror</text>
+            <line x1="260" y1="255" x2="260" y2="110" stroke="#fbbf24" stroke-width="5" marker-end="url(#arrowGold)"/>
+            <circle cx="260" cy="185" r="15" fill="#fde68a"/>
+            <line x1="405" y1="95" x2="405" y2="270" stroke="#94a3b8" stroke-width="3"/>
+            <line x1="390" y1="95" x2="420" y2="95" stroke="#94a3b8" stroke-width="3"/>
+            <line x1="390" y1="270" x2="420" y2="270" stroke="#94a3b8" stroke-width="3"/>
+            <text x="425" y="188" fill="#cbd5e1" font-size="20" font-style="italic">d</text>
+            <text x="260" y="340" text-anchor="middle" fill="#e2e8f0" font-size="16">Proper time: Δt₀ = 2d/c</text>
+          </svg>
+          <p class="diagram-caption">At rest, the photon travels the shortest up-down path.</p>
+        </div>
+        <div class="diagram-card">
+          <svg viewBox="0 0 520 360" role="img" aria-label="Moving light clock diagram">
+            <defs>
+              <marker id="arrowPink" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#fb7185"/></marker>
+              <marker id="arrowYellow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#fbbf24"/></marker>
+              <marker id="arrowWhite" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#e2e8f0"/></marker>
+            </defs>
+            <rect x="0" y="0" width="520" height="360" rx="18" fill="#071326"/>
+            <text x="260" y="35" text-anchor="middle" fill="#e2e8f0" font-size="20" font-weight="800">Light Clock — Moving Frame</text>
+            <rect x="70" y="260" width="95" height="22" rx="4" fill="#14b8a6" opacity=".75"/>
+            <rect x="315" y="260" width="95" height="22" rx="4" fill="#14b8a6"/>
+            <rect x="70" y="82" width="95" height="22" rx="4" fill="#14b8a6" opacity=".75"/>
+            <rect x="315" y="82" width="95" height="22" rx="4" fill="#14b8a6"/>
+            <line x1="118" y1="260" x2="362" y2="104" stroke="#fbbf24" stroke-width="5" marker-end="url(#arrowYellow)"/>
+            <circle cx="230" cy="190" r="13" fill="#fde68a"/>
+            <line x1="362" y1="260" x2="362" y2="104" stroke="#94a3b8" stroke-width="3"/>
+            <text x="377" y="188" fill="#cbd5e1" font-size="20" font-style="italic">d</text>
+            <line x1="118" y1="302" x2="362" y2="302" stroke="#fb7185" stroke-width="4" marker-end="url(#arrowPink)"/>
+            <text x="240" y="325" text-anchor="middle" fill="#fecdd3" font-size="16">vΔt</text>
+            <line x1="410" y1="305" x2="475" y2="305" stroke="#e2e8f0" stroke-width="4" marker-end="url(#arrowWhite)"/>
+            <text x="445" y="290" text-anchor="middle" fill="#e2e8f0" font-size="16">v</text>
+            <text x="210" y="138" fill="#fde68a" font-size="18" transform="rotate(-33 210 138)">cΔt</text>
+          </svg>
+          <p class="diagram-caption">Moving frame: the photon path is longer, but light still moves at c.</p>
+        </div>
+      </div>
+      <div class="eqbox">$$\Delta t=\gamma\Delta t_0 \qquad \gamma=\frac{1}{\sqrt{1-v^2/c^2}}$$</div>
+      <table>
+        <thead><tr><th>Symbol</th><th>Meaning</th><th>Units / Notes</th></tr></thead>
+        <tbody>
+          <tr><td>$\Delta t_0$</td><td>Proper time; time measured in the object's own rest frame</td><td>seconds; shortest time interval</td></tr>
+          <tr><td>$\Delta t$</td><td>Dilated time; time measured by an observer who sees the clock moving</td><td>seconds; longer than $\Delta t_0$</td></tr>
+          <tr><td>$v$</td><td>Relative speed between frames</td><td>m/s or fraction of $c$</td></tr>
+          <tr><td>$c$</td><td>Speed of light</td><td>$3.00\times10^8\,\text{m/s}$</td></tr>
+          <tr><td>$\gamma$</td><td>Lorentz factor</td><td>unitless; always $\ge 1$</td></tr>
+        </tbody>
+      </table>
+      <h3 class="text-2xl font-black">Derivation answer for the packet</h3>
+      <p>Using the light-clock triangle, the photon path is the hypotenuse, the mirror spacing gives the vertical leg, and the clock's sideways motion gives the horizontal leg.</p>
+      <div class="diagram-card">
+        <svg viewBox="0 0 760 360" role="img" aria-label="Labeled light clock triangle">
+          <defs>
+            <marker id="arrowTri" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#fbbf24"/></marker>
+          </defs>
+          <rect x="0" y="0" width="760" height="360" rx="18" fill="#071326"/>
+          <text x="380" y="38" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="800">Light Clock Triangle — Label Each Side</text>
+          <line x1="170" y1="285" x2="590" y2="285" stroke="#fb7185" stroke-width="5"/>
+          <line x1="590" y1="285" x2="590" y2="85" stroke="#94a3b8" stroke-width="5"/>
+          <line x1="170" y1="285" x2="590" y2="85" stroke="#fbbf24" stroke-width="5" marker-end="url(#arrowTri)"/>
+          <rect x="570" y="265" width="20" height="20" fill="none" stroke="#e2e8f0" stroke-width="3"/>
+          <text x="380" y="320" text-anchor="middle" fill="#fecdd3" font-size="22" font-weight="800">horizontal leg = vΔt</text>
+          <text x="625" y="190" fill="#cbd5e1" font-size="22" font-weight="800">vertical leg = cΔt₀</text>
+          <text x="345" y="165" text-anchor="middle" fill="#fde68a" font-size="24" font-weight="900" transform="rotate(-25 345 165)">hypotenuse = cΔt</text>
+          <text x="155" y="305" text-anchor="end" fill="#e2e8f0" font-size="14">start</text>
+          <text x="605" y="305" fill="#e2e8f0" font-size="14">end</text>
+        </svg>
+        <p class="diagram-caption">Use the full-tick version shown here. Some textbooks use a half-tick triangle; the final equation is the same.</p>
+      </div>
+      <div class="eqbox">$$c^2\Delta t^2=c^2\Delta t_0^2+v^2\Delta t^2$$
+      $$c^2\Delta t^2-v^2\Delta t^2=c^2\Delta t_0^2$$
+      $$\Delta t^2(c^2-v^2)=c^2\Delta t_0^2$$
+      $$\Delta t^2\left(1-\frac{v^2}{c^2}\right)=\Delta t_0^2$$
+      $$\Delta t=\frac{\Delta t_0}{\sqrt{1-v^2/c^2}}=\gamma\Delta t_0$$</div>
+      <div class="teacher-note"><strong>Common mistake:</strong> $\Delta t_0$ is the time measured by the person traveling with the clock. It is not automatically the Earth time. Identify the clock/event first.</div>
+
+      <h3 class="text-2xl font-black">Sample Problem 1: Basic time dilation</h3>
+      <p><strong>Problem:</strong> A spaceship travels at $0.80c$. One hour passes on the spaceship. How much time passes for an Earth observer?</p>
+      <button class="btn btn-dark no-print" onclick="toggle('td1')">Reveal worked solution</button>
+      <div id="td1" class="answer callout mt-3">
+        <p><strong>Step 1:</strong> Identify $\Delta t_0=1.0\,\text{h}$ because this is measured by the spaceship clock.</p>
+        <p><strong>Step 2:</strong> Calculate $\gamma$:</p>
+        <p>$$\gamma=\frac{1}{\sqrt{1-0.80^2}}=\frac{1}{\sqrt{0.36}}=1.667$$</p>
+        <p><strong>Step 3:</strong> Use $\Delta t=\gamma\Delta t_0$:</p>
+        <p>$$\Delta t=(1.667)(1.0\,h)=1.67\,h$$</p>
+        <p><strong>Answer:</strong> Earth measures about <strong>1.67 hours</strong>.</p>
+      </div>
+
+      <h3 class="text-2xl font-black">Sample Problem 2: Solve for speed</h3>
+      <p><strong>Problem:</strong> A traveler wants 10 years to pass on Earth while only 5 years pass on the ship. What speed is required?</p>
+      <button class="btn btn-dark no-print" onclick="toggle('td2')">Reveal worked solution</button>
+      <div id="td2" class="answer callout mt-3">
+        <p>Here $\Delta t=10\,\text{yr}$ and $\Delta t_0=5\,\text{yr}$, so $\gamma=\Delta t/\Delta t_0=2$.</p>
+        <p>$$2=\frac{1}{\sqrt{1-v^2/c^2}}$$</p>
+        <p>Square both sides:</p>
+        <p>$$4=\frac{1}{1-v^2/c^2}$$</p>
+        <p>Invert and solve:</p>
+        <p>$$1-\frac{v^2}{c^2}=\frac14$$</p>
+        <p>$$\frac{v^2}{c^2}=\frac34$$</p>
+        <p>$$\frac{v}{c}=\sqrt{0.75}=0.866$$</p>
+        <p><strong>Answer:</strong> The ship must travel at about <strong>$0.866c$</strong>.</p>
+      </div>
+    </section>
+
+    <section id="muons-gps" class="card p-6 space-y-5">
+      <span class="section-label">§4 Reality Check</span>
+      <h2 class="text-3xl font-black">Experimental proof: muons and GPS</h2>
+      <h3 class="text-2xl font-black">Cosmic muons</h3>
+      <p>Muons are unstable particles created high in Earth's atmosphere. Their rest-frame lifetime is so short that classical physics predicts they should decay before reaching the ground. But they are detected at Earth's surface because time dilation extends their lifetime in Earth's frame.</p>
+      <div class="eqbox">$$v=0.998c \Rightarrow \gamma=\frac{1}{\sqrt{1-0.998^2}}\approx15.8$$
+      $$\Delta t=\gamma\Delta t_0=(15.8)(2.2\,\mu s)\approx34.8\,\mu s$$</div>
+      <p>Distance traveled:</p>
+      <div class="eqbox">$$d=v\Delta t=(0.998)(3.00\times10^8)(34.8\times10^{-6})\approx1.04\times10^4\,m\approx10.4\,km$$</div>
+      <div class="callout"><strong>Packet answer:</strong> The muon can reach Earth because Earth observers measure the muon's lifetime as longer. In the muon's frame, the atmosphere is length-contracted instead. Both explanations agree.</div>
+
+      <h3 class="text-2xl font-black">GPS satellites</h3>
+      <table>
+        <thead><tr><th>Effect</th><th>Cause</th><th>Clock result</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td>Special relativity</td><td>Satellite speed, about 3.9 km/s</td><td>Moving clocks run slower</td><td>$-7\,\mu s/day$</td></tr>
+          <tr><td>General relativity</td><td>Weaker gravity at satellite altitude</td><td>Higher clocks run faster</td><td>$+45\,\mu s/day$</td></tr>
+          <tr><td>Net</td><td>Both effects together</td><td>Satellite clocks run fast overall</td><td>$+38\,\mu s/day$</td></tr>
+        </tbody>
+      </table>
+      <div class="teacher-note"><strong>Packet answer:</strong> Without correction, GPS would accumulate roughly 11 km of position error per day.</div>
+    </section>
+
+    <section id="length-contraction" class="card p-6 space-y-5">
+      <span class="section-label">§5 Length Contraction</span>
+      <h2 class="text-3xl font-black">Moving objects contract along the direction of motion</h2>
+      <div class="eqbox">$$L=\frac{L_0}{\gamma}=L_0\sqrt{1-\frac{v^2}{c^2}}$$</div>
+      <table>
+        <thead><tr><th>Symbol</th><th>Meaning</th><th>Key idea</th></tr></thead>
+        <tbody>
+          <tr><td>$L_0$</td><td>Proper length; measured in the object's rest frame</td><td>Longest measured length</td></tr>
+          <tr><td>$L$</td><td>Contracted length; measured by observer who sees object moving</td><td>Shorter than $L_0$</td></tr>
+          <tr><td>$\gamma$</td><td>Lorentz factor</td><td>Greater speed means larger $\gamma$ and stronger contraction</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><strong>Packet answer:</strong> Contraction only occurs along the <strong>direction of motion</strong>. Dimensions perpendicular to motion are <strong>unchanged</strong>.</div>
+      <div class="diagram-card">
+        <svg viewBox="0 0 800 300" role="img" aria-label="Length contraction comparison diagram">
+          <defs>
+            <marker id="arrowLen" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#e2e8f0"/></marker>
+          </defs>
+          <rect x="0" y="0" width="800" height="300" rx="18" fill="#071326"/>
+          <text x="400" y="36" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="800">Length Contraction Along Direction of Motion</text>
+          <rect x="90" y="90" width="275" height="70" rx="34" fill="#14b8a6"/>
+          <circle cx="145" cy="160" r="24" fill="#0f172a" stroke="#e2e8f0" stroke-width="4"/>
+          <circle cx="310" cy="160" r="24" fill="#0f172a" stroke="#e2e8f0" stroke-width="4"/>
+          <text x="228" y="78" text-anchor="middle" fill="#99f6e4" font-size="18" font-weight="800">Rocket in rest frame</text>
+          <line x1="90" y1="205" x2="365" y2="205" stroke="#99f6e4" stroke-width="4"/>
+          <text x="228" y="235" text-anchor="middle" fill="#99f6e4" font-size="20" font-weight="900">proper length L₀</text>
+          <rect x="485" y="105" width="170" height="55" rx="28" fill="#f59e0b"/>
+          <circle cx="520" cy="160" r="19" fill="#0f172a" stroke="#e2e8f0" stroke-width="4"/>
+          <circle cx="620" cy="160" r="19" fill="#0f172a" stroke="#e2e8f0" stroke-width="4"/>
+          <line x1="675" y1="132" x2="740" y2="132" stroke="#e2e8f0" stroke-width="5" marker-end="url(#arrowLen)"/>
+          <text x="710" y="115" text-anchor="middle" fill="#e2e8f0" font-size="18">v</text>
+          <text x="570" y="78" text-anchor="middle" fill="#fed7aa" font-size="18" font-weight="800">Measured by outside observer</text>
+          <line x1="485" y1="205" x2="655" y2="205" stroke="#fed7aa" stroke-width="4"/>
+          <text x="570" y="235" text-anchor="middle" fill="#fed7aa" font-size="20" font-weight="900">contracted length L</text>
+          <text x="400" y="275" text-anchor="middle" fill="#e2e8f0" font-size="18">L = L₀ / γ, so the moving rocket is shorter only along its motion.</text>
+        </svg>
+        <p class="diagram-caption">The object itself is not “squished” in its own frame; different observers measure different lengths.</p>
+      </div>
+
+      <h3 class="text-2xl font-black">Sample Problem 1: Rocket length</h3>
+      <p><strong>Problem:</strong> A rocket has proper length $L_0=500\,m$ and travels at $0.80c$. What length does a ground observer measure?</p>
+      <button class="btn btn-dark no-print" onclick="toggle('lc1')">Reveal worked solution</button>
+      <div id="lc1" class="answer callout mt-3">
+        <p>Calculate $\gamma$:</p>
+        <p>$$\gamma=\frac{1}{\sqrt{1-0.80^2}}=1.667$$</p>
+        <p>Use length contraction:</p>
+        <p>$$L=\frac{L_0}{\gamma}=\frac{500\,m}{1.667}=300\,m$$</p>
+        <p><strong>Answer:</strong> The ground observer measures the rocket as <strong>300 m</strong> long.</p>
+      </div>
+
+      <h3 class="text-2xl font-black">Sample Problem 2: Contraction at high speed</h3>
+      <p><strong>Problem:</strong> A 100 m spaceship is measured to be only 60 m long by an outside observer. What is $\gamma$ and what speed is the ship traveling?</p>
+      <button class="btn btn-dark no-print" onclick="toggle('lc2')">Reveal worked solution</button>
+      <div id="lc2" class="answer callout mt-3">
+        <p>Start with $L=L_0/\gamma$:</p>
+        <p>$$60=\frac{100}{\gamma} \Rightarrow \gamma=\frac{100}{60}=1.667$$</p>
+        <p>Now solve for speed:</p>
+        <p>$$1.667=\frac{1}{\sqrt{1-v^2/c^2}}$$</p>
+        <p>This is the same $\gamma$ as $0.80c$, so:</p>
+        <p>$$v=0.80c$$</p>
+        <p><strong>Answer:</strong> $\gamma=1.667$ and the ship travels at <strong>$0.80c$</strong>.</p>
+      </div>
+
+      <h3 class="text-2xl font-black">Sample Problem 3: Muon atmosphere length</h3>
+      <p><strong>Problem:</strong> In Earth's frame, the atmosphere is about 10 km thick. A muon travels with $\gamma=15.8$. What thickness does the muon measure?</p>
+      <button class="btn btn-dark no-print" onclick="toggle('lc3')">Reveal worked solution</button>
+      <div id="lc3" class="answer callout mt-3">
+        <p>Use $L=L_0/\gamma$:</p>
+        <p>$$L=\frac{10,000\,m}{15.8}=633\,m$$</p>
+        <p><strong>Answer:</strong> In the muon's frame, the atmosphere is only about <strong>630 m</strong> thick.</p>
+      </div>
+    </section>
+
+    <section id="simultaneity" class="card p-6 space-y-5">
+      <span class="section-label">§5 Simultaneity</span>
+      <h2 class="text-3xl font-black">There is no universal “now”</h2>
+      <p>Imagine lightning strikes both ends of a moving train simultaneously in the ground frame. The ground observer stands at the midpoint between the strikes, so both flashes travel equal distances and arrive together.</p>
+      <p>The train observer is at the center of the moving train. While the light travels, the train observer moves toward the front flash and away from the rear flash. Since light speed is still $c$ in both directions, the front flash reaches the train observer first.</p>
+      <div class="diagram-card">
+        <svg viewBox="0 0 850 330" role="img" aria-label="Train simultaneity diagram">
+          <defs>
+            <marker id="arrowTrain" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#e2e8f0"/></marker>
+          </defs>
+          <rect x="0" y="0" width="850" height="330" rx="18" fill="#071326"/>
+          <text x="425" y="35" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="800">Train Simultaneity Experiment</text>
+          <rect x="130" y="110" width="590" height="95" rx="18" fill="#dbeafe" stroke="#93c5fd" stroke-width="4"/>
+          <rect x="155" y="205" width="60" height="22" rx="10" fill="#64748b"/>
+          <rect x="320" y="205" width="60" height="22" rx="10" fill="#64748b"/>
+          <rect x="500" y="205" width="60" height="22" rx="10" fill="#64748b"/>
+          <rect x="655" y="205" width="60" height="22" rx="10" fill="#64748b"/>
+          <circle cx="425" cy="158" r="10" fill="#ef4444"/>
+          <text x="425" y="145" text-anchor="middle" fill="#991b1b" font-size="15" font-weight="800">train observer</text>
+          <line x1="720" y1="92" x2="785" y2="92" stroke="#e2e8f0" stroke-width="5" marker-end="url(#arrowTrain)"/>
+          <text x="754" y="76" text-anchor="middle" fill="#e2e8f0" font-size="18">v</text>
+          <line x1="130" y1="75" x2="130" y2="228" stroke="#fbbf24" stroke-width="5"/>
+          <polygon points="130,72 118,98 142,98" fill="#fbbf24"/>
+          <line x1="720" y1="75" x2="720" y2="228" stroke="#fbbf24" stroke-width="5"/>
+          <polygon points="720,72 708,98 732,98" fill="#fbbf24"/>
+          <text x="130" y="255" text-anchor="middle" fill="#fde68a" font-size="16" font-weight="800">rear strike</text>
+          <text x="720" y="255" text-anchor="middle" fill="#fde68a" font-size="16" font-weight="800">front strike</text>
+          <circle cx="425" cy="270" r="8" fill="#94a3b8"/>
+          <text x="425" y="295" text-anchor="middle" fill="#cbd5e1" font-size="16">ground observer at midpoint</text>
+          <line x1="130" y1="270" x2="720" y2="270" stroke="#64748b" stroke-width="2" stroke-dasharray="7 7"/>
+        </svg>
+        <p class="diagram-caption">In the ground frame the strikes are simultaneous; in the train frame the front flash arrives first.</p>
+      </div>
+      <div class="callout"><strong>Packet answer:</strong> Ground observer: both flashes arrive at the same time. Train observer: the front flash arrives first. Events simultaneous in one frame are not necessarily simultaneous in another.</div>
+    </section>
+
+    <section id="energy" class="card p-6 space-y-5">
+      <span class="section-label">§6 Energy & Mass</span>
+      <h2 class="text-3xl font-black">Energy and mass are equivalent</h2>
+      <p>Classical kinetic energy works only at low speeds:</p>
+      <div class="eqbox">$$KE=\frac12mv^2 \qquad \text{valid when } v\ll c$$</div>
+      <p>Relativistic kinetic energy is:</p>
+      <div class="eqbox">$$KE_{rel}=(\gamma-1)mc^2$$</div>
+      <p>Einstein's most famous equation is:</p>
+      <div class="eqbox">$$E_{rest}=mc^2$$</div>
+      <div class="callout"><strong>Packet answer:</strong> Mass is energy. Energy has inertia. Since $c^2\approx9\times10^{16}\,J/kg$, a tiny amount of mass stores an enormous amount of energy.</div>
+      <h3 class="text-2xl font-black">One gram example</h3>
+      <div class="eqbox">$$E=mc^2=(0.001\,kg)(3.00\times10^8\,m/s)^2=9.0\times10^{13}\,J$$</div>
+      <h3 class="text-2xl font-black">Energy-momentum relation</h3>
+      <div class="eqbox">$$E^2=(pc)^2+(mc^2)^2$$</div>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>Massive particle at rest: $p=0$, so $E=mc^2$.</li>
+        <li>Photon: $m=0$, so $E=pc=hf$.</li>
+        <li>Low-speed limit: $E\approx mc^2+\frac12mv^2$.</li>
+      </ul>
+    </section>
+
+    <section id="gravity" class="card p-6 space-y-5">
+      <span class="section-label">§7–8 General Relativity</span>
+      <h2 class="text-3xl font-black">Gravity is spacetime curvature</h2>
+      <table>
+        <thead><tr><th>Newton's gravity</th><th>Einstein's gravity</th></tr></thead>
+        <tbody>
+          <tr><td>Gravity is a force between masses.</td><td>Gravity is the curvature of spacetime.</td></tr>
+          <tr><td>Acts instantaneously in the old model.</td><td>Changes in gravity propagate at the speed of light.</td></tr>
+          <tr><td>Space and time are fixed backgrounds.</td><td>Space and time are dynamic and can curve.</td></tr>
+          <tr><td>Works well for everyday scales.</td><td>Needed for black holes, GPS, light bending, gravitational waves.</td></tr>
+        </tbody>
+      </table>
+      <div class="eqbox">$$G_{\mu\nu}=\frac{8\pi G}{c^4}T_{\mu\nu}$$</div>
+      <div class="callout"><strong>Packet answer:</strong> Mass tells spacetime how to curve; spacetime tells mass how to move. Free-falling objects follow geodesics, the straightest possible paths through curved spacetime.</div>
+      <div class="diagram-card">
+        <svg viewBox="0 0 850 360" role="img" aria-label="Spacetime curvature grid diagram">
+          <defs>
+            <radialGradient id="massGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fde68a"/><stop offset="70%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#92400e"/></radialGradient>
+            <marker id="arrowGeo" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#fb7185"/></marker>
+          </defs>
+          <rect x="0" y="0" width="850" height="360" rx="18" fill="#071326"/>
+          <text x="425" y="36" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="800">Spacetime Curvature — Rubber Sheet Analogy</text>
+          <g opacity=".6" stroke="#38bdf8" stroke-width="1.5" fill="none">
+            <path d="M70 90 C230 130, 620 130, 780 90"/>
+            <path d="M70 130 C230 165, 620 165, 780 130"/>
+            <path d="M70 170 C230 200, 620 200, 780 170"/>
+            <path d="M70 210 C230 235, 620 235, 780 210"/>
+            <path d="M70 250 C230 270, 620 270, 780 250"/>
+            <path d="M150 70 C175 135, 175 250, 150 300"/>
+            <path d="M250 70 C285 145, 285 250, 250 300"/>
+            <path d="M350 70 C405 155, 405 250, 350 300"/>
+            <path d="M450 70 C500 155, 500 250, 450 300"/>
+            <path d="M550 70 C575 145, 575 250, 550 300"/>
+            <path d="M650 70 C665 135, 665 250, 650 300"/>
+          </g>
+          <circle cx="425" cy="185" r="50" fill="url(#massGlow)"/>
+          <text x="425" y="191" text-anchor="middle" fill="#111827" font-size="18" font-weight="900">mass</text>
+          <path d="M145 105 C260 75, 335 95, 395 145 C455 195, 515 225, 690 205" fill="none" stroke="#fb7185" stroke-width="5" marker-end="url(#arrowGeo)"/>
+          <circle cx="690" cy="205" r="12" fill="#fb7185"/>
+          <text x="690" y="235" text-anchor="middle" fill="#fecdd3" font-size="16" font-weight="800">object follows geodesic</text>
+          <text x="425" y="330" text-anchor="middle" fill="#e2e8f0" font-size="17">Mass curves spacetime; free objects follow the straightest possible path through that curvature.</text>
+        </svg>
+        <p class="diagram-caption">The sheet analogy is useful, but real spacetime is 4D and time curvature matters.</p>
+      </div>
+      <h3 class="text-2xl font-black">Geodesics</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>On a flat surface, the shortest path is a straight line.</li>
+        <li>On a sphere, the shortest path is a great circle.</li>
+        <li>In curved spacetime, free-falling objects follow geodesics.</li>
+      </ul>
+      <div class="teacher-note"><strong>Important wording:</strong> Earth orbits the Sun because Earth follows a geodesic through the Sun's curved spacetime. You feel gravity because the ground stops you from following your natural free-fall path.</div>
+    </section>
+
+    <section id="black-holes" class="card p-6 space-y-5">
+      <span class="section-label">§9 Black Holes</span>
+      <h2 class="text-3xl font-black">Black holes and extreme spacetime</h2>
+      <p>A black hole forms when mass is compressed so much that spacetime curves strongly enough that nothing, not even light, can escape.</p>
+      <div class="eqbox">$$v_{esc}=\sqrt{\frac{2GM}{r}}$$
+      $$r_s=\frac{2GM}{c^2}$$</div>
+      <div class="diagram-card">
+        <svg viewBox="0 0 850 380" role="img" aria-label="Black hole structure diagram">
+          <defs>
+            <radialGradient id="bhDisk" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fff7ed"/><stop offset="35%" stop-color="#f97316"/><stop offset="75%" stop-color="#7c2d12"/><stop offset="100%" stop-color="#111827"/></radialGradient>
+          </defs>
+          <rect x="0" y="0" width="850" height="380" rx="18" fill="#071326"/>
+          <text x="425" y="36" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="800">Black Hole Structure</text>
+          <ellipse cx="425" cy="205" rx="285" ry="72" fill="none" stroke="#f97316" stroke-width="18" opacity=".75"/>
+          <ellipse cx="425" cy="205" rx="230" ry="55" fill="none" stroke="#facc15" stroke-width="8" opacity=".7"/>
+          <circle cx="425" cy="205" r="86" fill="#020617" stroke="#7c3aed" stroke-width="4"/>
+          <circle cx="425" cy="205" r="132" fill="none" stroke="#38bdf8" stroke-width="4" stroke-dasharray="9 8"/>
+          <circle cx="425" cy="205" r="8" fill="#ef4444"/>
+          <line x1="425" y1="205" x2="425" y2="92" stroke="#7c3aed" stroke-width="3"/>
+          <text x="435" y="92" fill="#c4b5fd" font-size="16" font-weight="800">event horizon, r = rₛ</text>
+          <line x1="555" y1="170" x2="665" y2="95" stroke="#38bdf8" stroke-width="3"/>
+          <text x="670" y="95" fill="#bae6fd" font-size="16" font-weight="800">photon sphere, r = 1.5rₛ</text>
+          <line x1="600" y1="230" x2="735" y2="280" stroke="#facc15" stroke-width="3"/>
+          <text x="615" y="312" fill="#fde68a" font-size="16" font-weight="800">accretion disk</text>
+          <line x1="425" y1="205" x2="295" y2="290" stroke="#ef4444" stroke-width="3"/>
+          <text x="150" y="310" fill="#fecaca" font-size="16" font-weight="800">singularity: physics breaks down</text>
+        </svg>
+        <p class="diagram-caption">A black hole has no solid surface at the event horizon; it is a boundary in spacetime.</p>
+      </div>
+      <table>
+        <thead><tr><th>Region</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Singularity</td><td>Where curvature tends toward infinity and current physics breaks down.</td></tr>
+          <tr><td>Event horizon</td><td>Point of no return; located at $r=r_s$.</td></tr>
+          <tr><td>Photon sphere</td><td>Region near $1.5r_s$ where light can orbit unstably.</td></tr>
+          <tr><td>Accretion disk</td><td>Superheated gas spiraling inward.</td></tr>
+        </tbody>
+      </table>
+      <h3 class="text-2xl font-black">Gravitational time dilation</h3>
+      <div class="eqbox">$$\frac{\tau}{t}=\sqrt{1-\frac{r_s}{r}}$$</div>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>At $r=2r_s$: $\tau/t=\sqrt{1-1/2}=0.707$.</li>
+        <li>At $r=4r_s$: $\tau/t=\sqrt{1-1/4}=0.866$.</li>
+        <li>Far away: $\tau/t\rightarrow1$.</li>
+        <li>At the event horizon: $\tau/t\rightarrow0$ for a distant observer.</li>
+      </ul>
+      <h3 class="text-2xl font-black">Tidal forces</h3>
+      <p>Spaghettification happens because gravity is stronger on the side of an object closer to the black hole than on the side farther away. This stretches the object radially and squeezes it laterally.</p>
+      <div class="eqbox">$$F_{tidal}\propto\frac{GMr}{R^3}$$</div>
+      <h3 class="text-2xl font-black">Hawking radiation</h3>
+      <p>Hawking radiation is the theoretical prediction that black holes can slowly radiate energy because of quantum effects near the event horizon. It has not been directly confirmed experimentally for real black holes because the temperature is incredibly tiny.</p>
+      <div class="eqbox">$$T_H=\frac{\hbar c^3}{8\pi GMk_B}$$</div>
+      <h3 class="text-2xl font-black">Light bending</h3>
+      <p>General relativity predicts that light follows curved geodesics near massive objects. Einstein's prediction is twice the Newtonian prediction because GR includes curvature of both space and time.</p>
+      <div class="eqbox">$$\delta\phi_{GR}=\frac{4GM}{c^2b}$$</div>
+    </section>
+
+    <section class="card p-6 space-y-5">
+      <span class="section-label">§10 Summary</span>
+      <h2 class="text-3xl font-black">Four key ideas students should leave with</h2>
+      <ol class="list-decimal pl-6 space-y-3">
+        <li><strong>The speed of light is absolute:</strong> all observers measure $c$.</li>
+        <li><strong>Time and length are relative:</strong> moving clocks run slow and moving objects contract along the direction of motion.</li>
+        <li><strong>Mass and energy are equivalent:</strong> $E=mc^2$.</li>
+        <li><strong>Gravity is spacetime curvature:</strong> objects follow geodesics through curved spacetime.</li>
+      </ol>
+      <div class="teacher-note"><strong>Final thought:</strong> Astronauts are technically time travelers toward the future. The effect is tiny at ISS speeds, but it becomes large near light speed or near strong gravity.</div>
+    </section>
+  </main>
+
+  <footer class="px-6 py-8 text-center text-slate-500">Special & General Relativity · Traditional Notes Site</footer>
+
+  <script>
+    function toggle(id){
+      const el = document.getElementById(id);
+      if(el) el.classList.toggle('open');
+      if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
+    }
+  </script>
+</body>
+</html>
