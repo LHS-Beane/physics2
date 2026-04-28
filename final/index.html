@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Physics II Conceptual Question Randomizer</title>
+<style>
+:root{--primary:#0077da;--secondary:#004d80;--accent:#ffcc00;--paper:#f7fbff;--ink:#14213d;--card:#fff;--border:#dbe7f3;--muted:#64748b;}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--paper);color:var(--ink)}
+header{background:linear-gradient(135deg,var(--secondary),var(--primary));color:white;padding:34px 18px}.wrap{max-width:1180px;margin:auto}h1{font-size:clamp(2rem,5vw,4.5rem);line-height:1;margin:0;font-weight:900}.lead{font-size:1.1rem;max-width:850px;color:#eaf6ff}.panel,.qcard{background:var(--card);border:1px solid var(--border);border-radius:22px;box-shadow:0 10px 25px rgba(0,0,0,.06)}.panel{padding:18px;margin-top:-24px;position:relative}.controls{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;align-items:end}label{font-weight:800;font-size:.9rem}select,input{width:100%;padding:11px;border:1px solid var(--border);border-radius:12px;background:white;font:inherit}button{border:0;border-radius:14px;padding:12px 15px;font-weight:900;cursor:pointer}.primary{background:var(--primary);color:white}.secondary{background:#e0f2fe;color:#075985}.ghost{background:#f1f5f9;color:#334155}.danger{background:#ffe4e6;color:#9f1239}.span3{grid-column:span 3}.span2{grid-column:span 2}.span4{grid-column:span 4}.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.badge{display:inline-flex;padding:6px 10px;border-radius:999px;background:#e0f2fe;color:#075985;font-weight:900;font-size:.8rem}.qgrid{display:grid;gap:18px;margin:24px 0}.qcard{padding:18px;overflow:hidden}.qhead{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:12px}.qtitle{font-weight:950;color:var(--secondary)}.topic{background:#fff8db;color:#92400e}.bank-html table{max-width:100%!important;width:auto!important}.bank-html img{max-width:100%;height:auto}.bank-html span,.bank-html td{font-size:1rem!important;line-height:1.35}.answerbox{margin-top:12px;background:#f8fafc;border:1px solid var(--border);border-radius:16px;padding:12px}.answerline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.answerline input{max-width:120px}.small{color:var(--muted);font-size:.9rem}.empty{text-align:center;padding:40px;color:var(--muted)}
+.feedback{margin-top:10px;padding:10px 12px;border-radius:14px;border:1px solid var(--border);font-weight:800}.feedback.good{background:#ecfdf5;color:#0f766e;border-color:#99f6e4}.feedback.bad{background:#fff1f2;color:#be123c;border-color:#fecdd3}.feedback.neutral{background:#eff6ff;color:#075985;border-color:#bfdbfe}.ai-box{margin-top:12px;border:1px solid var(--border);border-radius:16px;padding:12px;background:white;white-space:pre-wrap;line-height:1.45}.answer-key{font-size:1rem;background:#fff8db;border:1px solid #fde68a;padding:10px;border-radius:14px;margin-top:10px}.hidden{display:none!important}table.summary{width:100%;border-collapse:collapse}table.summary th,table.summary td{border:1px solid var(--border);padding:8px;vertical-align:top}table.summary th{background:#f0f7ff;text-align:left}.success{background:#ccfbf1;color:#115e59}
+
+@media(max-width:850px){.controls{grid-template-columns:1fr}.span2,.span3,.span4{grid-column:span 1}.qhead{display:block}.panel{margin-top:0;border-radius:0}}
+@media print{header,.panel,.answerbox,.no-print{display:none!important}body{background:white}.qcard{box-shadow:none;break-inside:avoid;margin-bottom:18px}.qgrid{display:block}.bank-html table{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><p style="letter-spacing:.22em;text-transform:uppercase;font-weight:800;opacity:.85">Physics II · Final Review</p><h1>Conceptual Question Randomizer</h1><p class="lead">Static GitHub-friendly practice site. It randomly pulls from the uploaded bank, keeps diagrams/images attached, checks answers from the answer key, and lets students request/copy reasoning prompts.</p></div></header>
+<main class="wrap" style="padding:0 18px 40px">
+<section class="panel no-print">
+  <div class="controls">
+    <div class="span3"><label for="topicSelect">Topic</label><select id="topicSelect"><option value="All">All Topics</option></select></div>
+    <div class="span2"><label for="countInput">Questions</label><input id="countInput" type="number" min="1" value="15"></div>
+    <div class="span3"><label for="seedInput">Seed / Version</label><input id="seedInput" placeholder="optional, e.g. A"></div>
+    <div class="span2"><button class="primary" style="width:100%" onclick="generateSet()">Generate</button></div>
+    <div class="span2"><button class="secondary" style="width:100%" onclick="window.print()">Print/PDF</button></div>
+    <div class="span4"><button class="ghost" style="width:100%" onclick="showAll()">Show Full Bank</button></div>
+    <div class="span4"><button class="ghost" style="width:100%" onclick="copyTeacherList()">Copy Question IDs</button></div>
+    <div class="span4"><button class="danger" style="width:100%" onclick="clearResponses()">Clear Responses</button></div>
+  </div>
+  <div class="stats"><span class="badge" id="bankCount"></span><span class="badge" id="setCount"></span><span class="badge">Images stay in /images</span><span class="badge">Works on GitHub Pages</span></div>
+  <p class="small"><strong>Answer key enabled.</strong> Student answers save locally. AI explanations copy a ChatGPT-ready prompt by default; to use the OpenAI API, set up a secure proxy endpoint. Never put an API key directly into this GitHub Pages file.</p>
+</section>
+<section id="questions" class="qgrid"><div class="empty">Choose a topic/count and click Generate.</div></section>
+<section id="quizNav" class="panel no-print" style="display:none;margin-top:10px">
+  <div class="controls">
+    <div class="span3"><button class="ghost" style="width:100%" onclick="previousQuestion()">← Previous</button></div>
+    <div class="span3"><button class="primary" style="width:100%" onclick="submitCurrent()">Submit / Check Answer</button></div>
+    <div class="span3"><button class="secondary" style="width:100%" onclick="nextQuestion()">Next →</button></div>
+    <div class="span3"><button class="ghost" style="width:100%" onclick="finishSet()">Finish / Summary</button></div>
+  </div>
+  <p class="small" id="navStatus" style="margin-top:10px"></p>
+</section>
+</main>
+<script src="questions.js"></script>
+<script>
+// Optional: set this to a secure proxy endpoint, e.g. https://your-worker.yourname.workers.dev/explain
+// Never put your OpenAI API key in this client-side file.
+const AI_EXPLANATION_ENDPOINT = "";
+
+const $ = sel => document.querySelector(sel);
+const bank = window.QUESTION_BANK || [];
+const answerKey = window.ANSWER_KEY || {};
+let currentSet = [];
+let currentIndex = 0;
+let showAllMode = false;
+
+function hashString(str){
+  let h=2166136261;
+  for(let i=0;i<str.length;i++){
+    h^=str.charCodeAt(i);
+    h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24);
+  }
+  return h>>>0;
+}
+function rng(seed){
+  let t=seed+0x6D2B79F5;
+  return function(){
+    t+=0x6D2B79F5;
+    let r=Math.imul(t^t>>>15,1|t);
+    r^=r+Math.imul(r^r>>>7,61|r);
+    return ((r^r>>>14)>>>0)/4294967296;
+  }
+}
+function shuffle(arr, rand=Math.random){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(rand()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function topics(){return [...new Set(bank.map(q=>q.topic))].sort();}
+function normalize(ans){
+  return String(ans||'').toUpperCase()
+    .replace(/\bAND\b/g, ',')
+    .replace(/\s+/g, '')
+    .replace(/[.]/g, '')
+    .split(',')
+    .filter(Boolean)
+    .sort()
+    .join(',');
+}
+function isCorrect(student,key){return normalize(student) === normalize(key);}
+function getPlainQuestion(q){
+  const tmp=document.createElement('div');
+  tmp.innerHTML=q.html;
+  return tmp.innerText.replace(/\s+/g,' ').trim().slice(0,3000);
+}
+
+function init(){
+  const sel=$('#topicSelect');
+  topics().forEach(t=>{
+    const o=document.createElement('option');
+    o.value=t;
+    o.textContent=t;
+    sel.appendChild(o);
+  });
+  $('#bankCount').textContent=bank.length+' total questions';
+  generateSet();
+}
+
+function filtered(){
+  const topic=$('#topicSelect').value;
+  return topic==='All'?bank:bank.filter(q=>q.topic===topic);
+}
+
+function generateSet(){
+  const pool=filtered();
+  const n=Math.min(Math.max(parseInt($('#countInput').value)||1,1),pool.length);
+  const seedText=$('#seedInput').value.trim() || String(Date.now());
+  const rand=rng(hashString(seedText+'|'+$('#topicSelect').value+'|'+n));
+  currentSet = shuffle(pool,rand).slice(0,n);
+  currentIndex = 0;
+  showAllMode = false;
+  $('#quizNav').style.display = currentSet.length ? 'block' : 'none';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const root=$('#questions');
+  if(!currentSet.length){
+    root.innerHTML='<div class="empty">No questions found for this filter.</div>';
+    $('#setCount').textContent='0 currently shown';
+    $('#quizNav').style.display='none';
+    return;
+  }
+  const q=currentSet[currentIndex];
+  $('#setCount').textContent='Question '+(currentIndex+1)+' of '+currentSet.length;
+  root.innerHTML=questionCard(q,currentIndex,currentSet.length);
+  hydrateAnswerInputs();
+  restoreFeedback(q.id);
+  updateNavStatus();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function questionCard(q,i,total){
+  const key = answerKey[q.id] || 'No key found';
+  return '<article class="qcard" id="'+q.id+'">'
+    + '<div class="qhead"><div class="qtitle">Question '+(i+1)+' of '+total+' <span class="small">('+q.id+')</span></div><span class="badge topic">'+q.topic+'</span></div>'
+    + '<div class="bank-html">'+q.html+'</div>'
+    + '<div id="key-'+q.id+'" class="answer-key hidden"><strong>Correct answer:</strong> '+key+'</div>'
+    + '<div id="feedback-'+q.id+'" class="feedback neutral hidden"></div>'
+    + '<div id="ai-'+q.id+'" class="ai-box hidden"></div>'
+    + '<div class="answerbox no-print"><div class="answerline"><label>My answer:</label><input data-answer="'+q.id+'" placeholder="A, B, C..."><button class="primary" onclick="submitAnswer(\''+q.id+'\')">Submit</button><button class="success" onclick="revealAnswer(\''+q.id+'\')">Show Answer</button><button class="secondary" onclick="explainWithAI(\''+q.id+'\')">Explain with AI</button><span class="small">Use letters; multi-answer is OK, like A,C.</span></div></div>'
+    + '</article>';
+}
+
+function hydrateAnswerInputs(){
+  document.querySelectorAll('[data-answer]').forEach(inp=>{
+    inp.value=localStorage.getItem('rand-answer-'+inp.dataset.answer)||'';
+    inp.addEventListener('input',()=>localStorage.setItem('rand-answer-'+inp.dataset.answer,inp.value));
+  });
+}
+
+function restoreFeedback(qid){
+  const student=localStorage.getItem('rand-answer-'+qid)||'';
+  const checked=localStorage.getItem('rand-checked-'+qid)==='true';
+  if(checked && student) renderFeedback(qid,student);
+}
+
+function renderFeedback(qid,student){
+  const key=answerKey[qid] || '';
+  const box=$('#feedback-'+qid);
+  if(!box) return;
+  const correct=key && isCorrect(student,key);
+  box.className='feedback '+(correct?'good':'bad');
+  box.innerHTML=correct ? 'Correct. Nice work.' : 'Not quite. Your answer: <strong>'+student+'</strong>. Correct answer: <strong>'+key+'</strong>.';
+  box.classList.remove('hidden');
+  revealAnswer(qid,false);
+}
+
+function submitAnswer(qid){
+  const inp=document.querySelector('[data-answer="'+qid+'"]');
+  if(!inp || !inp.value.trim()){
+    alert('Type your answer first, such as A, B, C, D, or E.');
+    return;
+  }
+  localStorage.setItem('rand-answer-'+qid, inp.value.trim());
+  localStorage.setItem('rand-checked-'+qid, 'true');
+  renderFeedback(qid, inp.value.trim());
+  updateNavStatus('Checked '+qid+'.');
+}
+function submitCurrent(){
+  if(!currentSet.length) return;
+  submitAnswer(currentSet[currentIndex].id);
+}
+function revealAnswer(qid,manual=true){
+  const el=$('#key-'+qid);
+  if(el) el.classList.remove('hidden');
+  if(manual) updateNavStatus('Revealed answer for '+qid+'.');
+}
+
+function nextQuestion(){
+  if(!currentSet.length) return;
+  const q=currentSet[currentIndex];
+  const inp=document.querySelector('[data-answer="'+q.id+'"]');
+  if(inp && inp.value.trim()) localStorage.setItem('rand-answer-'+q.id, inp.value.trim());
+  if(currentIndex < currentSet.length-1){
+    currentIndex++;
+    renderQuestion();
+  } else {
+    finishSet();
+  }
+}
+
+function previousQuestion(){
+  if(!currentSet.length) return;
+  const q=currentSet[currentIndex];
+  const inp=document.querySelector('[data-answer="'+q.id+'"]');
+  if(inp && inp.value.trim()) localStorage.setItem('rand-answer-'+q.id, inp.value.trim());
+  if(currentIndex > 0){
+    currentIndex--;
+    renderQuestion();
+  }
+}
+
+function finishSet(){
+  if(!currentSet.length) return;
+  let answered=0, checked=0, correct=0;
+  const rows=currentSet.map((q,i)=>{
+    const ans=localStorage.getItem('rand-answer-'+q.id)||'';
+    const key=answerKey[q.id]||'';
+    const wasChecked=localStorage.getItem('rand-checked-'+q.id)==='true';
+    if(ans.trim()) answered++;
+    if(wasChecked) checked++;
+    if(wasChecked && isCorrect(ans,key)) correct++;
+    const result = wasChecked ? (isCorrect(ans,key)?'Correct':'Incorrect') : 'Not checked';
+    return '<tr><td>'+(i+1)+'</td><td>'+q.id+'</td><td>'+q.topic+'</td><td>'+(ans || '<span class="small">blank</span>')+'</td><td>'+key+'</td><td>'+result+'</td></tr>';
+  }).join('');
+  $('#setCount').textContent='Score: '+correct+' correct of '+checked+' checked';
+  $('#questions').innerHTML='<article class="qcard"><div class="qhead"><div class="qtitle">Submission Summary</div><span class="badge topic">'+correct+'/'+checked+' correct checked</span></div><p>Answered: '+answered+' of '+currentSet.length+'. Checked: '+checked+'.</p><table class="summary"><thead><tr><th>#</th><th>ID</th><th>Topic</th><th>Student Answer</th><th>Correct Answer</th><th>Result</th></tr></thead><tbody>'+rows+'</tbody></table><div class="answerbox no-print"><button class="primary" onclick="currentIndex=0;renderQuestion()">Review From Start</button> <button class="secondary" onclick="window.print()">Print / Save Summary</button></div></article>';
+  updateNavStatus('Finished. '+correct+' correct of '+checked+' checked.');
+}
+
+function showAll(){
+  showAllMode = true;
+  currentSet = filtered().sort((a,b)=>a.sourceNumber-b.sourceNumber);
+  $('#quizNav').style.display='none';
+  renderAll(currentSet);
+}
+
+function renderAll(list){
+  const root=$('#questions');
+  if(!list.length){root.innerHTML='<div class="empty">No questions found for this filter.</div>'; return;}
+  $('#setCount').textContent=list.length+' currently shown';
+  root.innerHTML=list.map((q,i)=>questionCard(q,i,list.length)).join('');
+  hydrateAnswerInputs();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateNavStatus(msg){
+  if(!currentSet.length) return;
+  const answered=currentSet.filter(q=>localStorage.getItem('rand-answer-'+q.id)?.trim()).length;
+  const checked=currentSet.filter(q=>localStorage.getItem('rand-checked-'+q.id)==='true').length;
+  $('#navStatus').textContent = msg || ('Question '+(currentIndex+1)+' of '+currentSet.length+' · '+answered+' answered · '+checked+' checked.');
+}
+
+function clearResponses(){
+  if(confirm('Clear locally saved answers and checked results?')){
+    Object.keys(localStorage).forEach(k=>{if(k.startsWith('rand-answer-')||k.startsWith('rand-checked-'))localStorage.removeItem(k)});
+    document.querySelectorAll('[data-answer]').forEach(i=>i.value='');
+    document.querySelectorAll('.feedback').forEach(el=>el.classList.add('hidden'));
+    document.querySelectorAll('.answer-key').forEach(el=>el.classList.add('hidden'));
+    updateNavStatus('Responses cleared.');
+  }
+}
+
+function copyTeacherList(){
+  const ids=(showAllMode ? [...document.querySelectorAll('.qcard')].map(el=>el.id) : currentSet.map(q=>q.id)).join(', ');
+  if(navigator.clipboard){navigator.clipboard.writeText(ids)}
+  alert('Current question IDs: '+ids);
+}
+
+function buildAIPrompt(q){
+  const key=answerKey[q.id]||'unknown';
+  const student=localStorage.getItem('rand-answer-'+q.id)||'';
+  return `You are tutoring a calculus-based Physics II student. Explain why the correct answer is ${key}. Be concise, student-friendly, and do not just state the answer. Also explain why the most tempting wrong answer is wrong if possible.
+
+Question ID: ${q.id}
+Topic: ${q.topic}
+Student answer: ${student || 'not provided'}
+Correct answer: ${key}
+Question text and choices:
+${getPlainQuestion(q)}`;
+}
+
+async function explainWithAI(qid){
+  const q=bank.find(x=>x.id===qid);
+  if(!q) return;
+  const box=$('#ai-'+qid);
+  const prompt=buildAIPrompt(q);
+  box.classList.remove('hidden');
+  if(!AI_EXPLANATION_ENDPOINT){
+    if(navigator.clipboard) await navigator.clipboard.writeText(prompt);
+    box.textContent='AI prompt copied. Paste it into ChatGPT, or configure AI_EXPLANATION_ENDPOINT in index.html to use a secure OpenAI proxy. Do not put an API key in this GitHub Pages site.\n\nPrompt:\n'+prompt;
+    return;
+  }
+  box.textContent='Generating explanation...';
+  try{
+    const res=await fetch(AI_EXPLANATION_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt, questionId:qid, topic:q.topic})
+    });
+    if(!res.ok) throw new Error('Endpoint returned '+res.status);
+    const data=await res.json();
+    box.textContent=data.explanation || data.output || JSON.stringify(data,null,2);
+  }catch(err){
+    box.textContent='AI explanation failed: '+err.message+'\n\nFallback prompt:\n'+prompt;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
