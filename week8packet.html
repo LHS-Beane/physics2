@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Special & General Relativity Interactive Packet</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$']] },
+      svg: { fontCache: 'global' },
+      startup: { typeset: false }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root { --primary:#0f766e; --secondary:#0f172a; --accent:#f59e0b; --ink:#111827; --muted:#64748b; --bg:#f8fafc; }
+    html { scroll-behavior:smooth; }
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:var(--bg); color:var(--ink); }
+    .hero-grid { background-image: radial-gradient(circle at 20% 20%, rgba(20,184,166,.18), transparent 30%), radial-gradient(circle at 80% 10%, rgba(245,158,11,.22), transparent 28%), linear-gradient(135deg, #0f172a, #134e4a); }
+    .card { background:white; border:1px solid #e2e8f0; border-radius:1.25rem; box-shadow:0 12px 30px rgba(15,23,42,.08); }
+    .mini-card { background:#ffffff; border:1px solid #e5e7eb; border-radius:1rem; }
+    .section-pill { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .75rem; border-radius:999px; background:#ccfbf1; color:#115e59; font-weight:700; font-size:.78rem; letter-spacing:.04em; text-transform:uppercase; }
+    .callout { border-left:5px solid var(--primary); background:#f0fdfa; border-radius:.75rem; padding:1rem; }
+    .warning { border-left:5px solid var(--accent); background:#fffbeb; border-radius:.75rem; padding:1rem; }
+    .answer { display:none; }
+    .answer.open { display:block; }
+    textarea, input, select { width:100%; border:1px solid #cbd5e1; border-radius:.85rem; padding:.7rem .85rem; background:white; }
+    textarea { min-height:70px; resize:vertical; }
+    .blank { min-height:42px; }
+    .btn { border-radius:999px; padding:.7rem 1rem; font-weight:700; transition:.15s transform ease, .15s opacity ease; }
+    .btn:hover { transform:translateY(-1px); opacity:.95; }
+    .btn-primary { background:var(--primary); color:white; }
+    .btn-dark { background:var(--secondary); color:white; }
+    .btn-light { background:#e2e8f0; color:#0f172a; }
+    .sticky-nav { position:sticky; top:0; z-index:30; backdrop-filter:blur(14px); background:rgba(255,255,255,.88); border-bottom:1px solid #e2e8f0; }
+    .progressbar { height:8px; background:#e2e8f0; border-radius:999px; overflow:hidden; }
+    .progressbar > div { height:100%; background:linear-gradient(90deg,#0f766e,#14b8a6,#f59e0b); width:0%; transition:width .2s; }
+    .tab-active { background:#0f766e !important; color:white !important; }
+    details { border:1px solid #e2e8f0; border-radius:1rem; padding:1rem; background:#fff; }
+    summary { cursor:pointer; font-weight:800; color:#0f172a; }
+    @media print {
+      .no-print, .sticky-nav, button, .practice-extra { display:none !important; }
+      body { background:white; }
+      .card, .mini-card, details { box-shadow:none; border:1px solid #aaa; break-inside:avoid; }
+      textarea, input { border:0; border-bottom:1px solid #333; border-radius:0; }
+      .answer { display:block !important; color:#111; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero-grid text-white px-6 py-10 md:py-16">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-[1.25fr_.75fr] gap-8 items-center">
+      <div>
+        <p class="uppercase tracking-[.25em] text-teal-100 font-bold text-sm">Physics II · Calculus-Based</p>
+        <h1 class="text-4xl md:text-6xl font-black mt-3 leading-tight">Special & General Relativity Interactive Packet</h1>
+        <p class="mt-5 text-lg md:text-xl text-slate-100 max-w-3xl">Complete the guided notes, check your work, try extra problems, and build a clean packet you can print or submit as a PDF.</p>
+        <div class="mt-7 flex flex-wrap gap-3 no-print">
+          <button class="btn btn-primary" onclick="document.querySelector('#student-info').scrollIntoView()">Start Packet</button>
+          <button class="btn btn-light" onclick="window.print()">Print / Save as PDF</button>
+          <button class="btn bg-white/10 text-white border border-white/30" onclick="downloadAnswers()">Download Responses</button>
+        </div>
+      </div>
+      <div class="card bg-white/10 border-white/20 text-white p-6">
+        <h2 class="text-2xl font-black">Core equations</h2>
+        <div class="mt-4 space-y-3 text-lg">
+          <div class="p-3 rounded-xl bg-white/10">$\Delta t = \gamma\Delta t_0$</div>
+          <div class="p-3 rounded-xl bg-white/10">$L = \dfrac{L_0}{\gamma}$</div>
+          <div class="p-3 rounded-xl bg-white/10">$E = mc^2$</div>
+          <div class="p-3 rounded-xl bg-white/10">$r_s = \dfrac{2GM}{c^2}$</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sticky-nav no-print px-4 py-3">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center gap-3">
+      <div class="flex-1">
+        <div class="progressbar"><div id="progressFill"></div></div>
+        <p class="text-xs text-slate-600 mt-1"><span id="progressText">0%</span> of response boxes filled</p>
+      </div>
+      <div class="flex flex-wrap gap-2 text-sm">
+        <a class="btn btn-light py-2" href="#sr">SR</a>
+        <a class="btn btn-light py-2" href="#time">Time</a>
+        <a class="btn btn-light py-2" href="#gps">Muons/GPS</a>
+        <a class="btn btn-light py-2" href="#length">Length</a>
+        <a class="btn btn-light py-2" href="#energy">Energy</a>
+        <a class="btn btn-light py-2" href="#gr">GR/BH</a>
+        <a class="btn btn-light py-2" href="#practice">Practice</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <section id="student-info" class="card p-6">
+      <span class="section-pill">Student setup</span>
+      <div class="grid md:grid-cols-3 gap-4 mt-5">
+        <label>Name <input data-save="name" placeholder="Your name" /></label>
+        <label>Date <input data-save="date" type="date" /></label>
+        <label>Section <input data-save="section" placeholder="Class / section" /></label>
+      </div>
+      <div class="warning mt-5"><strong>Directions:</strong> Type your answers directly into each box. Your work saves automatically in this browser. Use reveal buttons only after making a real attempt.</div>
+    </section>
+
+    <section id="sr" class="card p-6 space-y-5">
+      <span class="section-pill">§1–2 Hook & Einstein's Postulates</span>
+      <h2 class="text-3xl font-black">Classical physics breaks down</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="mini-card p-5">
+          <h3 class="font-black text-xl">Classical velocity addition</h3>
+          <p class="mt-2">Newton/Galileo would say $v_{total}=v_{train}+v_{ball}$.</p>
+          <label class="block mt-4">Train at 60 mph + ball at 40 mph. Ground observer measures: <input data-save="train-ball" class="blank" /></label>
+          <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-train')">Reveal check</button>
+          <div id="a-train" class="answer callout mt-3">$60+40=100\text{ mph}$. This works well for ordinary objects.</div>
+        </div>
+        <div class="mini-card p-5">
+          <h3 class="font-black text-xl">Now use a flashlight</h3>
+          <p class="mt-2">Classical prediction for a train moving at $0.5c$ with a forward flashlight:</p>
+          <input data-save="flashlight-prediction" class="blank" placeholder="What would Galilean addition predict?" />
+          <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-light')">Reveal check</button>
+          <div id="a-light" class="answer callout mt-3">Classically: $c+0.5c=1.5c$. Experimentally: every observer still measures $c=3.00\times10^8\,\text{m/s}$. That contradiction forces a new model of space and time.</div>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <label>Michelson and Morley searched for the medium called the: <input data-save="aether" /></label>
+        <label>The experimental result was: <input data-save="mm-result" /></label>
+      </div>
+      <details><summary>Postulate 1 — Principle of Relativity</summary><p class="mt-3">The laws of physics are the same in all inertial reference frames. A smooth airplane with closed windows is the everyday example: you cannot use a local physics experiment to prove you are moving at constant velocity.</p></details>
+      <details><summary>Postulate 2 — Constancy of Light Speed</summary><p class="mt-3">All observers measure vacuum light speed as $c$, no matter how the source or observer moves. To preserve this, measurements of time and length must change between observers.</p></details>
+      <label class="block">Explain why the second postulate is the shocking one. <textarea data-save="postulate-explain"></textarea></label>
+    </section>
+
+    <section id="time" class="card p-6 space-y-5">
+      <span class="section-pill">§3 Time Dilation</span>
+      <h2 class="text-3xl font-black">The light clock derivation</h2>
+      <div class="callout"><strong>Big idea:</strong> The photon must still travel at $c$. In the moving frame it travels a longer diagonal path, so the tick takes more time. Moving clocks run slower.</div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <label>Hypotenuse expression <input data-save="hypotenuse" placeholder="ex: cΔt" /></label>
+        <label>Vertical leg expression <input data-save="vertical-leg" placeholder="ex: cΔt₀/2" /></label>
+        <label>Horizontal leg expression <input data-save="horizontal-leg" placeholder="ex: vΔt" /></label>
+      </div>
+      <label>Write the Pythagorean equation. <textarea data-save="pythagorean"></textarea></label>
+      <button class="btn btn-dark" onclick="toggleAnswer('a-pythag')">Reveal derivation setup</button>
+      <div id="a-pythag" class="answer callout">$(c\Delta t)^2=(c\Delta t_0)^2+(v\Delta t)^2$ if using the full up-down tick. If using the half-tick triangle, use $(c\Delta t/2)^2=(c\Delta t_0/2)^2+(v\Delta t/2)^2$. Both produce the same final equation.</div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <label>Step 2: Expand and collect terms. <textarea data-save="td-step2"></textarea></label>
+        <label>Step 3: Factor and isolate $\Delta t^2$. <textarea data-save="td-step3"></textarea></label>
+        <label>Step 4: Solve for $\Delta t$. <textarea data-save="td-step4"></textarea></label>
+        <label>Define $\gamma$. <textarea data-save="gamma-define"></textarea></label>
+      </div>
+      <button class="btn btn-dark" onclick="toggleAnswer('a-td-final')">Reveal final derivation</button>
+      <div id="a-td-final" class="answer warning">$c^2\Delta t^2=c^2\Delta t_0^2+v^2\Delta t^2$ → $\Delta t^2(c^2-v^2)=c^2\Delta t_0^2$ → $\Delta t^2(1-v^2/c^2)=\Delta t_0^2$ → $\Delta t=\dfrac{\Delta t_0}{\sqrt{1-v^2/c^2}}=\gamma\Delta t_0$.</div>
+      <div class="mini-card p-5">
+        <h3 class="font-black text-xl">Interactive Lorentz factor calculator</h3>
+        <label>Speed as a fraction of light speed, $v/c$ <input id="betaInput" type="number" min="0" max="0.9999" step="0.01" value="0.80" oninput="updateRelativityCalc()" /></label>
+        <p class="mt-3 text-lg">$\gamma =$ <strong id="gammaOut">1.667</strong></p>
+        <p>A 1.0 s proper-time tick is measured as <strong id="dilatedOut">1.667 s</strong> by the observer who sees the clock moving.</p>
+        <canvas id="gammaChart" height="120" class="mt-4"></canvas>
+      </div>
+    </section>
+
+    <section id="gps" class="card p-6 space-y-5">
+      <span class="section-pill">§4 Reality Check</span>
+      <h2 class="text-3xl font-black">Muons and GPS prove this is real</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="mini-card p-5">
+          <h3 class="font-black text-xl">Cosmic muons</h3>
+          <p>Muons form about 10 km above Earth. Their rest-frame half-life is $2.2\,\mu s$, but many reach the ground because at $v=0.998c$, $\gamma\approx15.8$.</p>
+          <label>Calculate $\gamma$ for $v=0.998c$. <input data-save="muon-gamma" /></label>
+          <label class="block mt-3">Calculate dilated lifetime. <input data-save="muon-lifetime" /></label>
+          <label class="block mt-3">Explain why this lets muons reach Earth. <textarea data-save="muon-explain"></textarea></label>
+          <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-muon')">Reveal solution</button>
+          <div id="a-muon" class="answer callout mt-3">$\gamma=1/\sqrt{1-0.998^2}\approx15.82$. Lifetime in Earth's frame: $15.82(2.2\,\mu s)\approx34.8\,\mu s$. Distance: $(0.998)(3.0\times10^8)(34.8\times10^{-6})\approx1.04\times10^4\,m$, or about 10.4 km.</div>
+        </div>
+        <div class="mini-card p-5">
+          <h3 class="font-black text-xl">GPS correction</h3>
+          <label>SR speed effect: moving satellite clocks run ________. <input data-save="gps-sr" /></label>
+          <label class="block mt-3">GR gravity effect: higher satellite clocks run ________. <input data-save="gps-gr" /></label>
+          <label class="block mt-3">Net correction: $-7+45=$ <input data-save="gps-net" /></label>
+          <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-gps')">Reveal check</button>
+          <div id="a-gps" class="answer callout mt-3">SR: slower by about $7\,\mu s/day$. GR: faster by about $45\,\mu s/day$. Net: $+38\,\mu s/day$. Without correction, GPS error grows by roughly 11 km/day.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="length" class="card p-6 space-y-5">
+      <span class="section-pill">§5 Length Contraction & Simultaneity</span>
+      <h2 class="text-3xl font-black">Space changes too</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="mini-card p-5">
+          <h3 class="font-black text-xl">Length contraction</h3>
+          <label>Write the equation for length contraction. <input data-save="length-eq" /></label>
+          <label class="block mt-3">Define $L_0$. <input data-save="l0-define" /></label>
+          <label class="block mt-3">Define $L$. <input data-save="l-define" /></label>
+          <label class="block mt-3">What direction contracts? <input data-save="contract-direction" /></label>
+          <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-length')">Reveal check</button>
+          <div id="a-length" class="answer callout mt-3">$L=L_0/\gamma=L_0\sqrt{1-v^2/c^2}$. $L_0$ is proper/rest length, the longest length. $L$ is contracted length measured when the object moves. Only the direction of motion contracts.</div>
+        </div>
+        <div class="mini-card p-5">
+          <h3 class="font-black text-xl">Rocket practice</h3>
+          <p>A rocket has proper length $L_0=500\,m$ and travels at $0.8c$.</p>
+          <label>Calculate $\gamma$. <input data-save="rocket-gamma" /></label>
+          <label class="block mt-3">Calculate $L$. <input data-save="rocket-length" /></label>
+          <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-rocket')">Reveal solution</button>
+          <div id="a-rocket" class="answer callout mt-3">$\gamma=1/\sqrt{1-0.8^2}=1/0.6=1.667$. $L=500/1.667\approx300\,m$.</div>
+        </div>
+      </div>
+      <div class="mini-card p-5">
+        <h3 class="font-black text-xl">Relativity of simultaneity</h3>
+        <p>Lightning strikes both ends of a moving train simultaneously in the ground frame.</p>
+        <label>What does the ground observer at the midpoint see? <textarea data-save="ground-observer"></textarea></label>
+        <label>What does the train observer see? <textarea data-save="train-observer"></textarea></label>
+        <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-sim')">Reveal explanation</button>
+        <div id="a-sim" class="answer warning mt-3">The ground observer sees both flashes arrive together. The train observer moves toward the front flash and away from the rear flash. Since both light signals still travel at $c$, the front flash reaches the train observer first. Events simultaneous in one frame do not have to be simultaneous in another.</div>
+      </div>
+    </section>
+
+    <section id="energy" class="card p-6 space-y-5">
+      <span class="section-pill">§6 Energy & Mass</span>
+      <h2 class="text-3xl font-black">Mass is energy</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="mini-card p-5">
+          <h3 class="font-black text-xl">Relativistic energy</h3>
+          <label>Classical KE equation: <input data-save="classical-ke" /></label>
+          <label class="block mt-3">Relativistic KE equation: <input data-save="rel-ke" /></label>
+          <label class="block mt-3">Rest energy equation: <input data-save="rest-energy" /></label>
+          <label class="block mt-3">What does $E=mc^2$ mean in words? <textarea data-save="emc2-meaning"></textarea></label>
+        </div>
+        <div class="mini-card p-5">
+          <h3 class="font-black text-xl">1 gram of mass</h3>
+          <p>Find the energy stored in $m=0.001\,kg$.</p>
+          <label>Show your work. <textarea data-save="one-gram-work"></textarea></label>
+          <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-gram')">Reveal solution</button>
+          <div id="a-gram" class="answer callout mt-3">$E=mc^2=(0.001)(3.0\times10^8)^2=9.0\times10^{13}\,J$. A tiny mass contains enormous energy.</div>
+        </div>
+      </div>
+      <div class="mini-card p-5">
+        <h3 class="font-black text-xl">Energy-momentum relation</h3>
+        <p>$E^2=(pc)^2+(mc^2)^2$</p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <label>Massive particle at rest, $p=0$: <input data-save="massive-rest" /></label>
+          <label>Photon, $m=0$: <input data-save="photon-energy" /></label>
+          <label>Low-speed limit: <input data-save="low-speed-energy" /></label>
+        </div>
+        <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-energy-momentum')">Reveal checks</button>
+        <div id="a-energy-momentum" class="answer callout mt-3">At rest: $E=mc^2$. Photon: $E=pc=hf$. Low-speed limit: $E\approx mc^2+\frac12mv^2$.</div>
+      </div>
+    </section>
+
+    <section id="gr" class="card p-6 space-y-5">
+      <span class="section-pill">§7–9 General Relativity & Black Holes</span>
+      <h2 class="text-3xl font-black">Gravity becomes geometry</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="mini-card p-5">
+          <h3 class="font-black text-xl">Newton vs. Einstein</h3>
+          <label>Newton: Gravity is a ________. <input data-save="newton-force" /></label>
+          <label class="block mt-3">Einstein: Gravity is ________. <input data-save="einstein-gravity" /></label>
+          <label class="block mt-3">Mass tells spacetime how to ________. <input data-save="mass-curves" /></label>
+          <label class="block mt-3">Spacetime tells mass how to ________. <input data-save="spacetime-move" /></label>
+          <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-gr')">Reveal check</button>
+          <div id="a-gr" class="answer callout mt-3">Newton: force. Einstein: curvature of spacetime. Mass tells spacetime how to curve; spacetime tells mass how to move.</div>
+        </div>
+        <div class="mini-card p-5">
+          <h3 class="font-black text-xl">Black holes</h3>
+          <label>Nothing, not even ________, can escape. <input data-save="bh-light" /></label>
+          <label class="block mt-3">Schwarzschild radius equation: <input data-save="rs-eq" /></label>
+          <label class="block mt-3">Event horizon meaning: <textarea data-save="event-horizon"></textarea></label>
+          <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-bh')">Reveal check</button>
+          <div id="a-bh" class="answer callout mt-3">Not even light can escape. $r_s=2GM/c^2$. The event horizon is the point-of-no-return boundary, not a solid surface.</div>
+        </div>
+      </div>
+      <div class="mini-card p-5">
+        <h3 class="font-black text-xl">Gravitational time dilation near a black hole</h3>
+        <p>$\tau/t=\sqrt{1-r_s/r}$</p>
+        <div class="grid md:grid-cols-4 gap-4">
+          <label>$r=2r_s$ <input data-save="tau-2rs" /></label>
+          <label>$r=4r_s$ <input data-save="tau-4rs" /></label>
+          <label>$r\rightarrow\infty$ <input data-save="tau-inf" /></label>
+          <label>$r=r_s$ <input data-save="tau-rs" /></label>
+        </div>
+        <button class="btn btn-dark mt-3" onclick="toggleAnswer('a-gravtime')">Reveal solution</button>
+        <div id="a-gravtime" class="answer warning mt-3">At $2r_s$: $\sqrt{1-1/2}=0.707$. At $4r_s$: $\sqrt{1-1/4}=0.866$. Far away: $1$. At the horizon: $0$ for a distant observer.</div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <label>Explain spaghettification. <textarea data-save="spaghettification"></textarea></label>
+        <label>Why is Hawking radiation important even though it is not experimentally confirmed? <textarea data-save="hawking"></textarea></label>
+      </div>
+    </section>
+
+    <section id="practice" class="card p-6 space-y-5 practice-extra">
+      <span class="section-pill">Extra practice</span>
+      <h2 class="text-3xl font-black">Exam-style problems with revealable answers</h2>
+      <div id="practiceList" class="space-y-4"></div>
+    </section>
+
+    <section class="card p-6 space-y-5">
+      <span class="section-pill">Wrap-up</span>
+      <h2 class="text-3xl font-black">Four key ideas</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <label>1. Speed of light is absolute: <textarea data-save="summary-c"></textarea></label>
+        <label>2. Time and length are relative: <textarea data-save="summary-time-length"></textarea></label>
+        <label>3. Mass and energy are equivalent: <textarea data-save="summary-energy"></textarea></label>
+        <label>4. Gravity is spacetime curvature: <textarea data-save="summary-gravity"></textarea></label>
+      </div>
+      <label>Final thought: Are astronauts real time travelers? Defend your answer using evidence from the lesson. <textarea data-save="final-thought" style="min-height:120px"></textarea></label>
+    </section>
+  </main>
+
+  <footer class="px-6 py-8 text-center text-slate-500 no-print">Special & General Relativity · Interactive Guided Packet</footer>
+
+  <script>
+    const practiceProblems = [
+      {q:'1. A spaceship travels at 0.60c. Find γ.', a:'γ = 1/sqrt(1−0.60²)=1/sqrt(0.64)=1.25.'},
+      {q:'2. A clock on that spaceship measures 4.0 hours. How much time passes on Earth?', a:'Δt=γΔt₀=(1.25)(4.0 h)=5.0 h.'},
+      {q:'3. A 120 m ship moves at 0.90c. What length does an outside observer measure?', a:'γ=1/sqrt(1−0.81)=2.294. L=120/2.294=52.3 m.'},
+      {q:'4. What speed gives γ = 2?', a:'2=1/sqrt(1−β²). So 1−β²=1/4, β²=3/4, β=0.866. Speed = 0.866c.'},
+      {q:'5. How much rest energy is in 2.0 kg of matter?', a:'E=mc²=(2.0)(3.0×10⁸)²=1.8×10¹⁷ J.'},
+      {q:'6. A black hole has mass 10 solar masses. If the Sun’s Schwarzschild radius is about 3 km, estimate this black hole’s Schwarzschild radius.', a:'Schwarzschild radius scales directly with mass: 10×3 km = 30 km.'},
+      {q:'7. Near a black hole, τ/t = 0.50. What fraction of normal distant time does the nearby clock experience?', a:'It experiences 50% of the distant observer’s time rate. For every 1 hour nearby, 2 hours pass far away.'},
+      {q:'8. Explain why GPS needs both special and general relativity.', a:'Satellite motion causes SR time dilation, making satellite clocks run slower. Weaker gravity at altitude causes GR time dilation, making clocks run faster. The net correction must be applied for accurate positioning.'}
+    ];
+
+    function renderPractice(){
+      const root = document.getElementById('practiceList');
+      root.innerHTML = practiceProblems.map((p,i)=>`<div class="mini-card p-5"><p class="font-bold">${p.q}</p><textarea data-save="practice-${i}" class="mt-3" placeholder="Try it here first..."></textarea><button class="btn btn-dark mt-3" onclick="toggleAnswer('practice-a-${i}')">Reveal answer</button><div id="practice-a-${i}" class="answer callout mt-3">${p.a}</div></div>`).join('');
+    }
+
+    function toggleAnswer(id){
+      document.getElementById(id)?.classList.toggle('open');
+      if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
+    }
+
+    function saveField(e){
+      const key = e.target.dataset.save;
+      if(!key) return;
+      localStorage.setItem('relativity_packet_' + key, e.target.value);
+      updateProgress();
+    }
+
+    function loadSaved(){
+      document.querySelectorAll('[data-save]').forEach(el=>{
+        const val = localStorage.getItem('relativity_packet_' + el.dataset.save);
+        if(val !== null) el.value = val;
+        el.addEventListener('input', saveField);
+      });
+      updateProgress();
+    }
+
+    function updateProgress(){
+      const fields = [...document.querySelectorAll('[data-save]')].filter(el=>el.offsetParent !== null || el.tagName);
+      const filled = fields.filter(el=>String(el.value || '').trim().length > 0).length;
+      const pct = fields.length ? Math.round(100*filled/fields.length) : 0;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressText').textContent = pct + '%';
+    }
+
+    function downloadAnswers(){
+      const lines = ['Special & General Relativity Interactive Packet Responses', '====================================================', ''];
+      document.querySelectorAll('[data-save]').forEach(el=>{
+        lines.push(`${el.dataset.save}: ${el.value || ''}`);
+      });
+      const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'relativity_packet_responses.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    let gammaChart;
+    function betaToGamma(beta){ return 1 / Math.sqrt(1 - beta*beta); }
+    function updateRelativityCalc(){
+      let beta = parseFloat(document.getElementById('betaInput').value);
+      if(isNaN(beta)) beta = 0;
+      beta = Math.min(Math.max(beta,0),0.9999);
+      const g = betaToGamma(beta);
+      document.getElementById('gammaOut').textContent = g.toFixed(3);
+      document.getElementById('dilatedOut').textContent = g.toFixed(3) + ' s';
+    }
+    function makeGammaChart(){
+      const ctx = document.getElementById('gammaChart');
+      const xs = [];
+      const ys = [];
+      for(let b=0; b<=0.99; b+=0.01){ xs.push(b.toFixed(2)); ys.push(betaToGamma(b)); }
+      gammaChart = new Chart(ctx, { type:'line', data:{ labels:xs, datasets:[{ label:'γ vs v/c', data:ys, borderWidth:3, pointRadius:0 }] }, options:{ responsive:true, scales:{ y:{ beginAtZero:true, max:8 }, x:{ ticks:{ maxTicksLimit:6 } } }, plugins:{ legend:{ display:false } } } });
+    }
+
+    window.addEventListener('load', ()=>{
+      renderPractice();
+      loadSaved();
+      makeGammaChart();
+      updateRelativityCalc();
+      setTimeout(()=>{ if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise(); }, 400);
+    });
+  </script>
+</body>
+</html>
